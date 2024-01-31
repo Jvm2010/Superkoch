@@ -16,11 +16,28 @@
             color: #333;
         }
 
+        .link-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
         .link-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 20px;
+            max-width: 90%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .link-box {
@@ -37,11 +54,6 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            position: fixed; /* Torna fixo na tela */
-            top: 50%; /* Ajusta a posição verticalmente */
-            left: 50%; /* Ajusta a posição horizontalmente */
-            transform: translate(-50%, -50%); /* Centraliza na tela */
-            z-index: 999; /* Coloca acima do conteúdo principal */
         }
 
         .link-box:hover {
@@ -64,55 +76,44 @@
 <body>
     <h1>Aplicativos SuperKoch</h1>
 
-    <div class="link-container">
-        <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
-            <a href="javascript:void(0);" onclick="openFullScreen('https://coletorrf.superkoch.com.br')">
-                Coletor RF
-            </a>
-        </div>
-
-        <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
-            <a href="javascript:void(0);" onclick="openFullScreen('https://nfedevolucao.superkoch.com.br/login')">
-                Nfe Devolução
-            </a>
-        </div>
+    <div class="back-link">
+        <a href="javascript:void(0);" onclick="openLinkModal()">Escolher Aplicativo</a>
     </div>
 
-    <div class="back-link">
-        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
+    <div class="link-modal" id="linkModal">
+        <div class="link-container">
+            <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
+                <a href="https://coletorrf.superkoch.com.br" target="_blank">
+                    Coletor RF
+                </a>
+            </div>
+
+            <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
+                <a href="https://nfedevolucao.superkoch.com.br/login" target="_blank">
+                    Nfe Devolução
+                </a>
+            </div>
+        </div>
+
+        <div class="back-link">
+            <a href="javascript:void(0);" onclick="closeLinkModal()">Voltar para Fazer Outras Escolhas</a>
+        </div>
     </div>
 
     <script>
         function showChoiceOverlay(link) {
             // Exibir a overlay de escolha
             alert(`Escolha: ${link}`);
-
-            // Adicionar botão visível na página do link
-            const backButton = document.createElement('button');
-            backButton.textContent = 'Voltar para a Escolha Principal';
-            backButton.onclick = returnToMain;
-
-            // Adicionar botão ao corpo da página do link
-            document.body.appendChild(backButton);
         }
 
-        function goBack() {
-            // Redirecionar para a página anterior no histórico do navegador
-            window.history.back();
+        function openLinkModal() {
+            // Abrir a modal de links
+            document.getElementById('linkModal').style.display = 'flex';
         }
 
-        function returnToMain() {
-            // Redirecionar para a escolha principal
-            window.location.href = 'https://jvm2010.github.io/Superkoch';
-        }
-
-        function openFullScreen(url) {
-            // Abrir o URL em tela cheia no celular
-            const mobileView = window.matchMedia("(max-width: 767px)");
-            
-            if (mobileView.matches) {
-                window.location.href = url;
-            }
+        function closeLinkModal() {
+            // Fechar a modal de links
+            document.getElementById('linkModal').style.display = 'none';
         }
     </script>
 </body>
