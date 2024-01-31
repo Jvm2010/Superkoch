@@ -81,11 +81,24 @@
         function showChoiceOverlay(link) {
             // Exibir a overlay de escolha
             alert(`Escolha: ${link}`);
+
+            // Adicionar botão visível na página do link
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Voltar para a Escolha Principal';
+            backButton.onclick = returnToMain;
+
+            // Adicionar botão ao corpo da página do link
+            document.body.appendChild(backButton);
         }
 
         function goBack() {
             // Redirecionar para a página anterior no histórico do navegador
             window.history.back();
+        }
+
+        function returnToMain() {
+            // Redirecionar para a escolha principal
+            window.location.href = '/?source=main';
         }
     </script>
 </body>
