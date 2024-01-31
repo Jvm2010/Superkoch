@@ -16,28 +16,11 @@
             color: #333;
         }
 
-        .link-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
         .link-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            max-width: 90%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
 
         .link-box {
@@ -54,6 +37,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            cursor: pointer;
         }
 
         .link-box:hover {
@@ -71,49 +55,54 @@
         .back-link {
             margin-top: 20px;
         }
+
+        .content-box {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Aplicativos SuperKoch</h1>
 
-    <div class="back-link">
-        <a href="javascript:void(0);" onclick="openLinkModal()">Escolher Aplicativo</a>
+    <div class="link-container">
+        <div class="link-box" onclick="loadContent('link1Content')">
+            <span>Coletor RF</span>
+        </div>
+
+        <div class="link-box" onclick="loadContent('link2Content')">
+            <span>Nfe Devolução</span>
+        </div>
     </div>
 
-    <div class="link-modal" id="linkModal">
-        <div class="link-container">
-            <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
-                <a href="https://coletorrf.superkoch.com.br" target="_blank">
-                    Coletor RF
-                </a>
-            </div>
+    <div id="link1Content" class="content-box">
+        <h2>Coletor RF</h2>
+        <!-- Inserir conteúdo específico para Coletor RF aqui -->
+    </div>
 
-            <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
-                <a href="https://nfedevolucao.superkoch.com.br/login" target="_blank">
-                    Nfe Devolução
-                </a>
-            </div>
-        </div>
+    <div id="link2Content" class="content-box">
+        <h2>Nfe Devolução</h2>
+        <!-- Inserir conteúdo específico para Nfe Devolução aqui -->
+    </div>
 
-        <div class="back-link">
-            <a href="javascript:void(0);" onclick="closeLinkModal()">Voltar para Fazer Outras Escolhas</a>
-        </div>
+    <div class="back-link">
+        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
 
     <script>
-        function showChoiceOverlay(link) {
-            // Exibir a overlay de escolha
-            alert(`Escolha: ${link}`);
+        function loadContent(contentId) {
+            // Oculta todas as caixas de conteúdo
+            var contentBoxes = document.getElementsByClassName('content-box');
+            for (var i = 0; i < contentBoxes.length; i++) {
+                contentBoxes[i].style.display = 'none';
+            }
+
+            // Exibe a caixa de conteúdo específica
+            document.getElementById(contentId).style.display = 'block';
         }
 
-        function openLinkModal() {
-            // Abrir a modal de links
-            document.getElementById('linkModal').style.display = 'flex';
-        }
-
-        function closeLinkModal() {
-            // Fechar a modal de links
-            document.getElementById('linkModal').style.display = 'none';
+        function goBack() {
+            // Redireciona para a página anterior no histórico do navegador
+            window.history.back();
         }
     </script>
 </body>
