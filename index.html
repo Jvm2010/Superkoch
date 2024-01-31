@@ -53,6 +53,24 @@
 
         .back-link {
             margin-top: 20px;
+            display: none; /* Inicialmente, ocultar o link de voltar */
+        }
+
+        .choice-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .choice-overlay h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -60,13 +78,13 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box link1">
+        <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
             <a href="https://www.youtube.com" target="_blank">
                 Link 1
             </a>
         </div>
 
-        <div class="link-box link2">
+        <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
             <a href="https://www.google.com" target="_blank">
                 Link 2
             </a>
@@ -74,11 +92,38 @@
     </div>
 
     <div class="back-link">
-        <a href="/">Voltar para a Página Inicial</a>
         <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
 
+    <div class="choice-overlay" id="choiceOverlay">
+        <h2>Escolha: <span id="chosenLink"></span></h2>
+        <a href="/" onclick="hideChoiceOverlay()">Voltar para Escolher Outro Link</a>
+    </div>
+
     <script>
+        function showChoiceOverlay(link) {
+            // Exibir a overlay de escolha
+            document.getElementById('chosenLink').innerText = link;
+            document.getElementById('choiceOverlay').style.display = 'flex';
+
+            // Ocultar as caixas de link
+            document.querySelector('.link-container').style.display = 'none';
+
+            // Exibir o link de voltar
+            document.querySelector('.back-link').style.display = 'block';
+        }
+
+        function hideChoiceOverlay() {
+            // Ocultar a overlay de escolha
+            document.getElementById('choiceOverlay').style.display = 'none';
+
+            // Exibir as caixas de link
+            document.querySelector('.link-container').style.display = 'flex';
+
+            // Ocultar o link de voltar
+            document.querySelector('.back-link').style.display = 'none';
+        }
+
         function goBack() {
             // Redirecionar para a página anterior no histórico do navegador
             history.back();
