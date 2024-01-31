@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h1>Caixas de Links</h1>
+    <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
         <a class="link-box" href="https://www.youtube.com" target="_blank">
@@ -71,6 +71,8 @@
 
     <div class="back-link">
         <a href="/">Voltar para a Página Inicial</a>
+        <!-- Adicione a seguinte linha para voltar para a escolha de links -->
+        <a href="/">&lt; Voltar para Escolher Outro Link</a>
     </div>
 </body>
 </html>
