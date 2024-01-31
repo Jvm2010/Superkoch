@@ -53,6 +53,7 @@
 
         .back-link {
             margin-top: 20px;
+            display: none; /* Inicialmente, ocultar o link de voltar */
         }
     </style>
 </head>
@@ -60,19 +61,32 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <a class="link-box" href="https://www.youtube.com" target="_blank">
-            Link 1
-        </a>
+        <div class="link-box link1">
+            <a href="https://www.youtube.com" target="_blank">
+                Link 1
+            </a>
+        </div>
 
-        <a class="link-box" href="https://www.google.com" target="_blank">
-            Link 2
-        </a>
+        <div class="link-box link2">
+            <a href="https://www.google.com" target="_blank">
+                Link 2
+            </a>
+        </div>
     </div>
 
     <div class="back-link">
         <a href="/">Voltar para a Página Inicial</a>
-        <!-- Adicione a seguinte linha para voltar para a escolha de links -->
-        <a href="/">&lt; Voltar para Escolher Outro Link</a>
+        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
+
+    <script>
+        function goBack() {
+            // Esconder as caixas de link
+            document.querySelector('.link-container').style.display = 'flex';
+
+            // Ocultar o link de voltar
+            document.querySelector('.back-link').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
