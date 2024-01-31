@@ -27,39 +27,32 @@
             width: 45%;
             max-width: 250px;
             margin: 10px;
-            position: relative;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .iframe-container {
-            position: relative;
-            width: 100%;
-            height: 200px; /* Altura padrão para telas menores */
-            margin-bottom: 20px;
+        .link-box:hover {
+            transform: scale(1.05);
+            border-color: #2980b9;
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .link-box a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .back-button {
+        .back-link {
             margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-        }
-
-        @media (min-width: 768px) {
-            /* Quando a largura da tela for 768 pixels ou mais, ajuste o tamanho dos iframes */
-            .iframe-container {
-                height: 400px; /* Altura maior para telas maiores */
-            }
         }
     </style>
 </head>
@@ -67,35 +60,54 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="expandBox(this)">
-            <div class="iframe-container">
-                <iframe src="http://coletorrf.superkoch.com.br" frameborder="0"></iframe>
-            </div>
+        <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
+            <a href="javascript:void(0);" onclick="openFullScreen('https://jvm2010.github.io/superkoch')">
+                Coletor RF
+            </a>
         </div>
 
-        <div class="link-box" onclick="expandBox(this)">
-            <div class="iframe-container">
-                <iframe src="https://nfedevolucao.superkoch.com.br/login" frameborder="0"></iframe>
-            </div>
+        <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
+            <a href="javascript:void(0);" onclick="openFullScreen('https://jvm2010.github.io/superkoch')">
+                Nfe Devolução
+            </a>
         </div>
     </div>
 
-    <button class="back-button" onclick="returnToMain()">Voltar para a Escolha Principal</button>
+    <div class="back-link">
+        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
+    </div>
 
     <script>
-        function expandBox(element) {
-            // Ajustar o estilo da caixa quando clicada
-            element.style.transform = "scale(1.2)";
-            element.style.width = "100%";
-            element.style.position = "fixed";
-            element.style.top = "0";
-            element.style.left = "0";
-            element.style.zIndex = "9999";
+        function showChoiceOverlay(link) {
+            // Exibir a overlay de escolha
+            alert(`Escolha: ${link}`);
+
+            // Adicionar botão visível na página do link
+            const backButton = document.createElement('button');
+            backButton.textContent = 'Voltar para a Escolha Principal';
+            backButton.onclick = returnToMain;
+
+            // Adicionar botão ao corpo da página do link
+            document.body.appendChild(backButton);
+        }
+
+        function goBack() {
+            // Redirecionar para a página anterior no histórico do navegador
+            window.history.back();
         }
 
         function returnToMain() {
             // Redirecionar para a escolha principal
             window.location.href = 'https://jvm2010.github.io/Superkoch';
+        }
+
+        function openFullScreen(url) {
+            // Abrir o URL em tela cheia no celular
+            const mobileView = window.matchMedia("(max-width: 767px)");
+            
+            if (mobileView.matches) {
+                window.location.href = url;
+            }
         }
     </script>
 </body>
