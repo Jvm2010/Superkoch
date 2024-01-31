@@ -27,6 +27,7 @@
             width: 100%;
             margin: 10px;
             position: relative;
+            transition: transform 0.3s ease-in-out;
         }
 
         .iframe-container {
@@ -65,13 +66,13 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box">
+        <div class="link-box" onclick="expandBox(this)">
             <div class="iframe-container">
                 <iframe src="http://coletorrf.superkoch.com.br" frameborder="0"></iframe>
             </div>
         </div>
 
-        <div class="link-box">
+        <div class="link-box" onclick="expandBox(this)">
             <div class="iframe-container">
                 <iframe src="https://nfedevolucao.superkoch.com.br/login" frameborder="0"></iframe>
             </div>
@@ -81,6 +82,16 @@
     <button class="back-button" onclick="returnToMain()">Voltar para a Escolha Principal</button>
 
     <script>
+        function expandBox(element) {
+            // Ajustar o estilo da caixa quando clicada
+            element.style.transform = "scale(1.2)";
+            element.style.width = "100%";
+            element.style.position = "fixed";
+            element.style.top = "0";
+            element.style.left = "0";
+            element.style.zIndex = "9999";
+        }
+
         function returnToMain() {
             // Redirecionar para a escolha principal
             window.location.href = 'https://jvm2010.github.io/Superkoch';
