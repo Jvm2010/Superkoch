@@ -27,32 +27,41 @@
             width: 45%;
             max-width: 250px;
             margin: 10px;
-            padding: 20px;
-            background-color: #fff;
-            border: 2px solid #3498db;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-            display: flex;
+            position: relative; /* Adicionado para posicionar a sobreposição */
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Ajuste conforme necessário */
+            margin-bottom: 20px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
-            text-align: center;
         }
 
-        .link-box:hover {
-            transform: scale(1.05);
-            border-color: #2980b9;
-        }
-
-        .link-box a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+        .overlay button {
             margin-top: 10px;
         }
 
-        .back-link {
-            margin-top: 20px;
+        .link-box:hover .overlay {
+            display: flex;
         }
     </style>
 </head>
@@ -60,42 +69,26 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
-            <a href="http://coletorrf.superkoch.com.br" target="_blank">
-                Coletor RF
-            </a>
+        <div class="link-box">
+            <div class="iframe-container">
+                <iframe src="http://coletorrf.superkoch.com.br" frameborder="0"></iframe>
+            </div>
+            <div class="overlay">
+                <button onclick="returnToMain()">Voltar para a Escolha Principal</button>
+            </div>
         </div>
 
-        <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
-            <a href="https://nfedevolucao.superkoch.com.br/login" target="_blank">
-                Nfe Devolução
-            </a>
+        <div class="link-box">
+            <div class="iframe-container">
+                <iframe src="https://nfedevolucao.superkoch.com.br/login" frameborder="0"></iframe>
+            </div>
+            <div class="overlay">
+                <button onclick="returnToMain()">Voltar para a Escolha Principal</button>
+            </div>
         </div>
-    </div>
-
-    <div class="back-link">
-        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
 
     <script>
-        function showChoiceOverlay(link) {
-            // Exibir a overlay de escolha
-            alert(`Escolha: ${link}`);
-
-            // Adicionar botão visível na página do link
-            const backButton = document.createElement('button');
-            backButton.textContent = 'Voltar para a Escolha Principal';
-            backButton.onclick = returnToMain;
-
-            // Adicionar botão ao corpo da página do link
-            document.body.appendChild(backButton);
-        }
-
-        function goBack() {
-            // Redirecionar para a página anterior no histórico do navegador
-            window.history.back();
-        }
-
         function returnToMain() {
             // Redirecionar para a escolha principal
             window.location.href = 'https://jvm2010.github.io/Superkoch';
