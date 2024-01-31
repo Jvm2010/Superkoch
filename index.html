@@ -79,19 +79,20 @@
 
     <div class="link-container">
         <div class="link-box link1" onclick="showChoiceOverlay('Link 1')">
-            <a href="https://www.youtube.com" target="_blank">
+            <a href="https://www.youtube.com?source=main" target="_blank">
                 Link 1
             </a>
         </div>
 
         <div class="link-box link2" onclick="showChoiceOverlay('Link 2')">
-            <a href="https://www.google.com" target="_blank">
+            <a href="https://www.google.com?source=main" target="_blank">
                 Link 2
             </a>
         </div>
     </div>
 
     <div class="back-link">
+        <a href="/" id="mainLink">Voltar para a Página Inicial</a>
         <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
 
@@ -111,6 +112,9 @@
 
             // Exibir o link de voltar
             document.querySelector('.back-link').style.display = 'block';
+
+            // Adicionar o link principal aos links
+            document.getElementById('mainLink').href = "/?source=main";
         }
 
         function hideChoiceOverlay() {
