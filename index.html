@@ -27,12 +27,13 @@
             width: 45%;
             max-width: 250px;
             margin: 10px;
+            position: relative;
         }
 
         .iframe-container {
             position: relative;
             width: 100%;
-            height: 400px; /* Ajuste conforme necessário */
+            height: 200px; /* Altura padrão para telas menores */
             margin-bottom: 20px;
         }
 
@@ -40,6 +41,24 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        @media (min-width: 768px) {
+            /* Quando a largura da tela for 768 pixels ou mais, ajuste o tamanho dos iframes */
+            .iframe-container {
+                height: 400px; /* Altura maior para telas maiores */
+            }
         }
     </style>
 </head>
@@ -59,5 +78,14 @@
             </div>
         </div>
     </div>
+
+    <button class="back-button" onclick="returnToMain()">Voltar para a Escolha Principal</button>
+
+    <script>
+        function returnToMain() {
+            // Redirecionar para a escolha principal
+            window.location.href = 'https://jvm2010.github.io/Superkoch';
+        }
+    </script>
 </body>
 </html>
