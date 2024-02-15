@@ -52,10 +52,6 @@
             margin-top: 10px;
         }
 
-        .back-link {
-            margin-top: 20px;
-        }
-
         .overlay {
             display: none;
             position: fixed;
@@ -112,13 +108,11 @@
             <span>Nfe Devolução</span>
         </div>
     </div>
-        <div class="link-container">
-        <div class="link-box" onclick="openEmulatedPage('https://coletores.superkoch.com.br', 'Aplicativos koch')">
+    <div class="link-container">
+        <div class="link-box">
             <span>Aplicativos Koch</span>
+            <p>Para fazer o download do aplicativo para dispositivos Android, <a href="https://coletores.superkoch.com.br">clique aqui</a>.</p>
         </div>
-
-    <div class="back-link">
-        <a href="javascript:void(0);" onclick="goBack()">Voltar para Fazer Outras Escolhas</a>
     </div>
 
     <div class="overlay" id="emulatedPageOverlay">
@@ -132,28 +126,19 @@
 
     <script>
         function openEmulatedPage(url, title) {
-            // Exibir overlay da página emulada
             var overlay = document.getElementById('emulatedPageOverlay');
             overlay.style.display = 'flex';
 
-            // Inserir conteúdo na página emulada (iframe)
             var iframeContainer = document.querySelector('.iframe-container');
             iframeContainer.innerHTML = '<iframe src="' + url + '" width="100%" height="100%" frameborder="0"></iframe>';
         }
 
         function closeEmulatedPage() {
-            // Fechar overlay da página emulada
             var overlay = document.getElementById('emulatedPageOverlay');
             overlay.style.display = 'none';
 
-            // Limpar conteúdo da página emulada
             var iframeContainer = document.querySelector('.iframe-container');
             iframeContainer.innerHTML = '';
-        }
-
-        function goBack() {
-            // Redirecionar para a página anterior no histórico do navegador
-            window.history.back();
         }
     </script>
 </body>
