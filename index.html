@@ -51,36 +51,61 @@
             font-weight: bold;
             margin-top: 10px;
         }
+
+        #emulatedPage {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 1000;
+            overflow: auto;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Aplicações SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="openIfoodSite()">
+        <div class="link-box" onclick="openEmulatedPage('https://separador.ifood.com.br')">
             <span>Abrir iFood</span>
         </div>
     </div>
 
+    <div id="emulatedPage"></div>
+
     <script>
-        var ifoodWindow = null;
+        function openEmulatedPage(url) {
+            var emulatedPage = document.getElementById('emulatedPage');
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    emulatedPage.innerHTML = this.responseText;
+                    emulatedPage.style.display = 'block';
 
-        function openIfoodSite() {
-            // Abre o site do iFood em uma nova janela ou guia do navegador
-            ifoodWindow = window.open('https://separador.ifood.com.br', '_blank');
-
-            // Adiciona um evento onload à nova janela
-            ifoodWindow.onload = function() {
-                // Cria um botão de retorno dentro do site aberto
-                var backButton = ifoodWindow.document.createElement('button');
-                backButton.innerHTML = 'Voltar';
-                backButton.onclick = function() {
-                    // Fecha a janela quando o botão de retorno é clicado
-                    ifoodWindow.close();
-                };
-                // Adiciona o botão de retorno ao corpo do site aberto
-                ifoodWindow.document.body.appendChild(backButton);
+                    // Adiciona um botão de fechar
+                    var closeButton = document.createElement('span');
+                    closeButton.className = 'close-button';
+                    closeButton.innerHTML = 'X';
+                    closeButton.onclick = function() {
+                        emulatedPage.innerHTML = '';
+                        emulatedPage.style.display = 'none';
+                    };
+                    emulatedPage.appendChild(closeButton);
+                }
             };
+            xhttp.open('GET', url, true);
+            xhttp.send();
         }
     </script>
 </body>
