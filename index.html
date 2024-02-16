@@ -69,13 +69,10 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 800px;
-            height: 80%;
-            max-height: 600px;
-            overflow: auto;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             position: relative;
-            padding: 20px;
         }
 
         .close-button {
@@ -86,44 +83,61 @@
             cursor: pointer;
             z-index: 1000;
         }
+
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="openExternalPage('https://appecommerce.superkoch.com.br/ecommerce/login')">
+        <div class="link-box" onclick="openEmulatedPage('https://appecommerce.superkoch.com.br/ecommerce/login', 'APP-ECOMMERCE')">
             <span>App Ecommerce</span>
         </div>
 
-        <div class="link-box" onclick="openExternalPage('https://separador.ifood.com.br')">
-            <span>Separador iFood</span>
+        <div class="link-box" onclick="openEmulatedPage('https://separador.ifood.com.br', 'separador-ifood')">
+            <span>Separador ifood</span>
         </div>
     </div>
     <div class="link-container">
         <div class="link-box">
             <span>Aplicativos Koch</span>
-            <p>Download dos aplicativos, <a href="https://coletores.superkoch.com.br">clique aqui</a>.</p>
+            <p>download dos aplicativos, <a href="https://coletores.superkoch.com.br">clique aqui</a>.</p>
         </div>
     </div>
 
     <div class="overlay" id="emulatedPageOverlay">
         <div class="emulated-page">
-            <span class="close-button" onclick="closeExternalPage()">X</span>
+            <span class="close-button" onclick="closeEmulatedPage()">X</span>
+            <div class="iframe-container">
+            </div>
         </div>
     </div>
 
     <script>
-        function openExternalPage(url) {
+        function openEmulatedPage(url, title) {
             var overlay = document.getElementById('emulatedPageOverlay');
             overlay.style.display = 'flex';
 
-            window.open(url, '_blank');
+            var iframeContainer = document.querySelector('.iframe-container');
+            iframeContainer.innerHTML = '<iframe src="' + url + '" width="100%" height="100%" frameborder="0"></iframe>';
         }
 
-        function closeExternalPage() {
+        function closeEmulatedPage() {
             var overlay = document.getElementById('emulatedPageOverlay');
             overlay.style.display = 'none';
+
+            var iframeContainer = document.querySelector('.iframe-container');
+            iframeContainer.innerHTML = '';
         }
     </script>
 </body>
