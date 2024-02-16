@@ -51,138 +51,37 @@
             font-weight: bold;
             margin-top: 10px;
         }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .emulated-page {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body>
-    <h1>Aplicativos SuperKoch</h1>
+    <h1>Aplicações SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="openFullscreen('https://appecommerce.superkoch.com.br/ecommerce/login')">
-            <span>App Ecommerce</span>
-        </div>
-
-        <div class="link-box" onclick="openFullscreen('https://separador.ifood.com.br')">
-            <span>Separador iFood</span>
-        </div>
-    </div>
-    <div class="link-container">
-        <div class="link-box">
-            <span>Aplicativos Koch</span>
-            <p>Download dos aplicativos, <a href="https://coletores.superkoch.com.br">clique aqui</a>.</p>
-        </div>
-    </div>
-
-    <div class="overlay" id="pageOverlay">
-        <div class="emulated-page" id="pageContent">
-            <span class="close-button" onclick="exitFullscreen()">X</span>
+        <div class="link-box" onclick="openIfoodSite()">
+            <span>Abrir iFood</span>
         </div>
     </div>
 
     <script>
-        var fullscreenElement = null;
+        var ifoodWindow = null;
 
-        function openFullscreen(url) {
-            var overlay = document.getElementById('pageOverlay');
-            overlay.style.display = 'flex';
-            var pageContent = document.getElementById('pageContent');
+        function openIfoodSite() {
+            // Abre o site do iFood em uma nova janela ou guia do navegador
+            ifoodWindow = window.open('https://separador.ifood.com.br', '_blank');
 
-            // Solicitar tela cheia ao navegador
-            if (pageContent.requestFullscreen) {
-                pageContent.requestFullscreen();
-            } else if (pageContent.mozRequestFullScreen) { /* Firefox */
-                pageContent.mozRequestFullScreen();
-            } else if (pageContent.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                pageContent.webkitRequestFullscreen();
-            } else if (pageContent.msRequestFullscreen) { /* IE/Edge */
-                pageContent.msRequestFullscreen();
-            }
-
-            // Abrir o link na tela cheia
-            var link = document.createElement('a');
-            link.setAttribute('href', url);
-            link.setAttribute('target', '_blank');
-            link.click();
-
-            // Atualizar a referência para o elemento em tela cheia
-            fullscreenElement = pageContent;
+            // Adiciona um evento onload à nova janela
+            ifoodWindow.onload = function() {
+                // Cria um botão de retorno dentro do site aberto
+                var backButton = ifoodWindow.document.createElement('button');
+                backButton.innerHTML = 'Voltar';
+                backButton.onclick = function() {
+                    // Fecha a janela quando o botão de retorno é clicado
+                    ifoodWindow.close();
+                };
+                // Adiciona o botão de retorno ao corpo do site aberto
+                ifoodWindow.document.body.appendChild(backButton);
+            };
         }
-
-        function exitFullscreen() {
-            if (document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if (document.mozCancelFullScreen) { /* Firefox */
-                document.mozCancelFullScreen();
-            } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-                document.webkitExitFullscreen();
-            } else if (document.msExitFullscreen) { /* IE/Edge */
-                document.msExitFullscreen();
-            }
-
-            // Esconder a sobreposição de tela cheia
-            var overlay = document.getElementById('pageOverlay');
-            overlay.style.display = 'none';
-
-            // Remover a referência ao elemento em tela cheia
-            fullscreenElement = null;
-        }
-
-        // Evento para detectar saída de tela cheia
-        document.addEventListener('fullscreenchange', function() {
-            if (!document.fullscreenElement) {
-                exitFullscreen();
-            }
-        });
-
-        // Eventos adicionais para navegadores específicos
-        document.addEventListener('mozfullscreenchange', function() {
-            if (!document.mozFullScreenElement) {
-                exitFullscreen();
-            }
-        });
-
-        document.addEventListener('webkitfullscreenchange', function() {
-            if (!document.webkitFullscreenElement) {
-                exitFullscreen();
-            }
-        });
-
-        document.addEventListener('msfullscreenchange', function() {
-            if (!document.msFullscreenElement) {
-                exitFullscreen();
-            }
-        });
     </script>
 </body>
 </html>
