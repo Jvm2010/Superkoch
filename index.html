@@ -69,13 +69,10 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 800px;
-            height: 80%;
-            max-height: 600px;
-            overflow: auto;
+            width: 100%;
+            height: 100%;
             position: relative;
-            padding: 20px;
+            overflow: hidden;
         }
 
         .close-button {
@@ -92,11 +89,11 @@
     <h1>Aplicativos SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="openPopup('https://appecommerce.superkoch.com.br/ecommerce/login')">
+        <div class="link-box" onclick="openFullscreen('https://appecommerce.superkoch.com.br/ecommerce/login')">
             <span>App Ecommerce</span>
         </div>
 
-        <div class="link-box" onclick="openPopup('https://separador.ifood.com.br')">
+        <div class="link-box" onclick="openFullscreen('https://separador.ifood.com.br')">
             <span>Separador iFood</span>
         </div>
     </div>
@@ -109,26 +106,83 @@
 
     <div class="overlay" id="pageOverlay">
         <div class="emulated-page" id="pageContent">
-            <span class="close-button" onclick="closePopup()">X</span>
+            <span class="close-button" onclick="exitFullscreen()">X</span>
         </div>
     </div>
 
     <script>
-        var popupWindow;
+        var fullscreenElement = null;
 
-        function openPopup(url) {
-            popupWindow = window.open(url, '_blank', 'width=800,height=600');
+        function openFullscreen(url) {
             var overlay = document.getElementById('pageOverlay');
             overlay.style.display = 'flex';
+            var pageContent = document.getElementById('pageContent');
+
+            // Solicitar tela cheia ao navegador
+            if (pageContent.requestFullscreen) {
+                pageContent.requestFullscreen();
+            } else if (pageContent.mozRequestFullScreen) { /* Firefox */
+                pageContent.mozRequestFullScreen();
+            } else if (pageContent.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                pageContent.webkitRequestFullscreen();
+            } else if (pageContent.msRequestFullscreen) { /* IE/Edge */
+                pageContent.msRequestFullscreen();
+            }
+
+            // Abrir o link na tela cheia
+            var link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('target', '_blank');
+            link.click();
+
+            // Atualizar a referência para o elemento em tela cheia
+            fullscreenElement = pageContent;
         }
 
-        function closePopup() {
-            if (popupWindow) {
-                popupWindow.close();
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) { /* Firefox */
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE/Edge */
+                document.msExitFullscreen();
             }
+
+            // Esconder a sobreposição de tela cheia
             var overlay = document.getElementById('pageOverlay');
             overlay.style.display = 'none';
+
+            // Remover a referência ao elemento em tela cheia
+            fullscreenElement = null;
         }
+
+        // Evento para detectar saída de tela cheia
+        document.addEventListener('fullscreenchange', function() {
+            if (!document.fullscreenElement) {
+                exitFullscreen();
+            }
+        });
+
+        // Eventos adicionais para navegadores específicos
+        document.addEventListener('mozfullscreenchange', function() {
+            if (!document.mozFullScreenElement) {
+                exitFullscreen();
+            }
+        });
+
+        document.addEventListener('webkitfullscreenchange', function() {
+            if (!document.webkitFullscreenElement) {
+                exitFullscreen();
+            }
+        });
+
+        document.addEventListener('msfullscreenchange', function() {
+            if (!document.msFullscreenElement) {
+                exitFullscreen();
+            }
+        });
     </script>
 </body>
 </html>
