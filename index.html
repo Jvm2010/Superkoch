@@ -10,13 +10,13 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa; /* Cor de fundo mais clara */
+            background-color: #9fc4e9; /* Cor de fundo mais clara */
             color: #000000; /* Cor do texto */
         }
 
         h1 {
             font-size: 32px; /* Tamanho do título */
-            color: #007bff; /* Cor do título */
+            color: #000000; /* Cor do título */
             margin-top: 40px; /* Espaçamento superior */
         }
 
@@ -68,12 +68,12 @@
 
         .frame-container {
             background-color: #ffffff; /* Cor de fundo do frame */
-            border: 2px solid #ff0000; /* Borda azul */
+            border: 2px solid #007bff; /* Borda azul */
             border-radius: 8px;
             width: 80%; /* Largura do frame */
             height: 80%; /* Altura do frame */
-            max-width: 1920; /* Largura máxima do frame */
-            max-height: 1080px; /* Altura máxima do frame */
+            max-width: 800px; /* Largura máxima do frame */
+            max-height: 600px; /* Altura máxima do frame */
             position: relative;
         }
 
@@ -81,6 +81,13 @@
             position: absolute;
             top: 10px;
             right: 10px;
+            cursor: pointer;
+        }
+
+        .fullscreen-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
             cursor: pointer;
         }
     </style>
@@ -110,6 +117,7 @@
         <div class="frame-container" id="frameContainer">
             <iframe id="iframe" src="" width="100%" height="100%" frameborder="0"></iframe>
             <span class="close-button" onclick="closeFrame()">X</span>
+            <span class="fullscreen-button" onclick="toggleFullscreen()">□</span>
         </div>
     </div>
 
@@ -129,6 +137,17 @@
             overlay.style.display = 'none';
             var iframe = document.getElementById('iframe');
             iframe.src = '';
+        }
+
+        function toggleFullscreen() {
+            var frameContainer = document.getElementById('frameContainer');
+            if (!document.fullscreenElement) {
+                frameContainer.requestFullscreen();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
         }
     </script>
 </body>
