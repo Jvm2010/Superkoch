@@ -90,19 +90,6 @@
         .close-button:hover {
             color: #ff0000; /* Cor do botão ao passar o mouse */
         }
-
-        .fullscreen-button {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            color: #00ff00; /* Cor do botão */
-            font-size: 24px; /* Tamanho do ícone */
-            cursor: pointer;
-        }
-
-        .fullscreen-button:hover {
-            color: #00cc00; /* Cor do botão ao passar o mouse */
-        }
     </style>
 </head>
 <body>
@@ -117,7 +104,7 @@
             <span>Nfe devolucao</span>
         </div>
         
-        <div class="link-box" onclick="openFrame('https://fluig.superkoch.com.br/portal/home', 'Fluig')">
+        <div class="link-box" onclick="openFrame('https://fluig.superkoch.com.br', 'Fluig')">
             <span>Fluig</span>
         </div>
         
@@ -130,11 +117,20 @@
         <div class="frame-container" id="frameContainer">
             <iframe id="iframe" src="" allowfullscreen></iframe>
             <span class="close-button" onclick="closeFrame()">X</span>
-            <span class="fullscreen-button" onclick="toggleFullScreen()">[ ]</span>
         </div>
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            var isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+            if (isInStandaloneMode) {
+                var iframe = document.getElementById('iframe');
+                iframe.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            }
+        });
+
         function openFrame(url, title) {
             var overlay = document.getElementById('overlay');
             overlay.style.display = 'flex';
@@ -147,17 +143,6 @@
             overlay.style.display = 'none';
             var iframe = document.getElementById('iframe');
             iframe.src = '';
-        }
-
-        function toggleFullScreen() {
-            var iframe = document.getElementById('iframe');
-            if (!document.fullscreenElement) {
-                iframe.requestFullscreen().catch(err => {
-                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                });
-            } else {
-                document.exitFullscreen();
-            }
         }
     </script>
 </body>
