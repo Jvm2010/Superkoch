@@ -17,15 +17,13 @@
         }
 
         .link-container {
-            display: flex;
-            justify-content: center;
             margin-top: 20px;
         }
 
         .link-box {
             width: 200px;
             height: 150px;
-            margin: 10px;
+            margin: 10px auto;
             padding: 20px;
             background-color: #fff;
             border: 2px solid #3498db;
@@ -93,22 +91,22 @@
     </style>
 </head>
 <body>
-    <h1>Aplicativos SuperKoch</h1>
+    <h1>Aplicações SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="openEmulatedPage('https://coletorrf.superkoch.com.br', 'Coletor-RF')">
+        <div class="link-box" onclick="confirmAndOpen('https://coletorrf.superkoch.com.br', 'Coletor RF')">
             <span>Coletor RF</span>
         </div>
         
-        <div class="link-box" onclick="openEmulatedPage('https://nfedevolucao.superkoch.com.br/login', 'Nfe-devolucao')">
+        <div class="link-box" onclick="confirmAndOpen('https://nfedevolucao.superkoch.com.br/login', 'Nfe devolucao')">
             <span>Nfe devolucao</span>
         </div>
         
-        <div class="link-box" onclick="openEmulatedPage('https://fluig.superkoch.com.br/', 'Fluig')">
+        <div class="link-box" onclick="confirmAndOpen('https://fluig.superkoch.com.br/', 'Fluig')">
             <span>App Ecommerce</span>
         </div>
         
-        <div class="link-box" onclick="openEmulatedPage('', '')">
+        <div class="link-box" onclick="confirmAndOpen('', '')">
             <span>Separador ifood</span>
         </div>
     </div>
@@ -122,6 +120,13 @@
     </div>
 
     <script>
+        function confirmAndOpen(url, title) {
+            var confirmation = confirm("Deseja entrar no site " + title + "?");
+            if (confirmation) {
+                openEmulatedPage(url, title);
+            }
+        }
+
         function openEmulatedPage(url, title) {
             var overlay = document.getElementById('emulatedPageOverlay');
             overlay.style.display = 'flex';
