@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,14 +18,13 @@
 
         .link-container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             margin-top: 20px;
         }
 
         .link-box {
-            width: 48%;
-            max-width: 300px;
+            width: 200px;
+            height: 150px;
             margin: 10px;
             padding: 20px;
             background-color: #fff;
@@ -33,10 +32,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
             cursor: pointer;
         }
 
@@ -45,11 +40,10 @@
             border-color: #2980b9;
         }
 
-        .link-box a {
-            text-decoration: none;
+        .link-box span {
+            font-size: 18px;
             color: #333;
             font-weight: bold;
-            margin-top: 10px;
         }
 
         .overlay {
@@ -69,8 +63,10 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            height: 100%;
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 800px;
             overflow: hidden;
             position: relative;
         }
@@ -103,17 +99,15 @@
         <div class="link-box" onclick="openEmulatedPage('https://coletorrf.superkoch.com.br', 'Coletor-RF')">
             <span>Coletor RF</span>
         </div>
-
-    <div class="link-container">
+        
         <div class="link-box" onclick="openEmulatedPage('https://nfedevolucao.superkoch.com.br/login', 'Nfe-devolucao')">
             <span>Nfe devolucao</span>
         </div>
-
-    <div class="link-container">
+        
         <div class="link-box" onclick="openEmulatedPage('https://fluig.superkoch.com.br/', 'Fluig')">
             <span>App Ecommerce</span>
         </div>
-
+        
         <div class="link-box" onclick="openEmulatedPage('', '')">
             <span>Separador ifood</span>
         </div>
