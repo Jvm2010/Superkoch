@@ -10,13 +10,13 @@
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #4997e5; /* Cor de fundo mais clara */
+            background-color: #f8f9fa; /* Cor de fundo mais clara */
             color: #000000; /* Cor do texto */
         }
 
         h1 {
             font-size: 32px; /* Tamanho do título */
-            color: #000000; /* Cor do título */
+            color: #007bff; /* Cor do título */
             margin-top: 40px; /* Espaçamento superior */
         }
 
@@ -28,12 +28,12 @@
         }
 
         .link-box {
-            width: 500px;
+            width: 300px;
             height: 50px; /* Altura aumentada para melhor apresentação */
             margin: 10px;
             padding: 15px;
             background-color: #ffffff; /* Fundo branco */
-            border: 2px solid #ff0000; /* Borda azul */
+            border: 2px solid #007bff; /* Borda azul */
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease-in-out;
@@ -52,51 +52,83 @@
             font-size: 20px; /* Tamanho do texto */
             color: #000000; /* Cor do texto */
         }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .frame-container {
+            background-color: #ffffff; /* Cor de fundo do frame */
+            border: 2px solid #ff0000; /* Borda azul */
+            border-radius: 8px;
+            width: 80%; /* Largura do frame */
+            height: 80%; /* Altura do frame */
+            max-width: 1920; /* Largura máxima do frame */
+            max-height: 1080px; /* Altura máxima do frame */
+            position: relative;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Bem-vindo às Aplicações SuperKoch</h1>
 
     <div class="link-container">
-        <div class="link-box" onclick="confirmAndOpen('https://coletorrf.superkoch.com.br', 'Coletor RF')">
+        <div class="link-box" onclick="openFrame('https://coletorrf.superkoch.com.br', 'Coletor RF')">
             <span>Coletor RF</span>
         </div>
         
-        <div class="link-box" onclick="confirmAndOpen('https://nfedevolucao.superkoch.com.br/login', 'Nfe devolucao')">
+        <div class="link-box" onclick="openFrame('https://nfedevolucao.superkoch.com.br/login', 'Nfe devolucao')">
             <span>Nfe devolucao</span>
         </div>
         
-        <div class="link-box" onclick="confirmAndOpen('https://fluig.superkoch.com.br/', 'Fluig')">
+        <div class="link-box" onclick="openFrame('https://fluig.superkoch.com.br/', 'Fluig')">
             <span>Fluig</span>
         </div>
         
-        <div class="link-box" onclick="confirmAndOpen('', '')">
+        <div class="link-box" onclick="openFrame('', '')">
             <span>Separador iFood</span>
         </div>
     </div>
 
+    <div class="overlay" id="overlay" onclick="closeFrame()">
+        <div class="frame-container" id="frameContainer">
+            <iframe id="iframe" src="" width="100%" height="100%" frameborder="0"></iframe>
+            <span class="close-button" onclick="closeFrame()">X</span>
+        </div>
+    </div>
+
     <script>
-        function confirmAndOpen(url, title) {
+        function openFrame(url, title) {
             var confirmation = confirm("Deseja entrar no site " + title + "?");
             if (confirmation) {
-                openEmulatedPage(url, title);
+                var overlay = document.getElementById('overlay');
+                overlay.style.display = 'flex';
+                var iframe = document.getElementById('iframe');
+                iframe.src = url;
             }
         }
 
-        function openEmulatedPage(url, title) {
-            var overlay = document.getElementById('emulatedPageOverlay');
-            overlay.style.display = 'flex';
-
-            var iframeContainer = document.querySelector('.iframe-container');
-            iframeContainer.innerHTML = '<iframe src="' + url + '" width="100%" height="100%" frameborder="0"></iframe>';
-        }
-
-        function closeEmulatedPage() {
-            var overlay = document.getElementById('emulatedPageOverlay');
+        function closeFrame() {
+            var overlay = document.getElementById('overlay');
             overlay.style.display = 'none';
-
-            var iframeContainer = document.querySelector('.iframe-container');
-            iframeContainer.innerHTML = '';
+            var iframe = document.getElementById('iframe');
+            iframe.src = '';
         }
     </script>
 </body>
