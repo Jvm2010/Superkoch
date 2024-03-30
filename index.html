@@ -29,7 +29,7 @@
 
         .link-box {
             width: 300px;
-            height: 20px; /* Altura aumentada para melhor apresentação */
+            height: 40px; /* Altura aumentada para melhor apresentação */
             margin: 10px;
             padding: 15px;
             background-color: #ffffff; /* Fundo branco */
@@ -90,6 +90,19 @@
         .close-button:hover {
             color: #ff0000; /* Cor do botão ao passar o mouse */
         }
+
+        .fullscreen-button {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            color: #00ff00; /* Cor do botão */
+            font-size: 24px; /* Tamanho do ícone */
+            cursor: pointer;
+        }
+
+        .fullscreen-button:hover {
+            color: #00cc00; /* Cor do botão ao passar o mouse */
+        }
     </style>
 </head>
 <body>
@@ -117,6 +130,7 @@
         <div class="frame-container" id="frameContainer">
             <iframe id="iframe" src="" allowfullscreen></iframe>
             <span class="close-button" onclick="closeFrame()">X</span>
+            <span class="fullscreen-button" onclick="toggleFullScreen()">[ ]</span>
         </div>
     </div>
 
@@ -133,6 +147,17 @@
             overlay.style.display = 'none';
             var iframe = document.getElementById('iframe');
             iframe.src = '';
+        }
+
+        function toggleFullScreen() {
+            var iframe = document.getElementById('iframe');
+            if (!document.fullscreenElement) {
+                iframe.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
         }
     </script>
 </body>
