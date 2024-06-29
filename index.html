@@ -1,145 +1,69 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplicações SuperKoch</title>
+    <title>Inventory Management</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
             text-align: center;
-            margin: 0;
-            padding: 0;
-            background-color: 0000ff; /* Cor de fundo mais clara */
-            color: #000000; /* Cor do texto */
         }
-
-        h1 {
-            font-size: 32px; /* Tamanho do título */
-            color: #000000; /* Cor do título */
-            margin-top: 40px; /* Espaçamento superior */
-        }
-
-        .link-container {
+        #log {
             margin-top: 20px;
-            display: flex;
-            flex-direction: column; /* Caixas dispostas em coluna */
-            align-items: center; /* Centralizar horizontalmente */
-        }
-
-        .link-box {
-            width: 300px;
-            height: 20px; /* Altura aumentada para melhor apresentação */
-            margin: 10px;
-            padding: 15px;
-            background-color: #ffffff; /* Fundo branco */
-            border: 2px solid #0026ff; /* Borda azul */
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease-in-out;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .link-box:hover {
-            transform: scale(1.05);
-            border-color: #0056b3; 
-        }
-
-        .link-box span {
-            font-size: 20px; 
-            color: #000000; 
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
-
-        .frame-container {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background-color: #ffffff;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #ff0000; 
-            font-size: 24px; 
-            cursor: pointer;
-        }
-
-        .close-button:hover {
-            color: #ff0000; 
         }
     </style>
 </head>
 <body>
-    <h1>Bem-vindo às Aplicações SuperKoch</h1>
+    <h2>Inventory Management</h2>
+    <table id="inventory">
+        <tr>
+            <th>Item</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td>Item 1</td>
+            <td><button onclick="requestDetails('Item 1')">Retirar</button></td>
+        </tr>
+        <tr>
+            <td>Item 2</td>
+            <td><button onclick="requestDetails('Item 2')">Retirar</button></td>
+        </tr>
+        <tr>
+            <td>Item 3</td>
+            <td><button onclick="requestDetails('Item 3')">Retirar</button></td>
+        </tr>
+    </table>
 
-    <div class="link-container">
-        <div class="link-box" onclick="openFrame('https://coletorrf.superkoch.com.br', 'Coletor RF')">
-            <span>Coletor RF</span>
-        </div>
-        
-        <div class="link-box" onclick="openFrame('https://nfedevolucao.superkoch.com.br/login', 'Nfe devolucao')">
-            <span>Nfe devolucao</span>
-        </div>
-        
-        <div class="link-box" onclick="openFrame('https://painelexpedicaolojas.superkoch.com.br/', 'Painel Expedição')">
-            <span>Painel Expedição Lojas</span>
-        </div>
-    </div>
-
-    <div class="overlay" id="overlay" onclick="closeFrame()">
-        <div class="frame-container" id="frameContainer">
-            <iframe id="iframe" src="" allowfullscreen></iframe>
-            <span class="close-button" onclick="closeFrame()">X</span>
-        </div>
+    <div id="log">
+        <h3>Log</h3>
+        <ul id="logList"></ul>
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function(event) {
-            var isInStandaloneMode = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-            if (isInStandaloneMode) {
-                var iframe = document.getElementById('iframe');
-                iframe.requestFullscreen().catch(err => {
-                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-                });
-            }
-        });
+        function requestDetails(item) {
+            const quantity = prompt(`Quantas unidades de ${item} deseja retirar?`);
+            const person = prompt(`Quem está retirando as unidades de ${item}?`);
 
-        function openFrame(url, title) {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'flex';
-            var iframe = document.getElementById('iframe');
-            iframe.src = url;
+            if (quantity && person) {
+                logAction(item, quantity, person);
+            } else {
+                alert('Ação cancelada.');
+            }
         }
 
-        function closeFrame() {
-            var overlay = document.getElementById('overlay');
-            overlay.style.display = 'none';
-            var iframe = document.getElementById('iframe');
-            iframe.src = '';
+        function logAction(item, quantity, person) {
+            const logList = document.getElementById('logList');
+            const logItem = document.createElement('li');
+            logItem.textContent = `${person} retirou ${quantity} unidades de ${item}.`;
+            logList.appendChild(logItem);
         }
     </script>
 </body>
