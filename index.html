@@ -3,68 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Management</title>
+    <title>Gerenciamento de Estoque</title>
     <style>
-        table {
-            width: 50%;
-            border-collapse: collapse;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
+        header {
+            width: 100%;
             padding: 10px;
+            background-color: #343a40;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        header h1 {
+            margin: 0;
+            padding: 0 20px;
             text-align: center;
         }
-        #log {
+        main {
+            width: 80%;
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #log-container {
+            width: 100%;
             margin-top: 20px;
+        }
+        #log {
+            padding: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            max-height: 300px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        #log h3 {
+            margin-top: 0;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        #logList {
+            padding: 0;
+            list-style: none;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        #logList li {
+            margin-bottom: 5px;
+            padding: 8px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        #logList li:last-child {
+            margin-bottom: 0;
+        }
+        #export-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        #export-btn:hover {
+            background-color: #0056b3;
+        }
+        .adjust-button {
+            background-color: #007bff;
+            margin-left: 5px;
+        }
+        .adjust-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <h2>Inventory Management</h2>
-    <table id="inventory">
-        <tr>
-            <th>Item</th>
-            <th>Action</th>
-        </tr>
-        <tr>
-            <td>Item 1</td>
-            <td><button onclick="requestDetails('Item 1')">Retirar</button></td>
-        </tr>
-        <tr>
-            <td>Item 2</td>
-            <td><button onclick="requestDetails('Item 2')">Retirar</button></td>
-        </tr>
-        <tr>
-            <td>Item 3</td>
-            <td><button onclick="requestDetails('Item 3')">Retirar</button></td>
-        </tr>
-    </table>
+    <header>
+        <h1>Gerenciamento de Estoque</h1>
+    </header>
+    <main id="app">
+        <table id="inventory">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Estoque</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="editable" id="item-1">PDV's</td>
+                    <td class="editable" id="stock-item-1">100</td>
+                    <td>
+                        <button onclick="retirarItem('item-1', 'stock-item-1')">Retirar</button>
+                        <button class="adjust-button" onclick="ajustarItem('item-1', 'stock-item-1')">Ajustar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editable" id="item-2">Monitor Dell</td>
+                    <td class="editable" id="stock-item-2">100</td>
+                    <td>
+                        <button onclick="retirarItem('item-2', 'stock-item-2')">Retirar</button>
+                        <button class="adjust-button" onclick="ajustarItem('item-2', 'stock-item-2')">Ajustar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editable" id="item-3">Teclado</td>
+                    <td class="editable" id="stock-item-3">100</td>
+                    <td>
+                        <button onclick="retirarItem('item-3', 'stock-item-3')">Retirar</button>
+                        <button class="adjust-button" onclick="ajustarItem('item-3', 'stock-item-3')">Ajustar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editable" id="item-4">Mouse</td>
+                    <td class="editable" id="stock-item-4">100</td>
+                    <td>
+                        <button onclick="retirarItem('item-4', 'stock-item-4')">Retirar</button>
+                        <button class="adjust-button" onclick="ajustarItem('item-4', 'stock-item-4')">Ajustar</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="editable" id="item-5">Impressora NFE</td>
+                    <td class="editable" id="stock-item-5">100</td>
+                    <td>
+                        <button onclick="retirarItem('item-5', 'stock-item-5')">Retirar</button>
+                        <button class="adjust-button" onclick="ajustarItem('item-5', 'stock-item-5')">Ajustar</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <div id="log">
-        <h3>Log</h3>
-        <ul id="logList"></ul>
-    </div>
+        <div id="log-container">
+            <h3>Log de Retiradas <button id="export-btn">Exportar para Excel</button></h3>
+            <div id="log">
+                <ul id="logList"></ul>
+            </div>
+        </div>
+    </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <script>
-        function requestDetails(item) {
-            const quantity = prompt(`Quantas unidades de ${item} deseja retirar?`);
-            const person = prompt(`Quem está retirando as unidades de ${item}?`);
+        // Variável para armazenar as entradas no log
+        let logEntries = [];
 
-            if (quantity && person) {
-                logAction(item, quantity, person);
+        // Função para retirar um item do estoque
+        function retirarItem(itemId, stockId) {
+            const stockElement = document.getElementById(stockId);
+            const itemElement = document.getElementById(itemId);
+            const stockQuantity = parseInt(stockElement.textContent, 10);
+            const item = itemElement.textContent;
+            const quantity = parseInt(prompt(`Quantas unidades de ${item} deseja retirar?`), 10);
+            const person = prompt(`Quem está retirando as unidades de ${item}?`);
+            const reason = prompt(`Para que será usado ${quantity} unidade(s) de ${item}?`);
+
+            if (!isNaN(quantity) && quantity > 0 && quantity <= stockQuantity && person && reason) {
+                const newStock = stockQuantity - quantity;
+                stockElement.textContent = newStock;
+                logAction(item, quantity, person, reason, 'retirou');
             } else {
-                alert('Ação cancelada.');
+                alert('Quantidade inválida ou operação cancelada.');
             }
         }
 
-        function logAction(item, quantity, person) {
-            const logList = document.getElementById('logList');
-            const logItem = document.createElement('li');
-            logItem.textContent = `${person} retirou ${quantity} unidades de ${item}.`;
-            logList.appendChild(logItem);
+        // Função para ajustar o estoque devolvendo itens
+        function ajustarItem(itemId, stockId) {
+            const stockElement = document.getElementById(stockId);
+            const itemElement = document.getElementById(itemId);
+            const item = itemElement.textContent;
+            const quantity = parseInt(prompt(`Quantas unidades de ${item} deseja devolver ao estoque?`), 10);
+            const reason = prompt(`Por que está devolvendo ${quantity} unidade(s) de ${item}?`);
+
+            if (!isNaN(quantity) && quantity > 0 && reason) {
+                const currentStock = parseInt(stockElement.textContent, 10);
+                const newStock = currentStock + quantity;
+                stockElement.textContent = newStock;
+                logAction(item, quantity, 'Sistema', reason, 'devolveu'); // Registra a devolução no log
+            } else {
+                alert('Quantidade inválida ou operação cancelada.');
+            }
         }
+
+        // Função para adicionar uma entrada ao log
+        function logAction(item, quantity, person, reason, action) {
+            const logList = document.getElementById('logList');
+            const listItem = document.createElement('li');
+            listItem.textContent = `${person} ${action} ${quantity} unidade(s) de ${item} (${reason})`;
+            logList.appendChild(listItem);
+            logEntries.push({ item, quantity, person, reason, action });
+        }
+
+        // Função para exportar o log para Excel
+        document.getElementById('export-btn').addEventListener('click', () => {
+            const worksheet = XLSX.utils.json_to_sheet(logEntries);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Log de Retiradas');
+            XLSX.writeFile(workbook, 'log_de_retiradas.xlsx');
+        });
     </script>
 </body>
 </html>
