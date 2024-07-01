@@ -17,15 +17,6 @@
             background-size: 55% auto; /* 100% de largura e altura automática (proporção preservada) */
             background-position: center; /* Centraliza a imagem no fundo */
         }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f0f8ff;
-        }
 
         .title {
             width: 100%;
@@ -228,7 +219,7 @@
                         <td>${logEntry.user}</td>
                         <td>${logEntry.reason}</td>
                         <td>
-                            ${currentUser === 'admin' ? `<button class="delete-btn" data-type="log" data-index="${index}">Excluir</button>` : ''}
+                            ${currentUser === 'admin' ? `<button class="delete-log-btn" data-index="${index}">Excluir</button>` : ''}
                         </td>
                     `;
                 });
@@ -247,52 +238,74 @@
 
             function adjustItemInInventory(index, quantity, user, reason, newName) {
                 const itemName = inventoryData[index].itemName;
+                const itemStock = inventoryData[index].itemStock;
                 if (quantity !== null && user !== null && reason !== null) {
                     if (newName) {
                         inventoryData[index].itemName = newName;
-                        logData.push({ action: 'Ajuste', itemName, quantity: parseInt(quantity), user, reason });
-                    } else {
-                        logData.push({ action: 'Ajuste', itemName, quantity: parseInt(quantity), user, reason });
                     }
+                    const adjustedQuantity = parseInt(quantity);
+                    inventoryData[index].itemStock += adjustedQuantity;
+                    logData.push({ action: 'Ajuste', itemName, quantity: adjustedQuantity, user, reason });
                     renderInventory();
                     renderLog();
                 }
             }
 
-            function withdrawFromInventory(index, quantity, user, reason) {
+            function withdrawItemFromInventory(index, quantity, user, reason) {
                 const itemName = inventoryData[index].itemName;
                 const itemStock = inventoryData[index].itemStock;
-                if (parseInt(quantity) <= itemStock) {
-                    inventoryData[index].itemStock -= parseInt(quantity);
-                    logData.push({ action: 'Retirada', itemName, quantity: parseInt(quantity), user, reason });
+                const withdrawQuantity = parseInt(quantity);
+                if (itemStock >= withdrawQuantity) {
+                    inventoryData[index].itemStock -= withdrawQuantity;
+                    logData.push({ action: 'Retirada', itemName, quantity: withdrawQuantity, user, reason });
                     renderInventory();
                     renderLog();
                 } else {
-                    alert('Estoque insuficiente para retirar essa quantidade.');
+                    alert('Quantidade insuficiente no estoque.');
                 }
             }
 
-            function deleteItemFromInventory(index) {
-                inventoryData.splice(index, 1);
-                renderInventory();
-            }
-
-            function deleteLogEntry(index) {
-                logData.splice(index, 1);
-                renderLog();
-            }
-
-            function clearLog() {
-                logData = [];
-                renderLog();
-            }
-
-            loginBtn.addEventListener('click', function() {
-                loginForm.style.display = 'flex';
-                loginBtn.style.display = 'none';
+            document.getElementById('add-item-submit').addEventListener('click', () => {
+                const name = document.getElementById('itemName').value;
+                const stock = parseInt(document.getElementById('itemStock').value);
+                if (name && !isNaN(stock)) {
+                    addItemToInventory(name, stock);
+                    document.getElementById('itemName').value = '';
+                    document.getElementById('itemStock').value = '';
+                    addFormItem.style.display = 'none';
+                } else {
+                    alert('Preencha todos os campos.');
+                }
             });
 
-            logoutBtn.addEventListener('click', function() {
+            document.getElementById('add-item-cancel').addEventListener('click', () => {
+                document.getElementById('itemName').value = '';
+                document.getElementById('itemStock').value = '';
+                addFormItem.style.display = 'none';
+            });
+
+            document.getElementById('login-form-submit').addEventListener('click', () => {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                if (username === 'admin' && password === 'admin') {
+                    currentUser = 'admin';
+                    loginForm.style.display = 'none';
+                    loginBtn.style.display = 'none';
+                    logoutBtn.style.display = 'block';
+                    addItemBtn.style.display = 'block';
+                    clearLogBtn.style.display = 'block';
+                    renderInventory();
+                    renderLog();
+                } else {
+                    alert('Usuário ou senha incorretos.');
+                }
+            });
+
+            document.getElementById('login-form-cancel').addEventListener('click', () => {
+                loginForm.style.display = 'none';
+            });
+
+            logoutBtn.addEventListener('click', () => {
                 currentUser = null;
                 logoutBtn.style.display = 'none';
                 loginBtn.style.display = 'block';
@@ -302,117 +315,76 @@
                 renderLog();
             });
 
-            document.getElementById('login-form-submit').addEventListener('click', function() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                if (username === 'admin' && password === 'admin') {
-                    currentUser = 'admin';
-                    loginForm.style.display = 'none';
-                    logoutBtn.style.display = 'block';
-                    addItemBtn.style.display = 'block';
-                    clearLogBtn.style.display = 'block';
-                    renderInventory();
-                    renderLog();
-                } else {
-                    alert('Credenciais inválidas. Tente novamente.');
-                }
+            loginBtn.addEventListener('click', () => {
+                loginForm.style.display = 'flex';
             });
 
-            document.getElementById('login-form-cancel').addEventListener('click', function() {
-                loginForm.style.display = 'none';
-                loginBtn.style.display = 'block';
-            });
-
-            addItemBtn.addEventListener('click', function() {
+            addItemBtn.addEventListener('click', () => {
                 addFormItem.style.display = 'flex';
-                addItemBtn.style.display = 'none';
             });
 
-            document.getElementById('add-item-submit').addEventListener('click', function() {
-                const itemName = document.getElementById('itemName').value;
-                const itemStock = document.getElementById('itemStock').value;
-                if (itemName && itemStock) {
-                    addItemToInventory(itemName, parseInt(itemStock));
-                    addFormItem.style.display = 'none';
-                    addItemBtn.style.display = 'block';
-                } else {
-                    alert('Por favor, preencha todos os campos.');
-                }
+            exportInventoryBtn.addEventListener('click', () => {
+                exportTableToExcel('inventory-table', 'inventario');
             });
 
-            document.getElementById('add-item-cancel').addEventListener('click', function() {
-                addFormItem.style.display = 'none';
-                addItemBtn.style.display = 'block';
+            exportLogBtn.addEventListener('click', () => {
+                exportTableToExcel('log-table', 'log_retiradas');
             });
 
-            exportInventoryBtn.addEventListener('click', function() {
-                exportarParaExcel(inventoryData, 'Inventário');
+            clearLogBtn.addEventListener('click', () => {
+                logData = [];
+                renderLog();
             });
 
-            exportLogBtn.addEventListener('click', function() {
-                exportarLogParaExcel(logData, 'Log de Retiradas');
-            });
+            function exportTableToExcel(tableID, filename = '') {
+                const downloadLink = document.createElement('a');
+                const dataType = 'application/vnd.ms-excel';
+                const tableHTML = encodeURIComponent(document.getElementById(tableID).outerHTML);
+                filename = filename ? `${filename}.xls` : 'excel_data.xls';
+                downloadLink.href = `data:${dataType}, ${tableHTML}`;
+                downloadLink.download = filename;
+                downloadLink.click();
+            }
 
-            document.getElementById('clear-log-btn').addEventListener('click', function() {
-                clearLog();
-            });
-
-            document.addEventListener('click', function(event) {
+            inventoryTable.addEventListener('click', (event) => {
                 if (event.target.classList.contains('withdraw-btn')) {
-                    const index = parseInt(event.target.getAttribute('data-index'));
+                    const index = event.target.dataset.index;
                     const quantity = prompt('Quantidade a ser retirada:');
                     const user = prompt('Quem está retirando:');
                     const reason = prompt('Motivo da retirada:');
-                    if (quantity !== null && user !== null && reason !== null) {
-                        withdrawFromInventory(index, quantity, user, reason);
+                    if (quantity && user && reason) {
+                        withdrawItemFromInventory(index, quantity, user, reason);
                     }
-                } else if (event.target.classList.contains('adjust-btn')) {
-                    const index = parseInt(event.target.getAttribute('data-index'));
+                }
+
+                if (event.target.classList.contains('adjust-btn')) {
+                    const index = event.target.dataset.index;
                     const quantity = prompt('Quantidade a ser ajustada:');
                     const user = prompt('Quem está ajustando:');
                     const reason = prompt('Motivo do ajuste:');
-                    const newName = prompt('Novo nome do item (deixe em branco para manter):');
-                    if (quantity !== null && user !== null && reason !== null) {
+                    const newName = prompt('Novo nome do item (deixe em branco para não alterar):');
+                    if (quantity && user && reason) {
                         adjustItemInInventory(index, quantity, user, reason, newName);
                     }
-                } else if (event.target.classList.contains('delete-btn')) {
-                    const index = parseInt(event.target.getAttribute('data-index'));
-                    const type = event.target.getAttribute('data-type');
+                }
+
+                if (event.target.classList.contains('delete-btn')) {
+                    const index = event.target.dataset.index;
+                    const type = event.target.dataset.type;
                     if (type === 'inventory') {
-                        deleteItemFromInventory(index);
-                    } else if (type === 'log') {
-                        deleteLogEntry(index);
+                        inventoryData.splice(index, 1);
+                        renderInventory();
                     }
                 }
             });
 
-            function exportarParaExcel(data, filename) {
-                const csvContent = "data:text/csv;charset=utf-8,"
-                    + encodeURIComponent(
-                        `${Object.keys(data[0]).join(';')}\n`
-                        + data.map(item => Object.values(item).join(';')).join('\n')
-                    );
-                const link = document.createElement('a');
-                link.setAttribute('href', csvContent);
-                link.setAttribute('download', `${filename}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-
-            function exportarLogParaExcel(data, filename) {
-                const csvContent = "data:text/csv;charset=utf-8,"
-                    + encodeURIComponent(
-                        `Ação;Item;Quantidade;Usuário;Motivo\n`
-                        + data.map(entry => `${entry.action};${entry.itemName};${entry.quantity};${entry.user};${entry.reason.replace(/\n|\r/g, ' ')}`).join('\n')
-                    );
-                const link = document.createElement('a');
-                link.setAttribute('href', csvContent);
-                link.setAttribute('download', `${filename}.csv`);
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+            logTable.addEventListener('click', (event) => {
+                if (event.target.classList.contains('delete-log-btn')) {
+                    const index = event.target.dataset.index;
+                    logData.splice(index, 1);
+                    renderLog();
+                }
+            });
 
             renderInventory();
             renderLog();
