@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Estoque</title>
+    <title>Gerenciador de Estoque TI KOCH</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -118,8 +118,9 @@
     </style>
 </head>
 <body>
-    <div class="title">Gerenciador de Estoque</div>
+    <div class="title">Gerenciador de Estoque TI KOCH</div>
     <button id="login-btn" class="top-right">Login</button>
+    <button id="logout-btn" class="top-right" style="display: none;">Logout</button>
 
     <div class="container">
         <div class="login-form" id="login-form">
@@ -178,6 +179,7 @@
             const inventoryTable = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const logTable = document.getElementById('log-table').getElementsByTagName('tbody')[0];
             const loginBtn = document.getElementById('login-btn');
+            const logoutBtn = document.getElementById('logout-btn');
             const addItemBtn = document.getElementById('add-item-btn');
             const clearLogBtn = document.getElementById('clear-log-btn');
             const exportInventoryBtn = document.getElementById('export-inventory-btn');
@@ -224,7 +226,7 @@
                         <td>${logEntry.itemName}</td>
                         <td>${logEntry.quantity}</td>
                         <td>${logEntry.user}</td>
-                        <td style="max-width: 200px; word-wrap: break-word;">${logEntry.reason}</td>
+                        <td>${logEntry.reason}</td>
                         <td>
                             ${currentUser === 'admin' ? `<button class="delete-btn" data-type="log" data-index="${index}">Excluir</button>` : ''}
                         </td>
@@ -248,10 +250,10 @@
                 if (quantity !== null && user !== null && reason !== null) {
                     if (newName) {
                         inventoryData[index].itemName = newName;
-                        logData.push({ action: 'Ajuste de Nome', itemName, quantity: null, user, reason });
+                        logData.push({ action: 'Ajuste', itemName, quantity: parseInt(quantity), user, reason });
+                    } else {
+                        logData.push({ action: 'Ajuste', itemName, quantity: parseInt(quantity), user, reason });
                     }
-                    inventoryData[index].itemStock += parseInt(quantity);
-                    logData.push({ action: 'Ajuste de Estoque', itemName, quantity: parseInt(quantity), user, reason });
                     renderInventory();
                     renderLog();
                 }
@@ -259,24 +261,45 @@
 
             function withdrawFromInventory(index, quantity, user, reason) {
                 const itemName = inventoryData[index].itemName;
-                if (inventoryData[index].itemStock >= quantity) {
-                    if (quantity !== null && user !== null && reason !== null) {
-                        inventoryData[index].itemStock -= parseInt(quantity);
-                        logData.push({ action: 'Retirada', itemName, quantity: parseInt(quantity), user, reason });
-                        renderInventory();
-                        renderLog();
-                    }
+                const itemStock = inventoryData[index].itemStock;
+                if (parseInt(quantity) <= itemStock) {
+                    inventoryData[index].itemStock -= parseInt(quantity);
+                    logData.push({ action: 'Retirada', itemName, quantity: parseInt(quantity), user, reason });
+                    renderInventory();
+                    renderLog();
                 } else {
-                    alert('Quantidade indisponível no estoque.');
+                    alert('Estoque insuficiente para retirar essa quantidade.');
                 }
+            }
+
+            function deleteItemFromInventory(index) {
+                inventoryData.splice(index, 1);
+                renderInventory();
+            }
+
+            function deleteLogEntry(index) {
+                logData.splice(index, 1);
+                renderLog();
+            }
+
+            function clearLog() {
+                logData = [];
+                renderLog();
             }
 
             loginBtn.addEventListener('click', function() {
                 loginForm.style.display = 'flex';
+                loginBtn.style.display = 'none';
             });
 
-            document.getElementById('login-form-cancel').addEventListener('click', function() {
-                loginForm.style.display = 'none';
+            logoutBtn.addEventListener('click', function() {
+                currentUser = null;
+                logoutBtn.style.display = 'none';
+                loginBtn.style.display = 'block';
+                addItemBtn.style.display = 'none';
+                clearLogBtn.style.display = 'none';
+                renderInventory();
+                renderLog();
             });
 
             document.getElementById('login-form-submit').addEventListener('click', function() {
@@ -285,80 +308,58 @@
                 if (username === 'admin' && password === 'admin') {
                     currentUser = 'admin';
                     loginForm.style.display = 'none';
+                    logoutBtn.style.display = 'block';
                     addItemBtn.style.display = 'block';
                     clearLogBtn.style.display = 'block';
                     renderInventory();
                     renderLog();
                 } else {
-                    alert('Usuário ou senha incorretos.');
+                    alert('Credenciais inválidas. Tente novamente.');
                 }
+            });
+
+            document.getElementById('login-form-cancel').addEventListener('click', function() {
+                loginForm.style.display = 'none';
+                loginBtn.style.display = 'block';
             });
 
             addItemBtn.addEventListener('click', function() {
                 addFormItem.style.display = 'flex';
-            });
-
-            document.getElementById('add-item-cancel').addEventListener('click', function() {
-                addFormItem.style.display = 'none';
+                addItemBtn.style.display = 'none';
             });
 
             document.getElementById('add-item-submit').addEventListener('click', function() {
                 const itemName = document.getElementById('itemName').value;
                 const itemStock = document.getElementById('itemStock').value;
-                addItemToInventory(itemName, itemStock);
-                addFormItem.style.display = 'none';
-            });
-
-            exportInventoryBtn.addEventListener('click', function() {
-                const csvContent = "data:text/csv;charset=utf-8,"
-                    + "Nome do Item,Estoque\n"
-                    + inventoryData.map(e => Object.values(e).join(",")).join("\n");
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "inventory.csv");
-                document.body.appendChild(link);
-                link.click();
-            });
-
-            exportLogBtn.addEventListener('click', function() {
-                const csvContent = "data:text/csv;charset=utf-8,"
-                    + "Ação,Item,Quantidade,Usuário,Motivo\n"
-                    + logData.map(e => {
-                        const { action, itemName, quantity, user, reason } = e;
-                        const motivo = reason.replace(/"/g, '""');
-                        return `"${action}","${itemName}",${quantity},"${user}","${motivo}"`;
-                    }).join("\n");
-                const encodedUri = encodeURI(csvContent);
-                const link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "log.csv");
-                document.body.appendChild(link);
-                link.click();
-            });
-
-            document.getElementById('clear-log-btn').addEventListener('click', function() {
-                logData = [];
-                renderLog();
-            });
-
-            document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('delete-btn')) {
-                    const type = event.target.getAttribute('data-type');
-                    const index = event.target.getAttribute('data-index');
-                    if (type === 'inventory') {
-                        inventoryData.splice(index, 1);
-                        renderInventory();
-                    } else if (type === 'log') {
-                        logData.splice(index, 1);
-                        renderLog();
-                    }
+                if (itemName && itemStock) {
+                    addItemToInventory(itemName, parseInt(itemStock));
+                    addFormItem.style.display = 'none';
+                    addItemBtn.style.display = 'block';
+                } else {
+                    alert('Por favor, preencha todos os campos.');
                 }
             });
 
-            inventoryTable.addEventListener('click', function(event) {
+            document.getElementById('add-item-cancel').addEventListener('click', function() {
+                addFormItem.style.display = 'none';
+                addItemBtn.style.display = 'block';
+            });
+
+            exportInventoryBtn.addEventListener('click', function() {
+                exportarParaExcel(inventoryData, 'Inventário');
+            });
+
+            exportLogBtn.addEventListener('click', function() {
+                exportarLogParaExcel(logData, 'Log de Retiradas');
+            });
+
+            document.getElementById('clear-log-btn').addEventListener('click', function() {
+                clearLog();
+            });
+
+            document.addEventListener('click', function(event) {
                 if (event.target.classList.contains('withdraw-btn')) {
-                    const index = event.target.getAttribute('data-index');
+                    const index = parseInt(event.target.getAttribute('data-index'));
                     const quantity = prompt('Quantidade a ser retirada:');
                     const user = prompt('Quem está retirando:');
                     const reason = prompt('Motivo da retirada:');
@@ -366,15 +367,52 @@
                         withdrawFromInventory(index, quantity, user, reason);
                     }
                 } else if (event.target.classList.contains('adjust-btn')) {
-                    const index = event.target.getAttribute('data-index');
-                    const quantity = prompt('Quantidade a ser ajustada (positiva ou negativa):');
+                    const index = parseInt(event.target.getAttribute('data-index'));
+                    const quantity = prompt('Quantidade a ser ajustada:');
                     const user = prompt('Quem está ajustando:');
                     const reason = prompt('Motivo do ajuste:');
+                    const newName = prompt('Novo nome do item (deixe em branco para manter):');
                     if (quantity !== null && user !== null && reason !== null) {
-                        adjustItemInInventory(index, quantity, user, reason);
+                        adjustItemInInventory(index, quantity, user, reason, newName);
+                    }
+                } else if (event.target.classList.contains('delete-btn')) {
+                    const index = parseInt(event.target.getAttribute('data-index'));
+                    const type = event.target.getAttribute('data-type');
+                    if (type === 'inventory') {
+                        deleteItemFromInventory(index);
+                    } else if (type === 'log') {
+                        deleteLogEntry(index);
                     }
                 }
             });
+
+            function exportarParaExcel(data, filename) {
+                const csvContent = "data:text/csv;charset=utf-8,"
+                    + encodeURIComponent(
+                        `${Object.keys(data[0]).join(';')}\n`
+                        + data.map(item => Object.values(item).join(';')).join('\n')
+                    );
+                const link = document.createElement('a');
+                link.setAttribute('href', csvContent);
+                link.setAttribute('download', `${filename}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            function exportarLogParaExcel(data, filename) {
+                const csvContent = "data:text/csv;charset=utf-8,"
+                    + encodeURIComponent(
+                        `Ação;Item;Quantidade;Usuário;Motivo\n`
+                        + data.map(entry => `${entry.action};${entry.itemName};${entry.quantity};${entry.user};${entry.reason.replace(/\n|\r/g, ' ')}`).join('\n')
+                    );
+                const link = document.createElement('a');
+                link.setAttribute('href', csvContent);
+                link.setAttribute('download', `${filename}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
 
             renderInventory();
             renderLog();
