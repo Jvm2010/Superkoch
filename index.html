@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,470 +9,374 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f8ff;
+            background-image: url('https://assets.isu.pub/document-structure/230504114755-05580be30f100ce1783d4f4656349573/v1/e7d736321df2ea556f17d0dbeb1bf2db.jpeg');
+            background-size: 55% auto; /* 100% de largura e altura automática (proporção preservada) */
+            background-position: center; /* Centraliza a imagem no fundo */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f0f8ff;
         }
 
-        .header {
-            background-color: #343a40;
-            padding: 10px 0;
-            text-align: center;
-            margin-bottom: 20px;
+        .title {
+            width: 100%;
+            background-color: #1e90ff;
             color: white;
-            position: relative;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 2em;
+            margin-bottom: 20px;
         }
 
         .container {
-            width: 80%;
-            margin: 0 auto;
+            width: 90%;
+            max-width: 1200px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .inventory, .log-section {
+            margin-bottom: 20px;
         }
 
         table {
             width: 100%;
-            margin-top: 20px;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
         table, th, td {
             border: 1px solid #ddd;
+        }
+
+        th, td {
             padding: 8px;
-            text-align: center;
+            text-align: left;
         }
 
         th {
-            background-color: #e9ecef;
-            color: #343a40;
+            background-color: #87cefa;
         }
 
-        .button {
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
+        button {
+            padding: 10px 20px;
+            margin: 5px;
             cursor: pointer;
-            margin-bottom: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #0056b3;
-        }
-
-        .delete-btn {
-            background-color: #dc3545;
-        }
-
-        .delete-btn:hover {
-            background-color: #c82333;
-        }
-
-        .export-btn {
-            background-color: #28a745;
-        }
-
-        .export-btn:hover {
-            background-color: #218838;
-        }
-
-        .log-container {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #fff;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .log-container h3 {
-            margin-top: 0;
-            margin-bottom: 10px;
-            color: #343a40;
-        }
-
-        .log-list {
-            list-style-type: none;
-            padding: 0;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-bottom: 0;
-        }
-
-        .log-item {
-            margin-bottom: 5px;
-            position: relative;
-            padding: 8px;
-            background-color: #f8f9fa;
+            border: none;
+            background-color: #1e90ff;
+            color: white;
             border-radius: 5px;
+            transition: background-color 0.3s;
         }
 
-        .log-item:hover {
-            background-color: #e9ecef;
+        button:hover {
+            background-color: #555;
         }
 
-        .log-item .delete-btn {
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: red;
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        .login-form {
+        .login-form, .add-item-form, .adjust-item-form {
             display: none;
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .login-form label {
-            display: block;
-            margin-bottom: 5px;
-            color: #343a40;
-        }
-
-        .login-form input[type="text"], .login-form input[type="password"] {
-            padding: 5px;
-            width: 100%;
-            margin-bottom: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        .login-form button {
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .login-form button:hover {
-            background-color: #0056b3;
-        }
-
-        .login-btn, .logout-btn, .add-item-btn {
-            padding: 8px 12px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            transition: background-color 0.3s ease;
-            z-index: 1000;
-        }
-
-        .logout-btn {
-            background-color: #dc3545;
-            display: none;
-        }
-
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-
-        .login-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .add-item-form {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            flex-direction: column;
+            align-items: center;
+            background-color: #f9f9f9;
             padding: 20px;
-            background-color: #fff;
             border: 1px solid #ddd;
-            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
-            z-index: 1000;
-            width: 300px;
-            max-width: 80%;
+            border-radius: 8px;
+            margin-bottom: 20px;
         }
 
-        .add-item-form label {
-            display: block;
-            margin-bottom: 10px;
-            color: #343a40;
-        }
-
-        .add-item-form input[type="text"], .add-item-form input[type="number"] {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-        }
-
-        .add-item-form button {
-            width: 100%;
+        .login-form input, .add-item-form input, .adjust-item-form input, .adjust-item-form textarea {
             padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+            margin: 10px 0;
+            width: 80%;
         }
 
-        .add-item-form button:hover {
-            background-color: #218838;
+        .login-form button, .add-item-form button, .adjust-item-form button {
+            width: 50%;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 </head>
 <body>
-    <div class="header">
-        <h2>Gerenciador de Estoque</h2>
-        <button class="button login-btn" id="login-btn">Login</button>
-        <button class="button logout-btn" id="logout-btn">Logout</button>
-    </div>
+    <div class="title">Gerenciador de Estoque</div>
+    <button id="login-btn" class="top-right">Login</button>
 
     <div class="container">
-        <table id="inventory">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Estoque</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="inventory-body">
-                <!-- Aqui serão adicionados dinamicamente os itens -->
-            </tbody>
-        </table>
-        
-        <div class="log-container">
-            <h3>Log de Retiradas</h3>
-            <ul class="log-list" id="logList">
-                <!-- Aqui serão adicionados dinamicamente os logs -->
-            </ul>
-            <button class="button export-btn" id="export-btn">Exportar Log para Excel</button>
-            <button class="button delete-btn" id="clear-log-btn">Limpar Log</button>
+        <div class="login-form" id="login-form">
+            <input type="text" id="username" placeholder="Usuário">
+            <input type="password" id="password" placeholder="Senha">
+            <button id="login-form-submit">Login</button>
+            <button id="login-form-cancel">Cancelar</button>
         </div>
 
-        <form class="login-form" id="login-form">
-            <label for="username">Usuário:</label>
-            <input type="text" id="username" name="username" required>
-            <label for="password">Senha:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="button" class="button" id="login-form-submit">Login</button>
-            <button type="button" class="button" id="login-form-cancel">Cancelar</button>
-        </form>
+        <div class="inventory">
+            <h2>Inventário</h2>
+            <table id="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Nome do Item</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
 
-        <form class="add-item-form" id="add-item-form">
-            <label for="itemName">Nome do Item:</label>
-            <input type="text" id="itemName" name="itemName" required>
-            <label for="itemStock">Estoque Inicial:</label>
-            <input type="number" id="itemStock" name="itemStock" required>
-            <button type="button" class="button" id="add-item-submit">Adicionar Item</button>
-            <button type="button" class="button" id="add-item-cancel">Cancelar</button>
-        </form>
+            <div class="add-item-form" id="add-item-form">
+                <input type="text" id="itemName" placeholder="Nome do Item">
+                <input type="number" id="itemStock" placeholder="Quantidade">
+                <button id="add-item-submit">Adicionar Item</button>
+                <button id="add-item-cancel">Cancelar</button>
+            </div>
+
+            <button id="add-item-btn" style="display: none; margin-top: 10px;">Adicionar Novo Item</button>
+            <button id="export-inventory-btn">Exportar Inventário para Excel</button>
+        </div>
+
+        <div class="log-section">
+            <h2>Log de Retiradas</h2>
+            <table id="log-table">
+                <thead>
+                    <tr>
+                        <th>Ação</th>
+                        <th>Item</th>
+                        <th>Quantidade</th>
+                        <th>Usuário</th>
+                        <th>Motivo</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button id="export-log-btn">Exportar Log para Excel</button>
+            <button id="clear-log-btn" style="display: none;">Limpar Log</button>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let currentUser = null;
-
-            // Simulação de dados de inventário inicial
-            let inventoryData = [
-                { itemName: 'Produto A', itemStock: 100 },
-                { itemName: 'Produto B', itemStock: 50 },
-                { itemName: 'Produto C', itemStock: 200 }
-            ];
-
-            // Simulação de logs iniciais
-            let logData = [
-                { action: 'Retirada', itemName: 'Produto A', quantity: 10, user: 'João', reason: 'Verificação de Estoque' },
-                { action: 'Ajuste', itemName: 'Produto B', quantity: 20, user: 'Maria', reason: 'Verificação de Estoque' }
-            ];
-
-            const inventoryTable = document.getElementById('inventory-body');
-            const logList = document.getElementById('logList');
+            const inventoryTable = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+            const logTable = document.getElementById('log-table').getElementsByTagName('tbody')[0];
             const loginBtn = document.getElementById('login-btn');
-            const logoutBtn = document.getElementById('logout-btn');
             const addItemBtn = document.getElementById('add-item-btn');
+            const clearLogBtn = document.getElementById('clear-log-btn');
+            const exportInventoryBtn = document.getElementById('export-inventory-btn');
+            const exportLogBtn = document.getElementById('export-log-btn');
             const loginForm = document.getElementById('login-form');
             const addFormItem = document.getElementById('add-item-form');
-            const exportBtn = document.getElementById('export-btn');
-            const clearLogBtn = document.getElementById('clear-log-btn');
+            const adjustItemForm = document.getElementById('adjust-item-form');
+            let currentUser = null;
 
-            // Função para renderizar o inventário na tabela
+            let inventoryData = JSON.parse(localStorage.getItem('inventoryData')) || [
+                { itemName: 'Item A', itemStock: 10 },
+                { itemName: 'Item B', itemStock: 20 }
+            ];
+
+            let logData = JSON.parse(localStorage.getItem('logData')) || [
+                { action: 'Retirada', itemName: 'Item A', quantity: 5, user: 'admin', reason: 'Venda' }
+            ];
+
             function renderInventory() {
                 inventoryTable.innerHTML = '';
                 inventoryData.forEach((item, index) => {
-                    const row = document.createElement('tr');
+                    const row = inventoryTable.insertRow();
                     row.innerHTML = `
                         <td>${item.itemName}</td>
                         <td>${item.itemStock}</td>
                         <td>
-                            <button class="button withdraw-btn" data-index="${index}">Retirar</button>
-                            <button class="button adjust-btn" data-index="${index}">Ajustar</button>
-                            <button class="button delete-btn" data-type="inventory" data-index="${index}">Excluir</button>
+                            <button class="withdraw-btn" data-index="${index}">Retirar</button>
+                            ${currentUser === 'admin' ? 
+                                `<button class="adjust-btn" data-index="${index}">Ajustar</button>
+                                <button class="delete-btn" data-type="inventory" data-index="${index}">Excluir</button>` 
+                                : ''}
                         </td>
                     `;
-                    inventoryTable.appendChild(row);
                 });
+                saveDataLocally();
             }
 
-            // Função para renderizar os logs na lista
             function renderLog() {
-                logList.innerHTML = '';
-                logData.forEach((log, index) => {
-                    const listItem = document.createElement('li');
-                    listItem.classList.add('log-item');
-                    listItem.innerHTML = `
-                        <div>
-                            <strong>${log.action}</strong>: ${log.quantity} ${log.itemName} por ${log.user}. Motivo: ${log.reason}
-                            ${currentUser === 'admin' ? `<button class="delete-btn" data-type="log" data-index="${index}"><i class="fas fa-trash-alt"></i></button>` : ''}
-                        </div>
+                logTable.innerHTML = '';
+                logData.forEach((logEntry, index) => {
+                    const row = logTable.insertRow();
+                    row.innerHTML = `
+                        <td>${logEntry.action}</td>
+                        <td>${logEntry.itemName}</td>
+                        <td>${logEntry.quantity}</td>
+                        <td>${logEntry.user}</td>
+                        <td style="max-width: 200px; word-wrap: break-word;">${logEntry.reason}</td>
+                        <td>
+                            ${currentUser === 'admin' ? `<button class="delete-btn" data-type="log" data-index="${index}">Excluir</button>` : ''}
+                        </td>
                     `;
-                    logList.appendChild(listItem);
                 });
+                saveDataLocally();
             }
 
-            // Função para adicionar item ao inventário
-            function addItem(itemName, itemStock) {
-                inventoryData.push({ itemName, itemStock });
+            function saveDataLocally() {
+                localStorage.setItem('inventoryData', JSON.stringify(inventoryData));
+                localStorage.setItem('logData', JSON.stringify(logData));
+            }
+
+            function addItemToInventory(name, stock) {
+                inventoryData.push({ itemName: name, itemStock: stock });
                 renderInventory();
             }
 
-            // Função para retirar item do inventário
-            function withdrawItem(itemIndex, quantity, user, reason) {
-                if (inventoryData[itemIndex].itemStock >= quantity) {
-                    inventoryData[itemIndex].itemStock -= quantity;
-                    logData.push({ action: 'Retirada', itemName: inventoryData[itemIndex].itemName, quantity, user, reason });
+            function adjustItemInInventory(index, quantity, user, reason, newName) {
+                const itemName = inventoryData[index].itemName;
+                if (quantity !== null && user !== null && reason !== null) {
+                    if (newName) {
+                        inventoryData[index].itemName = newName;
+                        logData.push({ action: 'Ajuste de Nome', itemName, quantity: null, user, reason });
+                    }
+                    inventoryData[index].itemStock += parseInt(quantity);
+                    logData.push({ action: 'Ajuste de Estoque', itemName, quantity: parseInt(quantity), user, reason });
                     renderInventory();
                     renderLog();
-                } else {
-                    alert('Estoque insuficiente para retirada!');
                 }
             }
 
-            // Função para ajustar estoque do item
-            function adjustItem(itemIndex, quantity, user, reason) {
-                inventoryData[itemIndex].itemStock += quantity;
-                logData.push({ action: 'Ajuste', itemName: inventoryData[itemIndex].itemName, quantity, user, reason });
-                renderInventory();
-                renderLog();
+            function withdrawFromInventory(index, quantity, user, reason) {
+                const itemName = inventoryData[index].itemName;
+                if (inventoryData[index].itemStock >= quantity) {
+                    if (quantity !== null && user !== null && reason !== null) {
+                        inventoryData[index].itemStock -= parseInt(quantity);
+                        logData.push({ action: 'Retirada', itemName, quantity: parseInt(quantity), user, reason });
+                        renderInventory();
+                        renderLog();
+                    }
+                } else {
+                    alert('Quantidade indisponível no estoque.');
+                }
             }
 
-            // Função para exportar log para Excel
-            function exportToExcel() {
-                let csvContent = "data:text/csv;charset=utf-8,"
-                    + logData.map(e => Object.values(e).join(",")).join("\n");
-                var encodedUri = encodeURI(csvContent);
-                var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", "log_estoque.csv");
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-
-            // Função para limpar o log
-            function clearLog() {
-                logData = [];
-                renderLog();
-            }
-
-            // Evento de clique no botão de login
             loginBtn.addEventListener('click', function() {
-                loginForm.style.display = 'block';
+                loginForm.style.display = 'flex';
             });
 
-            // Evento de clique no botão de logout
-            logoutBtn.addEventListener('click', function() {
-                currentUser = null;
-                loginBtn.style.display = 'inline-block';
-                logoutBtn.style.display = 'none';
-                addFormItem.style.display = 'none';
-                document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'none');
-            });
-
-            // Evento de submissão do formulário de login
-            document.getElementById('login-form-submit').addEventListener('click', function() {
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                // Simulação de validação de login
-                if (username === 'admin' && password === 'admin') {
-                    currentUser = 'admin';
-                    loginBtn.style.display = 'none';
-                    logoutBtn.style.display = 'inline-block';
-                    addFormItem.style.display = 'block';
-                    document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = 'inline-block');
-                    loginForm.style.display = 'none';
-                    renderInventory();
-                    renderLog();
-                } else {
-                    alert('Credenciais inválidas!');
-                }
-            });
-
-            // Evento de cancelamento do formulário de login
             document.getElementById('login-form-cancel').addEventListener('click', function() {
                 loginForm.style.display = 'none';
             });
 
-            // Evento de submissão do formulário de adicionar item
-            document.getElementById('add-item-submit').addEventListener('click', function() {
-                const itemName = document.getElementById('itemName').value;
-                const itemStock = parseInt(document.getElementById('itemStock').value);
-                addItem(itemName, itemStock);
-                document.getElementById('itemName').value = '';
-                document.getElementById('itemStock').value = '';
-                addFormItem.style.display = 'none';
+            document.getElementById('login-form-submit').addEventListener('click', function() {
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                if (username === 'admin' && password === 'admin') {
+                    currentUser = 'admin';
+                    loginForm.style.display = 'none';
+                    addItemBtn.style.display = 'block';
+                    clearLogBtn.style.display = 'block';
+                    renderInventory();
+                    renderLog();
+                } else {
+                    alert('Usuário ou senha incorretos.');
+                }
             });
 
-            // Evento de cancelamento do formulário de adicionar item
+            addItemBtn.addEventListener('click', function() {
+                addFormItem.style.display = 'flex';
+            });
+
             document.getElementById('add-item-cancel').addEventListener('click', function() {
                 addFormItem.style.display = 'none';
             });
 
-            // Evento de clique no botão de exportar para Excel
-            exportBtn.addEventListener('click', exportToExcel);
+            document.getElementById('add-item-submit').addEventListener('click', function() {
+                const itemName = document.getElementById('itemName').value;
+                const itemStock = document.getElementById('itemStock').value;
+                addItemToInventory(itemName, itemStock);
+                addFormItem.style.display = 'none';
+            });
 
-            // Evento de clique no botão de limpar log
-            clearLogBtn.addEventListener('click', clearLog);
+            exportInventoryBtn.addEventListener('click', function() {
+                const csvContent = "data:text/csv;charset=utf-8,"
+                    + "Nome do Item,Estoque\n"
+                    + inventoryData.map(e => Object.values(e).join(",")).join("\n");
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "inventory.csv");
+                document.body.appendChild(link);
+                link.click();
+            });
 
-            // Evento de clique nos botões de ação (Retirar, Ajustar, Excluir)
+            exportLogBtn.addEventListener('click', function() {
+                const csvContent = "data:text/csv;charset=utf-8,"
+                    + "Ação,Item,Quantidade,Usuário,Motivo\n"
+                    + logData.map(e => {
+                        const { action, itemName, quantity, user, reason } = e;
+                        const motivo = reason.replace(/"/g, '""');
+                        return `"${action}","${itemName}",${quantity},"${user}","${motivo}"`;
+                    }).join("\n");
+                const encodedUri = encodeURI(csvContent);
+                const link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "log.csv");
+                document.body.appendChild(link);
+                link.click();
+            });
+
+            document.getElementById('clear-log-btn').addEventListener('click', function() {
+                logData = [];
+                renderLog();
+            });
+
             document.addEventListener('click', function(event) {
-                if (event.target.classList.contains('withdraw-btn')) {
-                    const itemIndex = parseInt(event.target.getAttribute('data-index'));
-                    const quantity = parseInt(prompt('Quantidade a ser retirada:'));
-                    const user = prompt('Quem está retirando:');
-                    const reason = prompt('Motivo da retirada:');
-                    withdrawItem(itemIndex, quantity, user, reason);
-                } else if (event.target.classList.contains('adjust-btn')) {
-                    const itemIndex = parseInt(event.target.getAttribute('data-index'));
-                    const quantity = parseInt(prompt('Quantidade a ser ajustada:'));
-                    const user = prompt('Quem está ajustando:');
-                    const reason = prompt('Motivo do ajuste:');
-                    adjustItem(itemIndex, quantity, user, reason);
-                } else if (event.target.classList.contains('delete-btn')) {
-                    const index = parseInt(event.target.getAttribute('data-index'));
+                if (event.target.classList.contains('delete-btn')) {
                     const type = event.target.getAttribute('data-type');
-                    if (type === 'log') {
-                        logData.splice(index, 1);
-                        renderLog();
-                    } else if (type === 'inventory') {
+                    const index = event.target.getAttribute('data-index');
+                    if (type === 'inventory') {
                         inventoryData.splice(index, 1);
                         renderInventory();
+                    } else if (type === 'log') {
+                        logData.splice(index, 1);
+                        renderLog();
                     }
                 }
             });
 
-            // Renderizar inventário inicial
+            inventoryTable.addEventListener('click', function(event) {
+                if (event.target.classList.contains('withdraw-btn')) {
+                    const index = event.target.getAttribute('data-index');
+                    const quantity = prompt('Quantidade a ser retirada:');
+                    const user = prompt('Quem está retirando:');
+                    const reason = prompt('Motivo da retirada:');
+                    if (quantity !== null && user !== null && reason !== null) {
+                        withdrawFromInventory(index, quantity, user, reason);
+                    }
+                } else if (event.target.classList.contains('adjust-btn')) {
+                    const index = event.target.getAttribute('data-index');
+                    const quantity = prompt('Quantidade a ser ajustada (positiva ou negativa):');
+                    const user = prompt('Quem está ajustando:');
+                    const reason = prompt('Motivo do ajuste:');
+                    if (quantity !== null && user !== null && reason !== null) {
+                        adjustItemInInventory(index, quantity, user, reason);
+                    }
+                }
+            });
+
             renderInventory();
-            // Renderizar logs iniciais
             renderLog();
         });
     </script>
