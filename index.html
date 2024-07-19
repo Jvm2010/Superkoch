@@ -221,7 +221,7 @@
         <select id="withdraw-quantity" class="form-input"></select>
         <select id="withdraw-user" class="form-input"></select>
         <input type="text" id="withdraw-reason" class="form-input" placeholder="Motivo da retirada">
-        <select id="withdraw-patrimony" multiple class="form-input"></select>
+        <div id="withdraw-patrimony" class="form-input"></div> <!-- Alterado para <div> -->
         <div class="form-buttons">
             <button id="withdraw-submit"><i class="fas fa-check"></i> Confirmar Retirada</button>
             <button id="withdraw-cancel"><i class="fas fa-times"></i> Cancelar</button>
@@ -522,7 +522,7 @@
                 option.textContent = i;
                 quantitySelect.appendChild(option);
             }
-
+        
             const userSelect = document.getElementById('withdraw-user');
             userSelect.innerHTML = '';
             ['João', 'Deivid', 'Camargo'].forEach(user => {
@@ -531,43 +531,49 @@
                 option.textContent = user;
                 userSelect.appendChild(option);
             });
-
-            const patrimonySelect = document.getElementById('withdraw-patrimony');
-            patrimonySelect.innerHTML = '';
+        
+            const patrimonyDiv = document.getElementById('withdraw-patrimony');
+            patrimonyDiv.innerHTML = '';
             patrimony.split(', ').forEach(pat => {
-                const option = document.createElement('option');
-                option.value = pat;
-                option.textContent = pat;
-                patrimonySelect.appendChild(option);
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = pat;
+                checkbox.id = `patrimony-${pat}`;
+                const label = document.createElement('label');
+                label.htmlFor = `patrimony-${pat}`;
+                label.textContent = pat;
+                patrimonyDiv.appendChild(checkbox);
+                patrimonyDiv.appendChild(label);
+                patrimonyDiv.appendChild(document.createElement('br'));
             });
-
+        
             document.getElementById('withdraw-prompt').style.display = 'flex';
-
+        
             document.getElementById('withdraw-submit').onclick = function () {
                 const quantity = parseInt(quantitySelect.value);
                 const user = userSelect.value;
                 const reason = document.getElementById('withdraw-reason').value;
-                const selectedPatrimony = Array.from(patrimonySelect.selectedOptions).map(option => option.value).join(', ');
+                const selectedPatrimony = Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value).join(', ');
                 const date = new Date().toLocaleString();
-
+        
                 if (reason.trim() === '') {
                     alert('Por favor, insira um motivo.');
                     return;
                 }
-
+        
                 const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
                 const row = table.rows[rowIndex - 1];
                 const newStock = parseInt(row.cells[1].textContent) - quantity;
                 row.cells[1].textContent = newStock;
-
+        
                 const remainingPatrimony = patrimony.split(', ').filter(pat => !selectedPatrimony.includes(pat)).join(', ');
                 row.cells[2].textContent = remainingPatrimony;
-
+        
                 logAction('Retirada', name, quantity, user, reason, selectedPatrimony, date);
                 saveInventory();
                 document.getElementById('withdraw-prompt').style.display = 'none';
             };
-
+        
             document.getElementById('withdraw-cancel').onclick = function () {
                 document.getElementById('withdraw-prompt').style.display = 'none';
             };
@@ -619,11 +625,21 @@ function showAdjustPrompt(name, stock, patrimony, rowIndex) {
 
     adjustPrompt.style.display = 'flex'; // Exibe o diálogo
 
-    document.getElementById('adjust-submit').onclick = function() {
-        confirmAdjust(rowIndex);
+    document.getElementById('adjust-submit').onclick = function () {
+        const newName = adjustNewName.value.trim();
+        const quantity = adjustQuantity.value;
+        const selectedPatrimony = Array.from(adjustPatrimony.selectedOptions).map(option => option.value).join(', ');
+        const user = adjustUser.value;
+
+        if (newName === '' && quantity === '') {
+            alert('Por favor, insira pelo menos um ajuste.');
+            return;
+        }
+
+        confirmAdjust(rowIndex, newName, quantity, selectedPatrimony, user);
     };
 
-    document.getElementById('adjust-cancel').onclick = function() {
+    document.getElementById('adjust-cancel').onclick = function () {
         adjustPrompt.style.display = 'none'; // Esconde o diálogo
     };
 }
