@@ -404,6 +404,7 @@
                 <button class="withdraw-btn"><i class="fas fa-minus"></i> Retirar</button>
                 ${isAdmin ? `<button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
                 <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
+                
             </td>
         `;
         
@@ -577,18 +578,7 @@
         
             const userSelect = document.getElementById('withdraw-user');
             userSelect.innerHTML = '';
-            ['João V.Teixeira',
-            'Diego',
-            'Rodrigo',
-            'Deivid', 
-            'João V. Camargo',
-            'João V. Mateus',
-            'Felipe',
-            'Jader',
-            'Natã',
-            'Dielton',
-            'Alberto',
-            ].forEach(user => {
+            ['João V.Teixeira', 'Diego', 'Rodrigo', 'Deivid', 'João V. Camargo', 'João V. Mateus', 'Felipe', 'Jader', 'Natã', 'Dielton', 'Alberto'].forEach(user => {
                 const option = document.createElement('option');
                 option.value = user;
                 option.textContent = user;
@@ -597,18 +587,22 @@
         
             const patrimonyDiv = document.getElementById('withdraw-patrimony');
             patrimonyDiv.innerHTML = '';
-            patrimony.split(', ').forEach(pat => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = pat;
-                checkbox.id = `patrimony-${pat}`;
-                const label = document.createElement('label');
-                label.htmlFor = `patrimony-${pat}`;
-                label.textContent = pat;
-                patrimonyDiv.appendChild(checkbox);
-                patrimonyDiv.appendChild(label);
-                patrimonyDiv.appendChild(document.createElement('br'));
-            });
+            if (patrimony) {
+                patrimony.split(', ').forEach(pat => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = pat;
+                    checkbox.id = `patrimony-${pat}`;
+                    const label = document.createElement('label');
+                    label.htmlFor = `patrimony-${pat}`;
+                    label.textContent = pat;
+                    patrimonyDiv.appendChild(checkbox);
+                    patrimonyDiv.appendChild(label);
+                    patrimonyDiv.appendChild(document.createElement('br'));
+                });
+            } else {
+                patrimonyDiv.textContent = 'Sem patrimônio';
+            }
         
             document.getElementById('withdraw-prompt').style.display = 'flex';
         
@@ -616,7 +610,7 @@
                 const quantity = parseInt(quantitySelect.value);
                 const user = userSelect.value;
                 const reason = document.getElementById('withdraw-reason').value;
-                const selectedPatrimony = Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value);
+                const selectedPatrimony = patrimony ? Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value) : [];
                 const date = new Date().toLocaleString();
         
                 if (reason.trim() === '') {
@@ -624,18 +618,23 @@
                     return;
                 }
         
-                if (selectedPatrimony.length !== quantity) {
-                    alert(`Por favor, selecione exatamente ${quantity} patrimônio(s).`);
+                if (patrimony && selectedPatrimony.length !== quantity) {
+                    alert(`Selecione exatamente ${quantity} patrimônio(s).`);
                     return;
                 }
         
                 const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
                 const row = table.rows[rowIndex - 1];
-                const newStock = parseInt(row.cells[1].textContent) - quantity;
-                row.cells[1].textContent = newStock;
         
-                const remainingPatrimony = patrimony.split(', ').filter(pat => !selectedPatrimony.includes(pat)).join(', ');
-                row.cells[2].textContent = remainingPatrimony;
+                if (patrimony) {
+                    const newStock = parseInt(row.cells[1].textContent) - quantity;
+                    row.cells[1].textContent = newStock;
+                    const remainingPatrimony = patrimony.split(', ').filter(pat => !selectedPatrimony.includes(pat)).join(', ');
+                    row.cells[2].textContent = remainingPatrimony;
+                } else {
+                    const newStock = parseInt(row.cells[1].textContent) - 1;
+                    row.cells[1].textContent = newStock;
+                }
         
                 logAction('Retirada', name, quantity, user, reason, selectedPatrimony.join(', '), date);
                 saveInventory();
@@ -646,6 +645,7 @@
                 document.getElementById('withdraw-prompt').style.display = 'none';
             };
         }
+        
         function confirmAdjust(rowIndex) {
             const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const row = table.rows[rowIndex - 1];
