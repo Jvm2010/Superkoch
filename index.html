@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <title>Gerenciador de Estoque TI KOCH</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -118,8 +119,9 @@
             cursor: pointer;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px; /* Adiciona margem entre os botões */
         }
-
+        
         button:hover {
             background-color: #0056b3;
         }
@@ -232,6 +234,9 @@
 
             <button id="add-item-btn" style="display: none; margin-top: 10px;"><i class="fas fa-plus"></i> Adicionar Novo Item</button>
             <button id="export-inventory-btn"><i class="fas fa-file-export"></i> Exportar Inventário para Excel</button>
+            <button id="import-inventory-btn" style="display: none; margin-top: 10px;"><i class="fas fa-file-import"></i> Importar Inventário do Excel</button>
+            <input type="file" id="import-inventory-file" accept=".xlsx" style="display: none;">
+
         </div>
 
         <div class="log-section">
@@ -317,7 +322,7 @@
         document.getElementById('login-form-submit').addEventListener('click', function () {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
+        
             // Mock authentication (replace with actual authentication logic)
             if (username === 'Admin' && password === '1234') {
                 loggedIn = true;
@@ -327,6 +332,7 @@
                 document.getElementById('login-btn').style.display = 'none';
                 document.getElementById('add-item-btn').style.display = 'block';
                 document.getElementById('clear-log-btn').style.display = 'block';
+                document.getElementById('import-inventory-btn').style.display = 'block'; // Mostrar o botão de importação
             } else if (username === 'user' && password === 'user123') {
                 loggedIn = true;
                 isAdmin = false;
@@ -337,80 +343,72 @@
                 alert('Credenciais inválidas');
             }
         });
-
-        document.getElementById('add-item-btn').addEventListener('click', function () {
-            document.getElementById('add-item-form').style.display = 'flex';
+        
+        document.getElementById('import-inventory-btn').addEventListener('click', function () {
+            document.getElementById('import-inventory-file').click();
+        });
+        
+        document.getElementById('import-inventory-file').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const inventoryData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        
+                    // Limpar o inventário atual
+                    const tableBody = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+                    tableBody.innerHTML = '';
+        
+                    // Adicionar novos itens do Excel
+                    inventoryData.forEach((row, index) => {
+                        if (index > 0 && row.length >= 3) { // Ignorar a primeira linha (cabeçalho)
+                            const [itemName, itemStock, patrimonyNumber] = row;
+                            addItem(itemName, parseInt(itemStock), patrimonyNumber);
+                        }
+                    });
+        
+                    saveInventory();
+                };
+                reader.readAsArrayBuffer(file);
+            }
         });
 
-        document.getElementById('add-item-cancel').addEventListener('click', function () {
-            document.getElementById('add-item-form').style.display = 'none';
-        });
-
-        document.getElementById('add-item-submit').addEventListener('click', function () {
-            const itemName = document.getElementById('itemName').value;
-            const itemStock = parseInt(document.getElementById('itemStock').value);
-            const patrimonyNumber = document.getElementById('patrimonyNumber').value.split(',').map(pat => pat.trim()).join(', ');
-
-            addItem(itemName, itemStock, patrimonyNumber);
-            saveInventory();
-            document.getElementById('add-item-form').style.display = 'none';
-        });
-
+        function exportToExcel(tableId, fileName) {
+            let table = document.getElementById(tableId);
+            let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+            XLSX.writeFile(wb, fileName + ".xlsx");
+        }
+        
         document.getElementById('export-inventory-btn').addEventListener('click', function () {
             exportToExcel('inventory-table', 'Inventario');
         });
-
+        
         document.getElementById('export-log-btn').addEventListener('click', function () {
             exportToExcel('log-table', 'Log');
         });
-
-        document.getElementById('clear-log-btn').addEventListener('click', function () {
-            if (confirm('Tem certeza de que deseja limpar o log?')) {
-                clearLog();
-            }
-        });
-
-        function addLog(action, item, quantity, user, reason, patrimony, dateTime) {
-            const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${action}</td>
-                <td>${item}</td>
-                <td>${quantity}</td>
-                <td>${user}</td>
-                <td>${reason}</td>
-                <td>${patrimony}</td>
-                <td>${dateTime}</td>
-                <td class="action-buttons">
-                    ${isAdmin ? `<button class="delete-log-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
-                </td>
-            `;
         
-            if (isAdmin) {
-                newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
-                    deleteLogItem(newRow.rowIndex);
-                });
-            }
-        }
-
+        
         function addItem(name, stock, patrimony) {
             const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
             newRow.innerHTML = `
-            <td>${name}</td>
-            <td>${stock}</td>
-            <td>${patrimony}</td>
-            <td class="action-buttons">
-                <button class="withdraw-btn"><i class="fas fa-minus"></i> Retirar</button>
-                ${isAdmin ? `<button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
-                <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
-                
-            </td>
-        `;
+                <td>${name}</td>
+                <td>${stock}</td>
+                <td>${patrimony}</td>
+                <td class="action-buttons">
+                    <button class="withdraw-btn"><i class="fas fa-minus"></i> Retirar</button>
+                    ${isAdmin ? `<button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
+                    <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
+                </td>
+            `;
         
-        newRow.querySelector('.withdraw-btn').addEventListener('click', function () {
-            showWithdrawPrompt(name, stock, patrimony, newRow.rowIndex);
-        });
+            newRow.querySelector('.withdraw-btn').addEventListener('click', function () {
+                showWithdrawPrompt(name, stock, patrimony, newRow.rowIndex);
+            });
         
             if (isAdmin) {
                 newRow.querySelector('.adjust-btn').addEventListener('click', function () {
@@ -536,6 +534,31 @@
             saveLog();
         }        
         
+        function logAdjustment(action, item, quantity, user, reason, patrimony, date) {
+            const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td>${action}</td>
+                <td>${item}</td>
+                <td>${quantity}</td>
+                <td>${user}</td>
+                <td>${reason}</td>
+                <td>${patrimony}</td>
+                <td>${date}</td>
+                <td>
+                    ${isAdmin ? `<button class="delete-log-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
+                </td>
+            `;
+            
+            if (isAdmin) {
+                newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
+                    deleteLog(newRow.rowIndex);
+                });
+            }
+            
+            saveLog(); // Atualiza o log no localStorage
+        }
+        
 
         function deleteLog(rowIndex) {
             document.getElementById('log-table').deleteRow(rowIndex);
@@ -649,14 +672,19 @@
         function confirmAdjust(rowIndex) {
             const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const row = table.rows[rowIndex - 1];
-        
+            
             const adjustQuantity = document.getElementById('adjust-quantity').value;
             const adjustNewName = document.getElementById('adjust-new-name').value;
             const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
+            const user = document.getElementById('adjust-user').value;
+            const date = new Date().toLocaleString();
         
             row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
             row.cells[1].innerText = adjustQuantity;
             row.cells[2].innerText = adjustPatrimony;
+            
+            // Adicionar log de ajuste
+            logAdjustment('Ajuste', adjustNewName || row.cells[0].innerText, adjustQuantity, user, document.getElementById('adjust-reason').value, adjustPatrimony, date);
         
             document.getElementById('adjust-prompt').style.display = 'none';
             saveInventory();
