@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
+          body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
@@ -22,8 +22,11 @@
             background-color: #f0f8ff;
             color: #343a40;
         }
-
+        
         .title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             background-color: #1e90ff;
             color: white;
@@ -32,85 +35,129 @@
             font-size: 2em;
             margin-bottom: 20px;
         }
-
-    h1, h2 {
-        font-weight: 700;
-        color: #000000;
-    }
-
-    button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-weight: 500;
-    }
-
-    @media only screen and (min-width: 600px) and (max-width: 1024px) {
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        
+        .title img {
+            width: 200px; /* Ajuste o tamanho conforme necessário */
+            height: auto; /* Mantém a proporção da imagem */
+            margin-right: 20px; /* Espaço entre a imagem e o texto */
         }
-    
-        th, td {
-            padding: 10px;
-            text-align: left;
+        
+        h1, h2 {
+            font-weight: 700;
+            color: #000000;
         }
-    
-        /* Ajustar o layout das ações */
-        .actions {
-            display: flex;
-            flex-direction: column;
+        
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s, transform 0.2s;
         }
-    
-        .actions button {
-            margin-bottom: 5px;
+        
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
         }
-    }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+        #delete-log-btn {
+    background-color: #dc3545; /* Vermelho para indicar exclusão */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efeito quando o usuário passa o mouse sobre o botão de excluir */
+#delete-log-btn:hover {
+    background-color: #c82333; /* Cor de fundo mais escura ao passar o mouse */
+    transform: scale(1.05);
+}
+
+/* Efeito ao clicar no botão de excluir */
+#delete-log-btn:active {
+    background-color: #bd2130; /* Cor de fundo ainda mais escura ao clicar */
+    transform: scale(0.98);
+}
+        
+        button:active {
+            background-color: #004494;
+            transform: scale(0.98);
+        }
+        
+        #clear-log-btn {
+            background-color: #dc3545;
+        }
+        
+        #clear-log-btn:hover {
+            background-color: #c82333;
+        }
+        
+        #clear-log-btn:active {
+            background-color: #bd2130;
+        }
+        
+        @media only screen and (min-width: 600px) and (max-width: 1024px) {
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+        
+            th, td {
+                padding: 10px;
+                text-align: left;
+            }
+        
+            .actions {
+                display: flex;
+                flex-direction: column;
+            }
+        
+            .actions button {
+                margin-bottom: 5px;
+            }
+        }
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-        }
-
-        .container {
             width: 90%;
-            max-width: 1200px;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
+        
         .inventory, .log-section, .patrimony-section {
             margin-bottom: 20px;
         }
-
+        
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-
+        
         table, th, td {
             border: 1px solid #ddd;
         }
-
+        
         th, td {
             padding: 8px;
             text-align: left;
         }
-
+        
         th {
             background-color: #87cefa;
         }
-
+        
         button {
             padding: 10px 15px;
             border: none;
@@ -119,7 +166,7 @@
             cursor: pointer;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin: 5px; /* Adiciona margem entre os botões */
+            margin: 5px;
         }
         
         button:hover {
@@ -130,8 +177,8 @@
             display: flex;
             gap: 10px;
         }
-
-        .login-form, .add-item-form, .adjust-item-form, .patrimony-form, .prompt-box {
+        
+        .login-form, .add-item-form, .adjust-item-form, .patrimony-form{
             display: none;
             flex-direction: column;
             align-items: center;
@@ -146,7 +193,39 @@
             transform: translate(-50%, -50%);
             z-index: 1000;
         }
-
+        
+        .prompt-box {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+        
+        .form-input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+        }
+        
+        .form-buttons {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+        }
+        
+        .prompt-box.active {
+            display: flex;
+        }
+        
         .adjust-item-form {
             position: fixed;
             top: 20%;
@@ -157,32 +236,32 @@
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             z-index: 1000;
-            display: none; /* Inicialmente escondido */
+            display: none;
         }
-
+        
         .form-input {
             padding: 10px;
             margin: 10px 0;
             width: 80%;
         }
-
+        
         .form-buttons {
             display: flex;
             width: 100%;
             justify-content: space-around;
         }
-
+        
         .action-buttons {
             display: flex;
             justify-content: space-between;
         }
-
+        
         .top-right {
             position: absolute;
             top: 10px;
             right: 10px;
         }
-
+        
         /* Responsiveness */
         @media (max-width: 768px) {
             .container {
@@ -193,10 +272,12 @@
     </style>
 </head>
 <body>
-    <div class="title">Gerenciador de Estoque TI KOCH</div>
+    <div class="title">
+        <img src="https://omunicipioblumenau.com.br/wp-content/uploads/2012/10/komprao-koch-atacadista-de-blumenau-abre-portas-nesta-quarta-feira-dia-28-de-outubro-logo-koch-site.png" alt="Logotipo">
+        Gerenciador de Estoque TI KOCH
+    </div>
     <button id="login-btn" class="top-right"><i class="fas fa-sign-in-alt"></i> Login</button>
     <button id="logout-btn" class="top-right" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    <button onclick="logout()">Atualizar Página</button>
     
     <div class="container">
         <div class="login-form" id="login-form">
@@ -221,14 +302,14 @@
                 </thead>
                 <tbody></tbody>
             </table>
-
-            <div class="add-item-form" id="add-item-form">
-                <input type="text" id="itemName" class="form-input" placeholder="Nome do Item">
-                <input type="number" id="itemStock" class="form-input" placeholder="Quantidade">
-                <input type="text" id="patrimonyNumber" class="form-input" placeholder="Número de Patrimônio (separados por vírgula)">
+            
+            <div id="add-item-form" class="prompt-box">
+                <input type="text" id="item-name" class="form-input" placeholder="Nome do Item">
+                <input type="number" id="item-stock" class="form-input" placeholder="Estoque">
+                <input type="text" id="item-patrimony" class="form-input" placeholder="Patrimônio">
                 <div class="form-buttons">
-                    <button id="add-item-submit"><i class="fas fa-plus"></i> Adicionar Item</button>
-                    <button id="add-item-cancel"><i class="fas fa-times"></i> Cancelar</button>
+                    <button id="submit-item"><i class="fas fa-check"></i> Adicionar</button>
+                    <button id="cancel-item"><i class="fas fa-times"></i> Cancelar</button>
                 </div>
             </div>
 
@@ -304,11 +385,11 @@
         document.getElementById('login-btn').addEventListener('click', function () {
             document.getElementById('login-form').style.display = 'flex';
         });
-
+        
         document.getElementById('login-form-cancel').addEventListener('click', function () {
             document.getElementById('login-form').style.display = 'none';
         });
-
+        
         document.getElementById('logout-btn').addEventListener('click', function () {
             loggedIn = false;
             isAdmin = false;
@@ -317,8 +398,37 @@
             document.getElementById('add-item-btn').style.display = 'none';
             document.getElementById('clear-log-btn').style.display = 'none';
             document.getElementById('add-item-form').style.display = 'none';
+            // Recarregar a página
+            window.location.reload();
+        });
+        
+        document.getElementById('add-item-btn').addEventListener('click', function () {
+            document.getElementById('add-item-form').classList.add('active');
+        });
+        
+        document.getElementById('cancel-item').addEventListener('click', function () {
+            document.getElementById('add-item-form').classList.remove('active');
         });
 
+        document.getElementById('submit-item').addEventListener('click', function () {
+            const name = document.getElementById('item-name').value;
+            const stock = parseInt(document.getElementById('item-stock').value);
+            const patrimony = document.getElementById('item-patrimony').value;
+        
+            if (name.trim() === '' || isNaN(stock) || stock <= 0) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+        
+            addItem(name, stock, patrimony);
+        
+            // Limpar o formulário e esconder
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-stock').value = '';
+            document.getElementById('item-patrimony').value = '';
+            document.getElementById('add-item-form').style.display = 'none';
+        });
+        
         document.getElementById('login-form-submit').addEventListener('click', function () {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -347,6 +457,15 @@
         document.getElementById('import-inventory-btn').addEventListener('click', function () {
             document.getElementById('import-inventory-file').click();
         });
+
+        document.getElementById('clear-log-btn').addEventListener('click', function() {
+            if (window.confirm("Você tem certeza de que deseja limpar o log? Esta ação não pode ser desfeita.")) {
+                let logTableBody = document.querySelector('#log-table tbody');
+                logTableBody.innerHTML = ''; // Limpa o conteúdo do corpo da tabela de log
+            }
+
+            saveLog();
+        });
         
         document.getElementById('import-inventory-file').addEventListener('change', function (event) {
             const file = event.target.files[0];
@@ -367,7 +486,8 @@
                     inventoryData.forEach((row, index) => {
                         if (index > 0 && row.length >= 3) { // Ignorar a primeira linha (cabeçalho)
                             const [itemName, itemStock, patrimonyNumber] = row;
-                            addItem(itemName, parseInt(itemStock), patrimonyNumber);
+                            const patrimony = patrimonyNumber ? patrimonyNumber : 'Sem patrimônio'; // Define "Sem patrimônio" se vazio
+                            addItem(itemName, parseInt(itemStock), patrimony);
                         }
                     });
         
@@ -391,34 +511,36 @@
             exportToExcel('log-table', 'Log');
         });
         
-        
         function addItem(name, stock, patrimony) {
             const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const newRow = table.insertRow();
             newRow.innerHTML = `
                 <td>${name}</td>
                 <td>${stock}</td>
-                <td>${patrimony}</td>
+                <td>${patrimony || 'Sem patrimônio'}</td>
                 <td class="action-buttons">
                     <button class="withdraw-btn"><i class="fas fa-minus"></i> Retirar</button>
                     ${isAdmin ? `<button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
                     <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
                 </td>
             `;
-        
+            
+            // Adicionar event listeners para os botões
             newRow.querySelector('.withdraw-btn').addEventListener('click', function () {
-                showWithdrawPrompt(name, stock, patrimony, newRow.rowIndex);
+                showWithdrawPrompt(name, stock, patrimony || '', newRow.rowIndex);
             });
         
             if (isAdmin) {
                 newRow.querySelector('.adjust-btn').addEventListener('click', function () {
-                    showAdjustPrompt(name, stock, patrimony, newRow.rowIndex);
+                    showAdjustPrompt(name, stock, patrimony || '', newRow.rowIndex);
                 });
         
                 newRow.querySelector('.delete-btn').addEventListener('click', function () {
                     deleteItem(newRow.rowIndex);
                 });
             }
+        
+            saveInventory();
         }
         
         // No evento de login, após a autenticação
@@ -662,6 +784,7 @@
                 logAction('Retirada', name, quantity, user, reason, selectedPatrimony.join(', '), date);
                 saveInventory();
                 document.getElementById('withdraw-prompt').style.display = 'none';
+                window.location.reload();
             };
         
             document.getElementById('withdraw-cancel').onclick = function () {
@@ -712,7 +835,7 @@ function showAdjustPrompt(name, stock, patrimony, rowIndex) {
     adjustQuantity.value = stock;
     adjustNewName.value = name;
 
-    adjustPatrimony.innerHTML = patrimony.split(',').map(pat => `<option value="${pat}">${pat}</option>`).join('');
+    adjustPatrimony.innerHTML = patrimony === 'Sem patrimônio' ? `<option value="">Sem patrimônio</option>` : patrimony.split(',').map(pat => `<option value="${pat}">${pat}</option>`).join('');
     adjustUser.innerHTML = `
         <option value="João Teixeira">João Teixeira</option>
         <option value="João Camargo">João Camargo</option>
@@ -740,22 +863,21 @@ function showAdjustPrompt(name, stock, patrimony, rowIndex) {
         adjustPrompt.style.display = 'none'; // Esconde o diálogo
     };
 }
-        function confirmAdjust(rowIndex) {
-            const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-            const row = table.rows[rowIndex - 1];
-        
-            const adjustQuantity = document.getElementById('adjust-quantity').value;
-            const adjustNewName = document.getElementById('adjust-new-name').value;
-            const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
-        
-            row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
-            row.cells[1].innerText = adjustQuantity;
-            row.cells[2].innerText = adjustPatrimony;
-        
-            document.getElementById('adjust-prompt').style.display = 'none';
-            saveInventory();
-        }
+function confirmAdjust(rowIndex) {
+    const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+    const row = table.rows[rowIndex - 1];
 
+    const adjustQuantity = document.getElementById('adjust-quantity').value;
+    const adjustNewName = document.getElementById('adjust-new-name').value;
+    const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
+
+    row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
+    row.cells[1].innerText = adjustQuantity;
+    row.cells[2].innerText = adjustPatrimony || 'Sem patrimônio';
+
+    document.getElementById('adjust-prompt').style.display = 'none';
+    saveInventory();
+}
             document.getElementById('adjust-cancel').onclick = function () {
                 document.getElementById('adjust-prompt').style.display = 'none';
             };
@@ -770,12 +892,11 @@ function showAdjustPrompt(name, stock, patrimony, rowIndex) {
             
                 row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
                 row.cells[1].innerText = adjustQuantity;
-                row.cells[2].innerText = adjustPatrimony;
+                row.cells[2].innerText = adjustPatrimony || 'Sem patrimônio';
             
                 document.getElementById('adjust-prompt').style.display = 'none';
                 saveInventory();
-            }
-            
+            }              
 
         function exportToExcel(tableID, filename = '') {
             const table = document.getElementById(tableID);
