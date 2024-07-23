@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-          body {
+        body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
@@ -31,8 +31,8 @@
             background-color: #1e90ff;
             color: white;
             text-align: center;
-            padding: 20px 0;
-            font-size: 2em;
+            padding: 10px 0;
+            font-size: 2em; /* Aumentado para um título mais volumoso */
             margin-bottom: 20px;
         }
         
@@ -40,11 +40,6 @@
             width: 200px; /* Ajuste o tamanho conforme necessário */
             height: auto; /* Mantém a proporção da imagem */
             margin-right: 20px; /* Espaço entre a imagem e o texto */
-        }
-        
-        h1, h2 {
-            font-weight: 700;
-            color: #000000;
         }
         
         button {
@@ -55,41 +50,31 @@
             border-radius: 5px;
             cursor: pointer;
             font-weight: 500;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         
         button:hover {
             background-color: #0056b3;
             transform: scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
         }
-
-        #delete-log-btn {
-    background-color: #dc3545; /* Vermelho para indicar exclusão */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-/* Efeito quando o usuário passa o mouse sobre o botão de excluir */
-#delete-log-btn:hover {
-    background-color: #c82333; /* Cor de fundo mais escura ao passar o mouse */
-    transform: scale(1.05);
-}
-
-/* Efeito ao clicar no botão de excluir */
-#delete-log-btn:active {
-    background-color: #bd2130; /* Cor de fundo ainda mais escura ao clicar */
-    transform: scale(0.98);
-}
         
         button:active {
             background-color: #004494;
             transform: scale(0.98);
+        }
+        
+        #delete-log-btn, #clear-log-btn, #export-log-btn, #import-inventory-btn, #export-inventory-btn {
+            background-color: #007bff;
+        }
+        
+        #delete-log-btn:hover, #clear-log-btn:hover, #export-log-btn:hover, #import-inventory-btn:hover, #export-inventory-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        #delete-log-btn:active, #clear-log-btn:active, #export-log-btn:active, #import-inventory-btn:active, #export-inventory-btn:active {
+            background-color: #004494;
         }
         
         #clear-log-btn {
@@ -130,9 +115,9 @@
             margin: 0 auto;
             padding: 20px;
             width: 90%;
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: rgba(255, 255, 255, 0.95);
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
         
         .inventory, .log-section, .patrimony-section {
@@ -165,7 +150,7 @@
             color: white;
             cursor: pointer;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin: 5px;
         }
         
@@ -176,9 +161,10 @@
         .actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .login-form, .add-item-form, .adjust-item-form, .patrimony-form{
+        .login-form, .add-item-form, .adjust-item-form, .patrimony-form {
             display: none;
             flex-direction: column;
             align-items: center;
@@ -239,18 +225,6 @@
             display: none;
         }
         
-        .form-input {
-            padding: 10px;
-            margin: 10px 0;
-            width: 80%;
-        }
-        
-        .form-buttons {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-        }
-        
         .action-buttons {
             display: flex;
             justify-content: space-between;
@@ -269,6 +243,7 @@
                 padding: 10px;
             }
         }
+        
     </style>
 </head>
 <body>
@@ -278,7 +253,7 @@
     </div>
     <button id="login-btn" class="top-right"><i class="fas fa-sign-in-alt"></i> Login</button>
     <button id="logout-btn" class="top-right" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
-    
+
     <div class="container">
         <div class="login-form" id="login-form">
             <input type="text" id="username" class="form-input" placeholder="Usuário">
@@ -302,7 +277,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            
+
             <div id="add-item-form" class="prompt-box">
                 <input type="text" id="item-name" class="form-input" placeholder="Nome do Item">
                 <input type="number" id="item-stock" class="form-input" placeholder="Estoque">
@@ -313,11 +288,12 @@
                 </div>
             </div>
 
-            <button id="add-item-btn" style="display: none; margin-top: 10px;"><i class="fas fa-plus"></i> Adicionar Novo Item</button>
-            <button id="export-inventory-btn"><i class="fas fa-file-export"></i> Exportar Inventário para Excel</button>
-            <button id="import-inventory-btn" style="display: none; margin-top: 10px;"><i class="fas fa-file-import"></i> Importar Inventário do Excel</button>
+            <div class="actions">
+                <button id="add-item-btn" style="display: none;"><i class="fas fa-plus"></i> Adicionar Novo Item</button>
+                <button id="export-inventory-btn"><i class="fas fa-file-export"></i> Exportar Inventário para Excel</button>
+                <button id="import-inventory-btn" style="display: none;"><i class="fas fa-file-import"></i> Importar Inventário do Excel</button>
+            </div>
             <input type="file" id="import-inventory-file" accept=".xlsx" style="display: none;">
-
         </div>
 
         <div class="log-section">
@@ -337,8 +313,10 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <button id="export-log-btn"><i class="fas fa-file-export"></i> Exportar Log para Excel</button>
-            <button id="clear-log-btn" style="display: none;"><i class="fas fa-trash"></i> Limpar Log</button>
+            <div class="actions">
+                <button id="export-log-btn"><i class="fas fa-file-export"></i> Exportar Log para Excel</button>
+                <button id="clear-log-btn" style="display: none;"><i class="fas fa-trash"></i> Limpar Log</button>
+            </div>
         </div>
     </div>
 
@@ -359,7 +337,7 @@
         <select id="withdraw-quantity" class="form-input"></select>
         <select id="withdraw-user" class="form-input"></select>
         <input type="text" id="withdraw-reason" class="form-input" placeholder="Motivo da retirada">
-        <div id="withdraw-patrimony" class="form-input"></div> <!-- Alterado para <div> -->
+        <div id="withdraw-patrimony" class="form-input"></div>
         <div class="form-buttons">
             <button id="withdraw-submit"><i class="fas fa-check"></i> Confirmar Retirada</button>
             <button id="withdraw-cancel"><i class="fas fa-times"></i> Cancelar</button>
@@ -377,6 +355,8 @@
             <button id="adjust-cancel"><i class="fas fa-times"></i> Cancelar</button>
         </div>
     </div>
+</body>
+</html>
 
     <script>
         let loggedIn = false;
@@ -403,13 +383,13 @@
         });
         
         document.getElementById('add-item-btn').addEventListener('click', function () {
-            document.getElementById('add-item-form').classList.add('active');
+            document.getElementById('add-item-form').style.display = 'flex';
         });
         
         document.getElementById('cancel-item').addEventListener('click', function () {
-            document.getElementById('add-item-form').classList.remove('active');
+            document.getElementById('add-item-form').style.display = 'none';
         });
-
+        
         document.getElementById('submit-item').addEventListener('click', function () {
             const name = document.getElementById('item-name').value;
             const stock = parseInt(document.getElementById('item-stock').value);
@@ -524,7 +504,7 @@
                     <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
                 </td>
             `;
-            
+        
             // Adicionar event listeners para os botões
             newRow.querySelector('.withdraw-btn').addEventListener('click', function () {
                 showWithdrawPrompt(name, stock, patrimony || '', newRow.rowIndex);
@@ -732,7 +712,9 @@
         
             const patrimonyDiv = document.getElementById('withdraw-patrimony');
             patrimonyDiv.innerHTML = '';
-            if (patrimony) {
+            if (patrimony === 'Sem patrimônio') {
+                patrimonyDiv.textContent = 'Sem patrimônio';
+            } else {
                 patrimony.split(', ').forEach(pat => {
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
@@ -745,8 +727,6 @@
                     patrimonyDiv.appendChild(label);
                     patrimonyDiv.appendChild(document.createElement('br'));
                 });
-            } else {
-                patrimonyDiv.textContent = 'Sem patrimônio';
             }
         
             document.getElementById('withdraw-prompt').style.display = 'flex';
@@ -755,7 +735,7 @@
                 const quantity = parseInt(quantitySelect.value);
                 const user = userSelect.value;
                 const reason = document.getElementById('withdraw-reason').value;
-                const selectedPatrimony = patrimony ? Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value) : [];
+                const selectedPatrimony = patrimony === 'Sem patrimônio' ? [] : Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value);
                 const date = new Date().toLocaleString();
         
                 if (reason.trim() === '') {
@@ -763,21 +743,22 @@
                     return;
                 }
         
-                if (patrimony && selectedPatrimony.length !== quantity) {
-                    alert(`Selecione exatamente ${quantity} patrimônio(s).`);
-                    return;
-                }
-        
                 const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
                 const row = table.rows[rowIndex - 1];
         
-                if (patrimony) {
+                if (patrimony === 'Sem patrimônio') {
                     const newStock = parseInt(row.cells[1].textContent) - quantity;
                     row.cells[1].textContent = newStock;
+                } else {
+                    if (selectedPatrimony.length !== quantity) {
+                        alert('A quantidade retirada deve corresponder ao número de patrimônios selecionados.');
+                        return;
+                    }
+        
+                    // Remove os patrimônios selecionados
                     const remainingPatrimony = patrimony.split(', ').filter(pat => !selectedPatrimony.includes(pat)).join(', ');
                     row.cells[2].textContent = remainingPatrimony;
-                } else {
-                    const newStock = parseInt(row.cells[1].textContent) - 1;
+                    const newStock = parseInt(row.cells[1].textContent) - quantity;
                     row.cells[1].textContent = newStock;
                 }
         
