@@ -155,7 +155,7 @@
         }
         
         button:hover {
-            background-color: #0056b3;
+            background-color: #26ff00;
         }
         
         .actions {
@@ -244,6 +244,73 @@
             }
         }
         
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.4); 
+        }
+        
+        /* Modal Content */
+        .modal-content {
+            background-color: #ffffff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            max-width: 600px;
+        }
+        
+        /* Close Button */
+        .close {
+            color: #ff0000;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        button.cancel {
+            background-color: #f44336;
+        }
+        
+        button.cancel:hover {
+            background-color: #da190b;
+        }
+    
+        .log-table-container {
+            max-height: 400px; /* Define a altura máxima do contêiner */
+            overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo exceder a altura */
+            border: 1px solid #ddd; /* Opcional: Adiciona uma borda para melhor visualização */
+            margin-top: 10px; /* Espaçamento opcional entre o controle de pesquisa e a tabela */
+        }
+        
+        #log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #log-table th, #log-table td {
+            padding: 8px;
+            text-align: left;
+        }
+        
+        #log-table thead {
+            background-color: #f4f4f4;
+        }
+        
     </style>
 </head>
 <body>
@@ -298,27 +365,47 @@
 
         <div class="log-section">
             <h2>Log de Retiradas</h2>
-            <table id="log-table">
-                <thead>
-                    <tr>
-                        <th>Ação</th>
-                        <th>Item</th>
-                        <th>Quantidade</th>
-                        <th>Usuário</th>
-                        <th>Motivo</th>
-                        <th>Patrimônio do Equipamento</th>
-                        <th>Data e Hora</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="log-controls">
+                <input type="text" id="search-log" placeholder="Pesquisar log...">
+                <button id="filter-month-btn">Escolher Mês</button>
+                <select id="month-selector" style="display:none;">
+                    <option value="">Selecione um mês</option>
+                    <option value="01">Janeiro</option>
+                    <option value="02">Fevereiro</option>
+                    <option value="03">Março</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Maio</option>
+                    <option value="06">Junho</option>
+                    <option value="07">Julho</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Setembro</option>
+                    <option value="10">Outubro</option>
+                    <option value="11">Novembro</option>
+                    <option value="12">Dezembro</option>
+                </select>
+            </div>
+            <div class="log-table-container">
+                <table id="log-table">
+                    <thead>
+                        <tr>
+                            <th>Ação</th>
+                            <th>Item</th>
+                            <th>Quantidade</th>
+                            <th>Usuário</th>
+                            <th>Motivo</th>
+                            <th>Patrimônio do Equipamento</th>
+                            <th>Data e Hora</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
             <div class="actions">
                 <button id="export-log-btn"><i class="fas fa-file-export"></i> Exportar Log para Excel</button>
                 <button id="clear-log-btn" style="display: none;"><i class="fas fa-trash"></i> Limpar Log</button>
             </div>
         </div>
-    </div>
 
     <div class="adjust-item-form" id="adjust-prompt" style="display: none;">
         <input type="text" id="adjust-new-name" class="form-input" placeholder="Nome do Item">
@@ -355,6 +442,27 @@
             <button id="adjust-cancel"><i class="fas fa-times"></i> Cancelar</button>
         </div>
     </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Editar Log</h2>
+            <form id="edit-form">
+                <label for="edit-quantity">Quantidade:</label>
+                <input type="number" id="edit-quantity" required /><br>
+    
+                <label for="edit-reason">Motivo:</label>
+                <input type="text" id="edit-reason" required /><br>
+    
+                <label for="edit-patrimony">Patrimônio:</label>
+                <input type="text" id="edit-patrimony" required /><br>
+    
+                <button type="button" id="edit-submit">Salvar</button>
+                <button type="button" id="edit-cancel">Cancelar</button>
+            </form>
+        </div>
+    </div>
+    
 </body>
 </html>
 
@@ -447,6 +555,46 @@
             saveLog();
         });
         
+        document.getElementById('search-log').addEventListener('input', function () {
+            const searchText = this.value.toLowerCase();
+            filterLogTable(searchText, getSelectedMonth());
+        });
+        
+        document.getElementById('filter-month-btn').addEventListener('click', function () {
+            const monthSelector = document.getElementById('month-selector');
+            monthSelector.style.display = monthSelector.style.display === 'none' ? 'inline' : 'none';
+        });
+        
+        document.getElementById('month-selector').addEventListener('change', function () {
+            const selectedMonth = this.value;
+            filterLogTable(document.getElementById('search-log').value.toLowerCase(), selectedMonth);
+        });
+        
+        function getSelectedMonth() {
+            const monthSelector = document.getElementById('month-selector');
+            return monthSelector.value;
+        }
+        
+        function filterLogTable(searchText, month) {
+            const table = document.getElementById('log-table');
+            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        
+            for (const row of rows) {
+                const cells = row.getElementsByTagName('td');
+                const dateCell = cells[6].textContent;
+                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
+        
+                const matchesSearch = rowText.includes(searchText);
+                const matchesMonth = month === '' || dateCell.includes(`/${month}/`);
+        
+                if (matchesSearch && matchesMonth) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+        
         document.getElementById('import-inventory-file').addEventListener('change', function (event) {
             const file = event.target.files[0];
             if (file) {
@@ -522,7 +670,7 @@
         
             saveInventory();
         }
-        
+
         // No evento de login, após a autenticação
         document.getElementById('login-form-submit').addEventListener('click', function () {
             const username = document.getElementById('username').value;
@@ -575,20 +723,25 @@
             localStorage.removeItem('user');
             localStorage.removeItem('isAdmin'); // Se você estiver usando essa chave para verificar privilégios
         
-            // Redirecionar para a página inicial
-            window.location.href = 'index.html'; // Substitua 'index.html' pelo caminho para a página inicial
         }
 
         function deleteItem(rowIndex) {
-            document.getElementById('inventory-table').deleteRow(rowIndex);
-            saveInventory();
+            // Exibir uma caixa de confirmação
+            if (confirm('Deseja excluir este item?')) {
+                // Se o usuário confirmar, exclua a linha
+                const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
+                table.deleteRow(rowIndex);
+                
+                // Atualize o localStorage após a remoção
+                saveInventory();
+            }
         }
 
         function deleteLogItem(rowIndex) {
             document.getElementById('log-table').deleteRow(rowIndex);
             saveLog(); // Função que salva o log atualizado
         }
-        
+
         function saveInventory() {
             const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
             const data = [];
@@ -600,14 +753,117 @@
                 data.push({ itemName, itemStock, patrimonyNumber });
             }
             localStorage.setItem('inventoryData', JSON.stringify(data));
-        }
-
+        }        
+        
         function loadInventory() {
             const data = JSON.parse(localStorage.getItem('inventoryData') || '[]');
             for (const item of data) {
                 addItem(item.itemName, item.itemStock, item.patrimonyNumber);
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const isAdmin = true; // Defina isso conforme necessário
+        
+            // Função para adicionar botões de excluir e editar
+            function addActionButtons() {
+                const rows = document.querySelectorAll('#log-table tbody tr');
+                rows.forEach((row, index) => {
+                    const actionCell = row.cells[row.cells.length - 1];
+                    
+                    if (isAdmin) {
+                        if (!actionCell.querySelector('.delete-log-btn')) {
+                            const deleteButton = document.createElement('button');
+                            deleteButton.className = 'delete-log-btn';
+                            deleteButton.innerHTML = '<i class="fas fa-trash"></i> Excluir';
+                            deleteButton.addEventListener('click', () => {
+                                if (confirm('Tem certeza de que deseja excluir este log?')) {
+                                    deleteLogItem(index + 1);
+                                }
+                            });
+                            actionCell.appendChild(deleteButton);
+                        }
+                        
+                        if (!actionCell.querySelector('.edit-log-btn')) {
+                            const editButton = document.createElement('button');
+                            editButton.className = 'edit-log-btn';
+                            editButton.innerHTML = '<i class="fas fa-edit"></i> Editar';
+                            editButton.addEventListener('click', () => {
+                                showEditModal(editButton);
+                            });
+                            actionCell.appendChild(editButton);
+                        }
+                    }
+                });
+            }
+        
+            // Função para mostrar o modal de edição
+            function showEditModal(button) {
+                const row = button.closest('tr');  // Captura a linha mais próxima do botão clicado
+                const rowIndex = row.rowIndex - 1;  // Corrige o índice da linha
+            
+                document.getElementById('edit-quantity').value = row.cells[2].textContent;
+                document.getElementById('edit-reason').value = row.cells[4].textContent;
+                document.getElementById('edit-patrimony').value = row.cells[5].textContent;
+            
+                const modal = document.getElementById('edit-modal');
+                modal.style.display = 'block';
+            
+                document.getElementById('edit-submit').onclick = function () {
+                    confirmEdit(row, rowIndex);
+                };
+            
+                document.getElementById('edit-cancel').onclick = function () {
+                    modal.style.display = 'none';
+                };
+            
+                const closeButton = document.querySelector('#edit-modal .close');
+                closeButton.onclick = function () {
+                    modal.style.display = 'none';
+                };
+            
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = 'none';
+                    }
+                };
+            }
+        
+            // Função para confirmar a edição
+            function confirmEdit(row, rowIndex) {
+                const editQuantity = document.getElementById('edit-quantity').value;
+                const editReason = document.getElementById('edit-reason').value;
+                const editPatrimony = document.getElementById('edit-patrimony').value;
+            
+                row.cells[2].textContent = editQuantity;
+                row.cells[4].textContent = editReason;
+                row.cells[5].textContent = editPatrimony;
+            
+                const modal = document.getElementById('edit-modal');
+                modal.style.display = 'none';
+            
+                // Carregar os dados do log salvos
+                let logData = JSON.parse(localStorage.getItem('logData')) || [];
+            
+                // Atualizar o item correspondente no array
+                logData[rowIndex].quantity = editQuantity;
+                logData[rowIndex].reason = editReason;
+                logData[rowIndex].patrimony = editPatrimony;
+            
+                // Salvar os dados atualizados
+                localStorage.setItem('logData', JSON.stringify(logData));
+            }
+        
+            // Função para excluir um log
+            function deleteLogItem(rowIndex) {
+                const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
+                // Ajuste o índice da linha para corresponder ao índice correto da tabela de logs
+                table.deleteRow(rowIndex - 1);
+                saveLog();
+            }
+            // Adicionar botões de excluir e editar às linhas existentes
+            addActionButtons();
+        });
 
         function logAction(action, item, quantity, user, reason, patrimony, date) {
             const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
@@ -627,7 +883,9 @@
         
             if (isAdmin) {
                 newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
-                    deleteLog(newRow.rowIndex);
+                    if (confirm('Tem certeza de que deseja excluir este log?')) {
+                        deleteLogItem(newRow.rowIndex);
+                    }
                 });
             }
             
@@ -654,17 +912,13 @@
             
             if (isAdmin) {
                 newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
-                    deleteLog(newRow.rowIndex);
+                    if (confirm('Tem certeza de que deseja excluir este log?')) {
+                        deleteLogItem(newRow.rowIndex);
+                    }
                 });
             }
             
             saveLog(); // Atualiza o log no localStorage
-        }
-        
-
-        function deleteLog(rowIndex) {
-            document.getElementById('log-table').deleteRow(rowIndex);
-            saveLog();
         }
 
         function saveLog() {
@@ -683,7 +937,7 @@
             }
             localStorage.setItem('logData', JSON.stringify(data));
         }
-
+        
         function loadLog() {
             const data = JSON.parse(localStorage.getItem('logData') || '[]');
             for (const log of data) {
@@ -793,6 +1047,7 @@
             document.getElementById('adjust-prompt').style.display = 'none';
             saveInventory();
         }
+        
 document.getElementById('new-patrimony-input').addEventListener('change', function() {
     const newPatrimony = this.value.trim();
     const adjustPatrimonySelect = document.getElementById('adjust-patrimony');
