@@ -531,7 +531,7 @@
                 document.getElementById('add-item-btn').style.display = 'block';
                 document.getElementById('clear-log-btn').style.display = 'block';
                 document.getElementById('import-inventory-btn').style.display = 'block'; // Mostrar o botão de importação
-            } else if (username === 'user' && password === 'user123') {
+            } else if (username === 'Admin' && password === '1234') {
                 loggedIn = true;
                 isAdmin = false;
                 document.getElementById('login-form').style.display = 'none';
@@ -707,7 +707,7 @@
                         deleteItem(row.rowIndex);
                     });
                 });
-            } else if (username === 'user' && password === 'user123') {
+            } else if (username === 'Admin' && password === '1234') {
                 loggedIn = true;
                 isAdmin = false;
                 document.getElementById('login-form').style.display = 'none';
