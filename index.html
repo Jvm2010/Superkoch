@@ -3,262 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suporte Técnico | Koch Industrial</title>
+    <title>Atendimento - Koch Supermercados</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #25D366;
-            --secondary-color: #128C7E;
-            --dark-color: #075E54;
-            --light-color: #DCF8C6;
-            --text-color: #333;
-            --gray-light: #ece5dd;
-            --gray-medium: #ddd;
-            --gray-dark: #999;
-            --white: #fff;
+            --primary-color: #E31918; /* Vermelho Koch */
+            --secondary-color: #333333; /* Cinza escuro */
+            --light-color: #F8F8F8; /* Fundo claro */
+            --text-color: #333333;
+            --white: #FFFFFF;
+            --gray-border: #E0E0E0;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
         }
 
         body {
-            background-color: #e5ddd5;
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
-        }
-
-        .app-container {
+            background-color: var(--light-color);
             display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            max-width: 1600px;
-            margin: 0 auto;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
         }
 
-        /* Sidebar */
-        .sidebar {
-            width: 30%;
-            min-width: 300px;
+        /* Container principal */
+        .chat-container {
+            width: 100%;
+            max-width: 500px;
+            height: 90vh;
+            max-height: 800px;
             background-color: var(--white);
-            border-right: 1px solid var(--gray-medium);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
+            border: 1px solid var(--gray-border);
         }
 
-        .sidebar-header {
-            padding: 15px;
-            background-color: var(--secondary-color);
+        /* Cabeçalho */
+        .chat-header {
+            background-color: var(--primary-color);
             color: var(--white);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-header h2 {
-            font-size: 20px;
-            font-weight: 500;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--gray-light);
+            padding: 18px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .search-container {
-            padding: 10px 15px;
-            background-color: var(--white);
-            border-bottom: 1px solid var(--gray-medium);
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: none;
-            background-color: #f0f2f5;
-            font-size: 14px;
-        }
-
-        .chat-list {
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .chat-item {
-            display: flex;
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--gray-medium);
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .chat-item:hover {
-            background-color: #f5f5f5;
-        }
-
-        .chat-item.active {
-            background-color: #ebebeb;
-        }
-
-        .chat-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--gray-light);
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gray-dark);
-            font-weight: bold;
             position: relative;
         }
 
-        .online-badge {
+        .chat-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-left: 15px;
+        }
+
+        .header-icon {
+            font-size: 24px;
+        }
+
+        .status-badge {
             position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            border: 2px solid var(--white);
-        }
-
-        .chat-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .chat-name {
-            font-weight: 500;
-            margin-bottom: 3px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .chat-time {
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
             font-size: 12px;
-            color: var(--gray-dark);
-        }
-
-        .chat-preview {
-            font-size: 13px;
-            color: var(--gray-dark);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Chat Area */
-        .chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--gray-light);
-        }
-
-        .chat-header {
-            padding: 15px;
-            background-color: var(--white);
-            border-bottom: 1px solid var(--gray-medium);
             display: flex;
             align-items: center;
         }
 
-        .chat-header-info {
-            margin-left: 15px;
-            flex: 1;
+        .status-badge::before {
+            content: "";
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #FFF;
+            border-radius: 50%;
+            margin-right: 6px;
         }
 
-        .chat-header-name {
-            font-weight: 500;
-        }
-
-        .chat-header-status {
-            font-size: 13px;
-            color: var(--gray-dark);
-        }
-
-        .chat-messages {
+        /* Área de mensagens */
+        .messages-container {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            background-image: url('https://web.whatsapp.com/img/bg-chat-tile-light_a4be512e7195b6b733d9110b408f075d.png');
+            background-color: var(--white);
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
         .message {
-            max-width: 70%;
-            margin-bottom: 15px;
+            max-width: 80%;
+            margin-bottom: 16px;
             position: relative;
         }
 
         .message-content {
-            padding: 8px 12px;
-            border-radius: 7.5px;
+            padding: 12px 16px;
+            border-radius: 8px;
             position: relative;
             word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 15px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .received .message-content {
             background-color: var(--white);
             color: var(--text-color);
+            border: 1px solid var(--gray-border);
+            border-bottom-left-radius: 0;
         }
 
         .sent .message-content {
-            background-color: var(--light-color);
-            color: var(--text-color);
+            background-color: var(--primary-color);
+            color: var(--white);
             margin-left: auto;
+            border-bottom-right-radius: 0;
         }
 
         .message-time {
             font-size: 11px;
-            color: var(--gray-dark);
-            margin-top: 5px;
+            color: var(--text-color);
+            margin-top: 4px;
             text-align: right;
+            opacity: 0.7;
         }
 
-        .chat-input-container {
-            padding: 10px;
+        .sent .message-time {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Área de input */
+        .input-container {
+            padding: 12px;
             background-color: var(--white);
+            border-top: 1px solid var(--gray-border);
             display: flex;
             align-items: center;
         }
 
         .input-tools {
             display: flex;
-            padding: 0 10px;
+            padding: 0 8px;
         }
 
-        .input-tools i {
+        .input-tools button {
+            background: none;
+            border: none;
             font-size: 24px;
-            color: var(--gray-dark);
-            margin: 0 8px;
+            color: var(--secondary-color);
+            margin: 0 4px;
             cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .input-tools button:hover {
+            opacity: 1;
         }
 
         .message-input {
             flex: 1;
-            padding: 12px 15px;
-            border-radius: 20px;
-            border: none;
-            background-color: var(--white);
+            padding: 12px 16px;
+            border-radius: 24px;
+            border: 1px solid var(--gray-border);
             font-size: 15px;
             outline: none;
-            border: 1px solid var(--gray-medium);
+            transition: border-color 0.2s;
+        }
+
+        .message-input:focus {
+            border-color: var(--primary-color);
         }
 
         .send-button {
@@ -270,12 +190,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 10px;
+            margin-left: 8px;
             cursor: pointer;
             border: none;
+            transition: background-color 0.2s;
         }
 
-        /* Pre-chat form */
+        .send-button:hover {
+            background-color: #C01010;
+        }
+
+        /* Formulário pré-chat */
         .pre-chat-overlay {
             position: fixed;
             top: 0;
@@ -293,42 +218,50 @@
             background-color: var(--white);
             padding: 30px;
             border-radius: 10px;
-            width: 100%;
+            width: 90%;
             max-width: 400px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .pre-chat-form h2 {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             margin-bottom: 20px;
             text-align: center;
+            font-size: 22px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 500;
+            color: var(--secondary-color);
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px 15px;
-            border: 1px solid var(--gray-medium);
-            border-radius: 5px;
+            padding: 12px 16px;
+            border: 1px solid var(--gray-border);
+            border-radius: 6px;
             font-size: 15px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 12px;
-            background-color: var(--secondary-color);
+            padding: 14px;
+            background-color: var(--primary-color);
             color: var(--white);
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
@@ -336,141 +269,129 @@
         }
 
         .submit-btn:hover {
-            background-color: var(--dark-color);
+            background-color: #C01010;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-                height: auto;
-                min-height: 100vh;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: 40vh;
-            }
-            
-            .chat-area {
-                height: 60vh;
+        /* Emoji picker */
+        .emoji-picker {
+            position: absolute;
+            bottom: 70px;
+            right: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 10;
+        }
+
+        /* File input */
+        .file-input {
+            display: none;
+        }
+
+        /* Responsivo */
+        @media (max-width: 600px) {
+            .chat-container {
+                height: 100vh;
+                max-height: none;
+                border-radius: 0;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Pre-chat Form -->
+    <!-- Formulário pré-chat -->
     <div class="pre-chat-overlay" id="pre-chat">
         <div class="pre-chat-form">
-            <h2>Atendimento ao Cliente</h2>
+            <h2>Atendimento ao Colaborador</h2>
             <div class="form-group">
                 <label for="nome">Nome Completo</label>
                 <input type="text" id="nome" required>
             </div>
             <div class="form-group">
-                <label for="empresa">Empresa</label>
-                <input type="text" id="empresa" required>
+                <label for="filial">Filial</label>
+                <input type="text" id="filial" required>
             </div>
             <div class="form-group">
                 <label for="setor">Setor</label>
                 <input type="text" id="setor" required>
             </div>
-            <button class="submit-btn" onclick="startChat()">Iniciar Chat</button>
+            <button class="submit-btn" onclick="startChat()">Iniciar Atendimento</button>
         </div>
     </div>
 
-    <!-- Main Chat App -->
-    <div class="app-container" id="app-container" style="display: none;">
-        <!-- Sidebar -->
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h2>Suporte Técnico</h2>
-                <div class="user-avatar" id="user-avatar">SU</div>
-            </div>
-            
-            <div class="search-container">
-                <input type="text" class="search-box" placeholder="Pesquisar ou iniciar nova conversa">
-            </div>
-            
-            <div class="chat-list">
-                <div class="chat-item active">
-                    <div class="chat-avatar">
-                        <span>ST</span>
-                        <div class="online-badge"></div>
-                    </div>
-                    <div class="chat-info">
-                        <div class="chat-name">
-                            <span>Suporte Técnico</span>
-                            <span class="chat-time">12:30</span>
-                        </div>
-                        <div class="chat-preview">Olá! Como podemos ajudar?</div>
-                    </div>
-                </div>
-            </div>
+    <!-- Container do chat -->
+    <div class="chat-container" id="chat-container" style="display: none;">
+        <!-- Cabeçalho -->
+        <div class="chat-header">
+            <i class="fas fa-headset header-icon"></i>
+            <h2>Suporte Técnico</h2>
+            <div class="status-badge">Online</div>
         </div>
-        
-        <!-- Chat Area -->
-        <div class="chat-area">
-            <div class="chat-header">
-                <div class="chat-avatar">
-                    <span>ST</span>
-                    <div class="online-badge"></div>
-                </div>
-                <div class="chat-header-info">
-                    <div class="chat-header-name">Suporte Técnico</div>
-                    <div class="chat-header-status">Online</div>
-                </div>
+
+        <!-- Mensagens -->
+        <div class="messages-container" id="messages-container">
+            <!-- Mensagens serão adicionadas aqui via JavaScript -->
+        </div>
+
+        <!-- Input area -->
+        <div class="input-container">
+            <div class="input-tools">
+                <button id="emoji-btn"><i class="far fa-smile"></i></button>
+                <button id="file-btn"><i class="fas fa-paperclip"></i></button>
+                <input type="file" id="file-input" class="file-input">
             </div>
-            
-            <div class="chat-messages" id="chat-messages">
-                <!-- Messages will be inserted here by JavaScript -->
-            </div>
-            
-            <div class="chat-input-container">
-                <div class="input-tools">
-                    <i class="far fa-smile" id="emoji-btn"></i>
-                    <i class="fas fa-paperclip" id="attach-btn"></i>
-                </div>
-                <input type="text" class="message-input" id="message-input" placeholder="Digite uma mensagem">
-                <button class="send-button" id="send-btn">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
+            <input type="text" class="message-input" id="message-input" placeholder="Digite sua mensagem...">
+            <button class="send-button" id="send-btn">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <!-- Emoji picker (simplificado) -->
+        <div class="emoji-picker" id="emoji-picker">
+            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
+                <span style="font-size: 24px; cursor: pointer;">😀</span>
+                <span style="font-size: 24px; cursor: pointer;">😊</span>
+                <span style="font-size: 24px; cursor: pointer;">👍</span>
+                <span style="font-size: 24px; cursor: pointer;">❤️</span>
+                <span style="font-size: 24px; cursor: pointer;">😅</span>
+                <span style="font-size: 24px; cursor: pointer;">🙏</span>
             </div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
+        // Elementos DOM
         const preChat = document.getElementById('pre-chat');
-        const appContainer = document.getElementById('app-container');
-        const chatMessages = document.getElementById('chat-messages');
+        const chatContainer = document.getElementById('chat-container');
+        const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
-        const userAvatar = document.getElementById('user-avatar');
-        
-        // Start chat function
+        const emojiBtn = document.getElementById('emoji-btn');
+        const emojiPicker = document.getElementById('emoji-picker');
+        const fileBtn = document.getElementById('file-btn');
+        const fileInput = document.getElementById('file-input');
+
+        // Iniciar chat
         function startChat() {
             const nome = document.getElementById('nome').value;
-            const empresa = document.getElementById('empresa').value;
+            const filial = document.getElementById('filial').value;
             const setor = document.getElementById('setor').value;
-            
-            if (nome && empresa && setor) {
-                // Set user avatar initials
-                const initials = nome.split(' ').map(n => n[0]).join('').toUpperCase();
-                userAvatar.textContent = initials;
-                
-                // Hide pre-chat and show app
+
+            if (nome && filial && setor) {
                 preChat.style.display = 'none';
-                appContainer.style.display = 'flex';
+                chatContainer.style.display = 'flex';
                 
-                // Add welcome message
-                addMessage('Suporte Técnico', 'Olá ' + nome + '! Como podemos te ajudar hoje?', 'received', new Date());
+                // Mensagem de boas-vindas
+                addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Koch Supermercados! Como podemos ajudar?`, 'received', new Date());
             } else {
                 alert('Por favor, preencha todos os campos!');
             }
         }
-        
-        // Add message to chat
+
+        // Adicionar mensagem ao chat
         function addMessage(sender, text, type, time) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message', type);
@@ -479,46 +400,40 @@
             
             messageDiv.innerHTML = `
                 <div class="message-content">${text}</div>
-                <div class="message-time">${timeString}</div>
+                <div class="message-time">${timeString} • ${sender}</div>
             `;
             
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
-        
-        // Send message
+
+        // Enviar mensagem
         function sendMessage() {
             const text = messageInput.value.trim();
             if (text) {
                 const time = new Date();
                 
-                // Add user message
+                // Adiciona mensagem do usuário
                 addMessage('Você', text, 'sent', time);
                 messageInput.value = '';
                 
-                // Here you would send the message to your n8n backend
-                sendToBackend(text);
+                // Simula resposta do suporte
+                setTimeout(() => {
+                    let response;
+                    
+                    if (text.toLowerCase().includes('senha')) {
+                        response = 'Para trocar sua senha, envie um e-mail para it.suporte@grupokochsa.com.br ou abra um chamado no Softdesk.';
+                    } else if (text.toLowerCase().includes('olá') || text.toLowerCase().includes('oi') || text.toLowerCase().includes('ola')) {
+                        response = 'Olá! Sou o assistente virtual do suporte técnico. No que posso ajudar?';
+                    } else {
+                        response = 'Entendi sua solicitação. Um de nossos técnicos entrará em contato em breve.';
+                    }
+                    
+                    addMessage('Suporte Técnico', response, 'received', new Date());
+                }, 1000);
             }
         }
-        
-        // Simulate sending to backend (replace with actual fetch to n8n)
-        function sendToBackend(text) {
-            // This is a simulation - replace with actual API call
-            setTimeout(() => {
-                let response;
-                
-                if (text.toLowerCase().includes('senha')) {
-                    response = 'Para trocar sua senha, envie um e-mail para it.suporte@grupokochsa.com.br ou abra um chamado no Softdesk.';
-                } else if (text.toLowerCase().includes('olá') || text.toLowerCase().includes('oi')) {
-                    response = 'Olá! Sou o assistente virtual do suporte técnico. No que posso ajudar?';
-                } else {
-                    response = 'Entendi sua solicitação. Um de nossos técnicos entrará em contato em breve.';
-                }
-                
-                addMessage('Suporte Técnico', response, 'received', new Date());
-            }, 1000);
-        }
-        
+
         // Event listeners
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
@@ -526,10 +441,43 @@
                 sendMessage();
             }
         });
-        
-        // Initial welcome message (for demo)
-        window.addEventListener('DOMContentLoaded', () => {
-            // In a real app, you might load previous messages here
+
+        // Emoji picker
+        emojiBtn.addEventListener('click', () => {
+            emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Adiciona emoji ao input
+        emojiPicker.querySelectorAll('span').forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                messageInput.value += emoji.textContent;
+                messageInput.focus();
+            });
+        });
+
+        // File upload
+        fileBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                addMessage('Você', `Arquivo enviado: ${fileName}`, 'sent', new Date());
+                
+                // Aqui você enviaria o arquivo para o backend
+                // Por simplicidade, estamos apenas mostrando o nome
+                
+                // Limpa o input
+                fileInput.value = '';
+            }
+        });
+
+        // Fecha o emoji picker ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!emojiBtn.contains(e.target) && !emojiPicker.contains(e.target)) {
+                emojiPicker.style.display = 'none';
+            }
         });
     </script>
 </body>
