@@ -288,6 +288,43 @@
             background-color: var(--primary-dark);
         }
 
+        /* Estilo personalizado para o input de arquivo */
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-input-button {
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .file-input-button:hover {
+            opacity: 1;
+            background-color: var(--gray-light);
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
             .chat-container {
                 height: 95vh;
@@ -339,9 +376,12 @@
         <!-- Input area -->
         <div class="input-container">
             <div class="input-tools">
-                <button id="emoji-btn"><i class="far fa-smile"></i></button>
-                <button id="file-btn"><i class="fas fa-paperclip"></i></button>
-                <input type="file" id="file-input" class="file-input">
+                <div class="file-input-wrapper">
+                    <button class="file-input-button" id="file-btn">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <input type="file" id="file-input" class="file-input">
+                </div>
             </div>
             <textarea class="message-input" id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
             <button class="send-button" id="send-btn">
@@ -363,7 +403,7 @@
         // Variável para armazenar dados do usuário
         let userData = {};
 
-        // Iniciar chat
+        // Iniciar chat - APENAS ESTA MENSAGEM É LOCAL
         function startChat() {
             const nome = document.getElementById('nome').value;
             const filial = document.getElementById('filial').value;
@@ -376,7 +416,7 @@
                 preChat.style.display = 'none';
                 chatContainer.style.display = 'flex';
                 
-                // APENAS ESTA MENSAGEM É ENVIADA LOCALMENTE
+                // ÚNICA MENSAGEM GERADA LOCALMENTE
                 addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Suporte! Como podemos ajudar?`, 'received', new Date());
             } else {
                 alert('Por favor, preencha todos os campos!');
@@ -399,7 +439,7 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Enviar mensagem para o n8n
+        // Enviar mensagem para o n8n - TODAS AS RESPOSTAS VÊM DAQUI
         async function sendMessage() {
             const text = messageInput.value.trim();
             if (text) {
@@ -444,6 +484,7 @@
                         responseText = 'Recebemos sua mensagem. Em breve retornaremos.';
                     }
                     
+                    // RESPOSTA VINDA DO N8N
                     addMessage('Suporte Técnico', responseText, 'received', new Date());
                 } catch (error) {
                     console.error('Erro ao enviar mensagem:', error);
@@ -467,18 +508,11 @@
             }
         });
 
-        // File upload
-        fileBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
-
+        // File upload - apenas exibe o nome do arquivo
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
                 const fileName = fileInput.files[0].name;
-                addMessage('Você', `Arquivo enviado: ${fileName}`, 'sent', new Date());
-                
-                // Aqui você enviaria o arquivo para o backend
-                // Por simplicidade, estamos apenas mostrando o nome
+                addMessage('Você', `Arquivo selecionado: ${fileName} (funcionalidade de envio precisa ser implementada no backend)`, 'sent', new Date());
                 
                 // Limpa o input
                 fileInput.value = '';
