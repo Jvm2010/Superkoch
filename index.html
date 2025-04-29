@@ -257,29 +257,31 @@
     messages.scrollTop = messages.scrollHeight;
   }
 
-  async function sendToN8N(userMessage) {
-    try {
-      const response = await fetch(N8N_WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nome: user.nome,
-          filial: user.filial,
-          setor: user.setor,
-          mensagem: userMessage
-        })
-      });
-      const data = await response.json();
-      if (data && data.resposta) {
-        addMessage(data.resposta, 'received');
-      } else {
-        addMessage('Desculpe, não consegui entender a resposta.', 'received');
-      }
-    } catch (error) {
-      console.error('Erro ao enviar mensagem:', error);
-      addMessage('Erro na comunicação. Tente novamente.', 'received');
+async function sendToN8N(userMessage) {
+  try {
+    const response = await fetch(N8N_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: userMessage,
+        nome: user.nome,
+        filial: user.filial,
+        setor: user.setor
+      })
+    });
+    const data = await response.json();
+    console.log('Resposta recebida do n8n:', data);
+    if (data && data.resposta) {
+      addMessage(data.resposta, 'received');
+    } else {
+      addMessage('Desculpe, não entendi a resposta.', 'received');
     }
+  } catch (error) {
+    console.error('Erro ao enviar mensagem para n8n:', error);
+    addMessage('Erro de conexão com o servidor.', 'received');
   }
+}
+
 </script>
 
 </body>
