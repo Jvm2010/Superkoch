@@ -79,18 +79,17 @@
 </div>
 
 <script>
-  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook/chat-atendimento';
+  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook-test/chat-atendimento';
 
   const chatMessages = document.getElementById('chat-messages');
-  let userName = '';
 
-  // Mensagem de boas-vindas
+  // Mensagem inicial de boas-vindas
   function welcomeUser() {
-    userName = prompt('Digite seu nome:') || 'Cliente';
+    const userName = prompt('Digite seu nome:') || 'Cliente';
     addMessage(`Olá ${userName}! Como podemos ajudar você hoje?`, 'bot');
   }
 
-  // Função para adicionar mensagem no chat
+  // Função para adicionar mensagem ao chat
   function addMessage(message, sender) {
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message', sender);
@@ -99,7 +98,7 @@
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Função para enviar mensagem para o N8N
+  // Função para enviar mensagem
   async function sendMessage() {
     const userInput = document.getElementById('user-input');
     const text = userInput.value.trim();
@@ -112,23 +111,20 @@
       const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, user: userName })
+        body: JSON.stringify({ message: text })
       });
-
       const data = await response.json();
-
       if (data && data.reply) {
         addMessage(data.reply, 'bot');
       } else {
-        addMessage('Desculpe, não entendi. Por favor, tente novamente.', 'bot');
+        addMessage('Desculpe, não entendi. Tente novamente.', 'bot');
       }
     } catch (error) {
-      console.error('Erro na comunicação com o servidor:', error);
-      addMessage('Erro de conexão. Tente novamente mais tarde.', 'bot');
+      console.error('Erro:', error);
+      addMessage('Erro ao conectar. Tente novamente mais tarde.', 'bot');
     }
   }
 
-  // Iniciar o chat
   welcomeUser();
 </script>
 
