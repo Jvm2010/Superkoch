@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #E31918; /* Vermelho Koch */
+            --primary-color: #E31918;
             --primary-dark: #C01010;
             --secondary-color: #333333;
             --light-color: #F8F8F8;
@@ -288,7 +288,6 @@
             background-color: var(--primary-dark);
         }
 
-        /* Estilo personalizado para o input de arquivo */
         .file-input-wrapper {
             position: relative;
             display: inline-block;
@@ -397,26 +396,24 @@
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
-        const fileBtn = document.getElementById('file-btn');
         const fileInput = document.getElementById('file-input');
 
         // Variável para armazenar dados do usuário
         let userData = {};
 
-        // Iniciar chat - APENAS ESTA MENSAGEM É LOCAL
+        // Iniciar chat
         function startChat() {
             const nome = document.getElementById('nome').value;
             const filial = document.getElementById('filial').value;
             const setor = document.getElementById('setor').value;
 
             if (nome && filial && setor) {
-                // Armazena os dados do usuário
                 userData = { nome, filial, setor };
                 
                 preChat.style.display = 'none';
                 chatContainer.style.display = 'flex';
                 
-                // ÚNICA MENSAGEM GERADA LOCALMENTE
+                // APENAS ESTA MENSAGEM É GERADA LOCALMENTE
                 addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Suporte! Como podemos ajudar?`, 'received', new Date());
             } else {
                 alert('Por favor, preencha todos os campos!');
@@ -439,7 +436,7 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Enviar mensagem para o n8n - TODAS AS RESPOSTAS VÊM DAQUI
+        // Enviar mensagem para o n8n
         async function sendMessage() {
             const text = messageInput.value.trim();
             if (text) {
@@ -457,7 +454,7 @@
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            ...userData, // Inclui nome, filial e setor
+                            ...userData,
                             message: text
                         })
                     });
@@ -480,7 +477,7 @@
                     } else if (typeof data === 'string') {
                         responseText = data;
                     } else {
-                        console.warn('Estrutura de resposta não reconhecida:', data);
+                        console.error('Estrutura de resposta não reconhecida:', data);
                         responseText = 'Recebemos sua mensagem. Em breve retornaremos.';
                     }
                     
@@ -488,7 +485,7 @@
                     addMessage('Suporte Técnico', responseText, 'received', new Date());
                 } catch (error) {
                     console.error('Erro ao enviar mensagem:', error);
-                    addMessage('Suporte Técnico', 'Desculpe, ocorreu um erro. Por favor, tente novamente.', 'received', new Date());
+                    addMessage('Suporte Técnico', 'Desculpe, ocorreu um erro ao conectar com o servidor. Por favor, tente novamente.', 'received', new Date());
                 }
             }
         }
@@ -508,13 +505,11 @@
             }
         });
 
-        // File upload - apenas exibe o nome do arquivo
+        // File upload
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
                 const fileName = fileInput.files[0].name;
-                addMessage('Você', `Arquivo selecionado: ${fileName} (funcionalidade de envio precisa ser implementada no backend)`, 'sent', new Date());
-                
-                // Limpa o input
+                addMessage('Você', `Arquivo selecionado: ${fileName} (envio de arquivos será implementado em breve)`, 'sent', new Date());
                 fileInput.value = '';
             }
         });
