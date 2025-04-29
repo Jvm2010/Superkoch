@@ -8,11 +8,10 @@
   <style>
     :root {
       --primary-color: #E31918;
-      --primary-dark: #C01010;
       --background-color: #F8F8F8;
-      --text-color: #333;
       --light: #fff;
       --border-color: #E0E0E0;
+      --text-color: #333;
     }
 
     body {
@@ -22,7 +21,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      height: 100vh;
       padding: 10px;
     }
 
@@ -49,7 +48,6 @@
     .chat-header h2 {
       margin: 0 0 0 10px;
       font-size: 22px;
-      font-weight: bold;
     }
 
     .status {
@@ -77,7 +75,6 @@
       border-radius: 10px;
       font-size: 15px;
       line-height: 1.5;
-      position: relative;
       word-wrap: break-word;
     }
 
@@ -110,7 +107,6 @@
       padding: 12px 18px;
       font-size: 15px;
       outline: none;
-      transition: border-color 0.3s;
     }
 
     .chat-input textarea:focus {
@@ -132,6 +128,7 @@
       font-size: 20px;
     }
 
+    /* Pre-chat */
     .pre-chat {
       position: fixed;
       top: 0;
@@ -201,9 +198,7 @@
     <div class="status">Online</div>
   </div>
 
-  <div class="messages" id="messages">
-    <!-- Mensagens -->
-  </div>
+  <div class="messages" id="messages"></div>
 
   <div class="chat-input">
     <textarea id="messageInput" rows="1" placeholder="Digite sua mensagem..."></textarea>
@@ -221,7 +216,7 @@
 
   let user = {};
 
-  const webhookUrl = "https://kochti.app.n8n.cloud/webhook-test/chat-atendimento";
+  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook-test/chat-atendimento';
 
   preChatForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -234,7 +229,7 @@
   });
 
   sendBtn.addEventListener('click', sendMessage);
-  messageInput.addEventListener('keypress', function(e) {
+  messageInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
@@ -250,7 +245,7 @@
     if (text !== '') {
       addMessage(text, 'sent');
       messageInput.value = '';
-      sendToN8n(text);
+      sendToN8N(text);
     }
   }
 
@@ -262,13 +257,11 @@
     messages.scrollTop = messages.scrollHeight;
   }
 
-  async function sendToN8n(userMessage) {
+  async function sendToN8N(userMessage) {
     try {
-      const response = await fetch(webhookUrl, {
+      const response = await fetch(N8N_WEBHOOK_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nome: user.nome,
           filial: user.filial,
@@ -276,16 +269,15 @@
           mensagem: userMessage
         })
       });
-
       const data = await response.json();
       if (data && data.resposta) {
         addMessage(data.resposta, 'received');
       } else {
-        addMessage('Não entendi, poderia repetir?', 'received');
+        addMessage('Desculpe, não consegui entender a resposta.', 'received');
       }
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
-      addMessage('Erro de conexão. Tente novamente.', 'received');
+      addMessage('Erro na comunicação. Tente novamente.', 'received');
     }
   }
 </script>
