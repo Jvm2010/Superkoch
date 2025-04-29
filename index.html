@@ -33,10 +33,9 @@
             padding: 20px;
         }
 
-        /* Container principal ampliado */
         .chat-container {
             width: 100%;
-            max-width: 800px; /* Aumentado de 500px */
+            max-width: 800px;
             height: 85vh;
             max-height: 900px;
             background-color: var(--white);
@@ -48,7 +47,6 @@
             border: 1px solid var(--gray-border);
         }
 
-        /* Cabeçalho mais destacado */
         .chat-header {
             background-color: var(--primary-color);
             color: var(--white);
@@ -91,7 +89,6 @@
             margin-right: 8px;
         }
 
-        /* Área de mensagens maior */
         .messages-container {
             flex: 1;
             padding: 25px;
@@ -100,7 +97,6 @@
             background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
-        /* Mensagens mais espaçosas */
         .message {
             max-width: 75%;
             margin-bottom: 20px;
@@ -143,7 +139,6 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Área de input maior */
         .input-container {
             padding: 15px 20px;
             background-color: var(--white);
@@ -219,7 +214,6 @@
             transform: scale(1.05);
         }
 
-        /* Formulário pré-chat */
         .pre-chat-overlay {
             position: fixed;
             top: 0;
@@ -294,78 +288,6 @@
             background-color: var(--primary-dark);
         }
 
-        /* Emoji picker melhorado */
-        .emoji-picker {
-            position: absolute;
-            bottom: 80px;
-            right: 30px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            display: none;
-            z-index: 10;
-            width: 300px;
-        }
-
-        .emoji-picker h3 {
-            font-size: 14px;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .emoji-categories {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 10px;
-            border-bottom: 1px solid var(--gray-light);
-            padding-bottom: 8px;
-        }
-
-        .emoji-categories button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 5px;
-            opacity: 0.6;
-        }
-
-        .emoji-categories button.active {
-            opacity: 1;
-            color: var(--primary-color);
-        }
-
-        .emoji-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 8px;
-            max-height: 200px;
-            overflow-y: auto;
-            padding: 5px;
-        }
-
-        .emoji-grid span {
-            font-size: 22px;
-            cursor: pointer;
-            text-align: center;
-            padding: 2px;
-            border-radius: 4px;
-        }
-
-        .emoji-grid span:hover {
-            background-color: var(--gray-light);
-            transform: scale(1.1);
-        }
-
-        /* File input */
-        .file-input {
-            display: none;
-        }
-
-        /* Responsivo */
         @media (max-width: 768px) {
             .chat-container {
                 height: 95vh;
@@ -375,11 +297,6 @@
             
             .message {
                 max-width: 85%;
-            }
-            
-            .emoji-picker {
-                width: 90%;
-                right: 5%;
             }
         }
     </style>
@@ -405,7 +322,7 @@
         </div>
     </div>
 
-    <!-- Container do chat ampliado -->
+    <!-- Container do chat -->
     <div class="chat-container" id="chat-container" style="display: none;">
         <!-- Cabeçalho -->
         <div class="chat-header">
@@ -431,21 +348,6 @@
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
-
-        <!-- Emoji picker melhorado -->
-        <div class="emoji-picker" id="emoji-picker">
-            <h3>Emojis</h3>
-            <div class="emoji-categories">
-                <button class="active" data-category="smileys">😀</button>
-                <button data-category="people">👋</button>
-                <button data-category="nature">🐻</button>
-                <button data-category="food">🍎</button>
-                <button data-category="symbols">❤️</button>
-            </div>
-            <div class="emoji-grid" id="emoji-grid">
-                <!-- Emojis serão adicionados via JavaScript -->
-            </div>
-        </div>
     </div>
 
     <script>
@@ -455,34 +357,11 @@
         const messagesContainer = document.getElementById('messages-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
-        const emojiBtn = document.getElementById('emoji-btn');
-        const emojiPicker = document.getElementById('emoji-picker');
-        const emojiGrid = document.getElementById('emoji-grid');
         const fileBtn = document.getElementById('file-btn');
         const fileInput = document.getElementById('file-input');
 
-        // Emojis por categoria
-        const emojis = {
-            smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳'],
-            people: ['👋', '🤚', '🖐', '✋', '🖖', '👌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏'],
-            nature: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋'],
-            food: ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶', '🌽', '🥕', '🧄', '🧅', '🥔', '🍠', '🥐'],
-            symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐']
-        };
-
-        // Carrega emojis na grid
-        function loadEmojis(category = 'smileys') {
-            emojiGrid.innerHTML = '';
-            emojis[category].forEach(emoji => {
-                const span = document.createElement('span');
-                span.textContent = emoji;
-                span.addEventListener('click', () => {
-                    messageInput.value += emoji;
-                    messageInput.focus();
-                });
-                emojiGrid.appendChild(span);
-            });
-        }
+        // Variável para armazenar dados do usuário
+        let userData = {};
 
         // Iniciar chat
         function startChat() {
@@ -491,13 +370,14 @@
             const setor = document.getElementById('setor').value;
 
             if (nome && filial && setor) {
+                // Armazena os dados do usuário
+                userData = { nome, filial, setor };
+                
                 preChat.style.display = 'none';
                 chatContainer.style.display = 'flex';
                 
-                // Mensagem de boas-vindas
-                setTimeout(() => {
-                    addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Koch Supermercados! Como podemos ajudar?`, 'received', new Date());
-                }, 500);
+                // APENAS ESTA MENSAGEM É ENVIADA LOCALMENTE
+                addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Suporte! Como podemos ajudar?`, 'received', new Date());
             } else {
                 alert('Por favor, preencha todos os campos!');
             }
@@ -524,9 +404,6 @@
             const text = messageInput.value.trim();
             if (text) {
                 const time = new Date();
-                const nome = document.getElementById('nome').value;
-                const filial = document.getElementById('filial').value;
-                const setor = document.getElementById('setor').value;
                 
                 // Adiciona mensagem do usuário
                 addMessage('Você', text, 'sent', time);
@@ -540,21 +417,34 @@
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            nome: nome,
-                            filial: filial,
-                            setor: setor,
+                            ...userData, // Inclui nome, filial e setor
                             message: text
                         })
                     });
                     
+                    if (!response.ok) {
+                        throw new Error(`Erro HTTP: ${response.status}`);
+                    }
+                    
                     const data = await response.json();
                     
-                    // Exibe a resposta do bot
-                    if (data.message) {
-                        addMessage('Suporte Técnico', data.message, 'received', new Date());
+                    // Verifica várias possibilidades de estrutura de resposta
+                    let responseText = '';
+                    
+                    if (data.response) {
+                        responseText = data.response;
+                    } else if (data.message) {
+                        responseText = data.message;
+                    } else if (data.text) {
+                        responseText = data.text;
+                    } else if (typeof data === 'string') {
+                        responseText = data;
                     } else {
-                        addMessage('Suporte Técnico', 'Recebemos sua mensagem. Em breve retornaremos.', 'received', new Date());
+                        console.warn('Estrutura de resposta não reconhecida:', data);
+                        responseText = 'Recebemos sua mensagem. Em breve retornaremos.';
                     }
+                    
+                    addMessage('Suporte Técnico', responseText, 'received', new Date());
                 } catch (error) {
                     console.error('Erro ao enviar mensagem:', error);
                     addMessage('Suporte Técnico', 'Desculpe, ocorreu um erro. Por favor, tente novamente.', 'received', new Date());
@@ -577,21 +467,6 @@
             }
         });
 
-        // Emoji picker
-        emojiBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
-        });
-
-        // Categorias de emoji
-        document.querySelectorAll('.emoji-categories button').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.emoji-categories button').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                loadEmojis(button.dataset.category);
-            });
-        });
-
         // File upload
         fileBtn.addEventListener('click', () => {
             fileInput.click();
@@ -609,14 +484,6 @@
                 fileInput.value = '';
             }
         });
-
-        // Fecha o emoji picker ao clicar fora
-        document.addEventListener('click', () => {
-            emojiPicker.style.display = 'none';
-        });
-
-        // Carrega emojis iniciais
-        loadEmojis();
     </script>
 </body>
 </html>
