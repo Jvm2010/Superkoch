@@ -3,516 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento - Koch Supermercados</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Atendimento Automático</title>
     <style>
-        :root {
-            --primary-color: #E31918;
-            --primary-dark: #C01010;
-            --secondary-color: #333333;
-            --light-color: #F8F8F8;
-            --text-color: #333333;
-            --white: #FFFFFF;
-            --gray-border: #E0E0E0;
-            --gray-light: #F0F0F0;
-        }
-
-        * {
+        /* Estilos Gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        }
-
-        body {
-            background-color: #f5f5f5;
+            background-color: #f4f7fa;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            height: 100vh;
+            color: #333;
         }
 
-        .chat-container {
-            width: 100%;
-            max-width: 800px;
-            height: 85vh;
-            max-height: 900px;
-            background-color: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border: 1px solid var(--gray-border);
-        }
-
-        .chat-header {
-            background-color: var(--primary-color);
-            color: var(--white);
-            padding: 20px 25px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .chat-header h2 {
-            font-size: 22px;
-            font-weight: 600;
-            margin-left: 15px;
-        }
-
-        .header-icon {
-            font-size: 26px;
-        }
-
-        .status-badge {
-            position: absolute;
-            right: 25px;
-            background-color: #4CAF50;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-        }
-
-        .status-badge::before {
-            content: "";
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #FFF;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-        .messages-container {
-            flex: 1;
-            padding: 25px;
-            overflow-y: auto;
-            background-color: var(--white);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
-        }
-
-        .message {
-            max-width: 75%;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .message-content {
-            padding: 14px 18px;
-            border-radius: 10px;
-            position: relative;
-            word-wrap: break-word;
-            line-height: 1.5;
-            font-size: 16px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .received .message-content {
-            background-color: var(--white);
-            color: var(--text-color);
-            border: 1px solid var(--gray-border);
-            border-bottom-left-radius: 0;
-        }
-
-        .sent .message-content {
-            background-color: var(--primary-color);
-            color: var(--white);
-            margin-left: auto;
-            border-bottom-right-radius: 0;
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: var(--text-color);
-            margin-top: 6px;
-            text-align: right;
-            opacity: 0.7;
-        }
-
-        .sent .message-time {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .input-container {
-            padding: 15px 20px;
-            background-color: var(--white);
-            border-top: 1px solid var(--gray-border);
-            display: flex;
-            align-items: center;
-        }
-
-        .input-tools {
-            display: flex;
-            padding: 0 10px;
-        }
-
-        .input-tools button {
-            background: none;
-            border: none;
-            font-size: 26px;
-            color: var(--secondary-color);
-            margin: 0 6px;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: all 0.2s;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .input-tools button:hover {
-            opacity: 1;
-            background-color: var(--gray-light);
-        }
-
-        .message-input {
-            flex: 1;
-            padding: 14px 18px;
-            border-radius: 25px;
-            border: 1px solid var(--gray-border);
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s;
-            margin: 0 10px;
-            min-height: 50px;
-            max-height: 120px;
-            resize: none;
-        }
-
-        .message-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(227, 25, 24, 0.2);
-        }
-
-        .send-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 10px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            font-size: 20px;
-        }
-
-        .send-button:hover {
-            background-color: var(--primary-dark);
-            transform: scale(1.05);
-        }
-
-        .pre-chat-overlay {
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.6);
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 10;
         }
 
         .pre-chat-form {
-            background-color: var(--white);
-            padding: 40px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            width: 350px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         .pre-chat-form h2 {
-            color: var(--primary-color);
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 24px;
+            margin-bottom: 20px;
+            color: #007bff;
         }
 
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 500;
-            color: var(--secondary-color);
-            font-size: 15px;
-        }
-
-        .form-group input {
+        .pre-chat-form input {
             width: 100%;
-            padding: 14px 18px;
-            border: 1px solid var(--gray-border);
-            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
             font-size: 16px;
-            transition: all 0.3s;
         }
 
-        .form-group input:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(227, 25, 24, 0.2);
+        button:hover {
+            background-color: #0056b3;
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 16px;
-            background-color: var(--primary-color);
-            color: var(--white);
-            border: none;
+        #chat-container {
+            display: none;
+            width: 400px;
+            background-color: #fff;
             border-radius: 8px;
-            font-size: 17px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 20px;
         }
 
-        .submit-btn:hover {
-            background-color: var(--primary-dark);
+        #chat-box {
+            height: 300px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
         }
 
-        .file-input-wrapper {
-            position: relative;
-            display: inline-block;
+        #chat-box div {
+            padding: 8px;
+            margin-bottom: 8px;
+            border-radius: 4px;
         }
 
-        .file-input-button {
-            background: none;
-            border: none;
-            font-size: 26px;
-            color: var(--secondary-color);
-            cursor: pointer;
-            opacity: 0.8;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        #chat-box .user {
+            background-color: #e0f7fa;
+            text-align: left;
         }
 
-        .file-input-button:hover {
-            opacity: 1;
-            background-color: var(--gray-light);
+        #chat-box .bot {
+            background-color: #f1f1f1;
+            text-align: left;
         }
 
-        .file-input {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
+        #user-input {
+            padding: 10px;
             width: 100%;
-            height: 100%;
-            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
-        @media (max-width: 768px) {
-            .chat-container {
-                height: 95vh;
-                max-height: none;
-                border-radius: 0;
-            }
-            
-            .message {
-                max-width: 85%;
+        .typing-indicator {
+            font-size: 14px;
+            color: #007bff;
+            font-style: italic;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .pre-chat-form, #chat-container {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Formulário pré-chat -->
-    <div class="pre-chat-overlay" id="pre-chat">
+
+    <!-- Tela de Preenchimento -->
+    <div id="pre-chat" class="overlay">
         <div class="pre-chat-form">
-            <h2>Atendimento ao Colaborador</h2>
-            <div class="form-group">
-                <label for="nome">Nome Completo</label>
-                <input type="text" id="nome" required>
-            </div>
-            <div class="form-group">
-                <label for="filial">Filial</label>
-                <input type="text" id="filial" required>
-            </div>
-            <div class="form-group">
-                <label for="setor">Setor</label>
-                <input type="text" id="setor" required>
-            </div>
-            <button class="submit-btn" onclick="startChat()">Iniciar Atendimento</button>
+            <h2>Preencha seus dados</h2>
+            <input type="text" id="nome" placeholder="Nome Completo" required>
+            <input type="text" id="filial" placeholder="Filial" required>
+            <input type="text" id="setor" placeholder="Setor" required>
+            <button onclick="entrarChat()">Entrar no Chat</button>
         </div>
     </div>
 
-    <!-- Container do chat -->
-    <div class="chat-container" id="chat-container" style="display: none;">
-        <!-- Cabeçalho -->
-        <div class="chat-header">
-            <i class="fas fa-headset header-icon"></i>
-            <h2>Suporte Técnico</h2>
-            <div class="status-badge">Online</div>
-        </div>
-
-        <!-- Mensagens -->
-        <div class="messages-container" id="messages-container">
-            <!-- Mensagens serão adicionadas aqui via JavaScript -->
-        </div>
-
-        <!-- Input area -->
-        <div class="input-container">
-            <div class="input-tools">
-                <div class="file-input-wrapper">
-                    <button class="file-input-button" id="file-btn">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
-                    <input type="file" id="file-input" class="file-input">
-                </div>
-            </div>
-            <textarea class="message-input" id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
-            <button class="send-button" id="send-btn">
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
+    <!-- Chat -->
+    <div id="chat-container">
+        <h3>BEM VINDO AO ATENDIMENTO AUTOMÁTICO DO SUPORTE</h3>
+        <p>No que podemos ajudar?</p>
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Digite sua mensagem..." onkeydown="if(event.key === 'Enter') enviarMensagem()">
+        <button onclick="enviarMensagem()">Enviar</button>
+        <p class="typing-indicator" id="typing-indicator" style="display: none;">O bot está digitando...</p>
     </div>
 
     <script>
-        // Elementos DOM
-        const preChat = document.getElementById('pre-chat');
-        const chatContainer = document.getElementById('chat-container');
-        const messagesContainer = document.getElementById('messages-container');
-        const messageInput = document.getElementById('message-input');
-        const sendBtn = document.getElementById('send-btn');
-        const fileInput = document.getElementById('file-input');
-
-        // Variável para armazenar dados do usuário
-        let userData = {};
-
-        // Iniciar chat
-        function startChat() {
+        // Função para mostrar o chat após preencher os dados
+        function entrarChat() {
             const nome = document.getElementById('nome').value;
             const filial = document.getElementById('filial').value;
             const setor = document.getElementById('setor').value;
 
             if (nome && filial && setor) {
-                userData = { nome, filial, setor };
-                
-                preChat.style.display = 'none';
-                chatContainer.style.display = 'flex';
-                
-                // APENAS ESTA MENSAGEM É GERADA LOCALMENTE
-                addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Suporte! Como podemos ajudar?`, 'received', new Date());
+                document.getElementById('pre-chat').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'block';
             } else {
                 alert('Por favor, preencha todos os campos!');
             }
         }
 
-        // Adicionar mensagem ao chat
-        function addMessage(sender, text, type, time) {
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', type);
-            
-            const timeString = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            
-            messageDiv.innerHTML = `
-                <div class="message-content">${text}</div>
-                <div class="message-time">${timeString} • ${sender}</div>
-            `;
-            
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
+        // Função para enviar mensagem ao n8n
+        function enviarMensagem() {
+            const mensagem = document.getElementById('user-input').value;
 
-        // Enviar mensagem para o n8n
-        async function sendMessage() {
-            const text = messageInput.value.trim();
-            if (text) {
-                const time = new Date();
-                
-                // Adiciona mensagem do usuário
-                addMessage('Você', text, 'sent', time);
-                messageInput.value = '';
-                
-                try {
-                    // Envia para o webhook do n8n
-                    const response = await fetch('https://kochti.app.n8n.cloud/webhook/chat-atendimento', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            ...userData,
-                            message: text
-                        })
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`Erro HTTP: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    // Verifica várias possibilidades de estrutura de resposta
-                    let responseText = '';
-                    
-                    if (data.response) {
-                        responseText = data.response;
-                    } else if (data.message) {
-                        responseText = data.message;
-                    } else if (data.text) {
-                        responseText = data.text;
-                    } else if (typeof data === 'string') {
-                        responseText = data;
-                    } else {
-                        console.error('Estrutura de resposta não reconhecida:', data);
-                        responseText = 'Recebemos sua mensagem. Em breve retornaremos.';
-                    }
-                    
-                    // RESPOSTA VINDA DO N8N
-                    addMessage('Suporte Técnico', responseText, 'received', new Date());
-                } catch (error) {
+            if (mensagem.trim() !== "") {
+                const chatBox = document.getElementById('chat-box');
+                const userMessage = document.createElement('div');
+                userMessage.classList.add('user');
+                userMessage.textContent = "Você: " + mensagem;
+                chatBox.appendChild(userMessage);
+
+                document.getElementById('user-input').value = "";
+
+                // Exibe indicador de digitação
+                document.getElementById('typing-indicator').style.display = 'block';
+
+                // Enviar a mensagem para o n8n
+                fetch('https://kochti.app.n8n.cloud/webhook-test/chat-atendimento', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nome: document.getElementById('nome').value,
+                        filial: document.getElementById('filial').value,
+                        setor: document.getElementById('setor').value,
+                        message: mensagem
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('bot');
+                    botMessage.textContent = "Bot: " + data.message;
+                    chatBox.appendChild(botMessage);
+                    document.getElementById('typing-indicator').style.display = 'none';
+                    chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática
+                })
+                .catch(error => {
                     console.error('Erro ao enviar mensagem:', error);
-                    addMessage('Suporte Técnico', 'Desculpe, ocorreu um erro ao conectar com o servidor. Por favor, tente novamente.', 'received', new Date());
-                }
+                    document.getElementById('typing-indicator').style.display = 'none';
+                });
             }
         }
-
-        // Auto-resize do textarea
-        messageInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = (this.scrollHeight) + 'px';
-        });
-
-        // Event listeners
-        sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        // File upload
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                const fileName = fileInput.files[0].name;
-                addMessage('Você', `Arquivo selecionado: ${fileName} (envio de arquivos será implementado em breve)`, 'sent', new Date());
-                fileInput.value = '';
-            }
-        });
     </script>
 </body>
 </html>
