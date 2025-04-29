@@ -1,213 +1,294 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atendimento Automático</title>
-    <style>
-        /* Estilos Gerais */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #333;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atendimento Koch Supermercados</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #E31918;
+      --primary-dark: #C01010;
+      --background-color: #F8F8F8;
+      --text-color: #333;
+      --light: #fff;
+      --border-color: #E0E0E0;
+    }
 
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--background-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
 
-        .pre-chat-form {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            width: 350px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+    .chat-wrapper {
+      width: 100%;
+      max-width: 800px;
+      background: var(--light);
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-        .pre-chat-form h2 {
-            margin-bottom: 20px;
-            color: #007bff;
-        }
+    .chat-header {
+      background: var(--primary-color);
+      color: var(--light);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
 
-        .pre-chat-form input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
+    .chat-header h2 {
+      margin: 0 0 0 10px;
+      font-size: 22px;
+      font-weight: bold;
+    }
 
-        button {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
+    .status {
+      position: absolute;
+      right: 20px;
+      background: #4CAF50;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+    }
 
-        button:hover {
-            background-color: #0056b3;
-        }
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: var(--light);
+    }
 
-        #chat-container {
-            display: none;
-            width: 400px;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            padding: 20px;
-        }
+    .message {
+      max-width: 70%;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 15px;
+      line-height: 1.5;
+      position: relative;
+      word-wrap: break-word;
+    }
 
-        #chat-box {
-            height: 300px;
-            overflow-y: auto;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            margin-bottom: 15px;
-        }
+    .message.sent {
+      background: var(--primary-color);
+      color: var(--light);
+      margin-left: auto;
+      border-bottom-right-radius: 0;
+    }
 
-        #chat-box div {
-            padding: 8px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
+    .message.received {
+      background: var(--background-color);
+      color: var(--text-color);
+      border: 1px solid var(--border-color);
+      border-bottom-left-radius: 0;
+    }
 
-        #chat-box .user {
-            background-color: #e0f7fa;
-            text-align: left;
-        }
+    .chat-input {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-top: 1px solid var(--border-color);
+    }
 
-        #chat-box .bot {
-            background-color: #f1f1f1;
-            text-align: left;
-        }
+    .chat-input textarea {
+      flex: 1;
+      resize: none;
+      border-radius: 25px;
+      border: 1px solid var(--border-color);
+      padding: 12px 18px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
 
-        #user-input {
-            padding: 10px;
-            width: 100%;
-            border-radius: 6px;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
+    .chat-input textarea:focus {
+      border-color: var(--primary-color);
+    }
 
-        .typing-indicator {
-            font-size: 14px;
-            color: #007bff;
-            font-style: italic;
-        }
+    .send-btn {
+      background: var(--primary-color);
+      color: var(--light);
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      margin-left: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
 
-        /* Responsividade */
-        @media (max-width: 600px) {
-            .pre-chat-form, #chat-container {
-                width: 100%;
-            }
-        }
-    </style>
+    .pre-chat {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .pre-chat-form {
+      background: var(--light);
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .pre-chat-form h2 {
+      margin-bottom: 20px;
+      color: var(--primary-color);
+    }
+
+    .pre-chat-form input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .pre-chat-form button {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary-color);
+      border: none;
+      border-radius: 8px;
+      color: var(--light);
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Tela de Preenchimento -->
-    <div id="pre-chat" class="overlay">
-        <div class="pre-chat-form">
-            <h2>Preencha seus dados</h2>
-            <input type="text" id="nome" placeholder="Nome Completo" required>
-            <input type="text" id="filial" placeholder="Filial" required>
-            <input type="text" id="setor" placeholder="Setor" required>
-            <button onclick="entrarChat()">Entrar no Chat</button>
-        </div>
-    </div>
+<div class="pre-chat" id="pre-chat">
+  <form class="pre-chat-form" id="pre-chat-form">
+    <h2>Identificação</h2>
+    <input type="text" id="nome" placeholder="Nome completo" required>
+    <input type="text" id="filial" placeholder="Filial" required>
+    <input type="text" id="setor" placeholder="Setor" required>
+    <button type="submit">Iniciar Atendimento</button>
+  </form>
+</div>
 
-    <!-- Chat -->
-    <div id="chat-container">
-        <h3>BEM VINDO AO ATENDIMENTO AUTOMÁTICO DO SUPORTE</h3>
-        <p>No que podemos ajudar?</p>
-        <div id="chat-box"></div>
-        <input type="text" id="user-input" placeholder="Digite sua mensagem..." onkeydown="if(event.key === 'Enter') enviarMensagem()">
-        <button onclick="enviarMensagem()">Enviar</button>
-        <p class="typing-indicator" id="typing-indicator" style="display: none;">O bot está digitando...</p>
-    </div>
+<div class="chat-wrapper" id="chat-wrapper" style="display:none;">
+  <div class="chat-header">
+    <i class="fas fa-headset"></i>
+    <h2>Atendimento Koch</h2>
+    <div class="status">Online</div>
+  </div>
 
-    <script>
-        // Função para mostrar o chat após preencher os dados
-        function entrarChat() {
-            const nome = document.getElementById('nome').value;
-            const filial = document.getElementById('filial').value;
-            const setor = document.getElementById('setor').value;
+  <div class="messages" id="messages">
+    <!-- Mensagens -->
+  </div>
 
-            if (nome && filial && setor) {
-                document.getElementById('pre-chat').style.display = 'none';
-                document.getElementById('chat-container').style.display = 'block';
-            } else {
-                alert('Por favor, preencha todos os campos!');
-            }
-        }
+  <div class="chat-input">
+    <textarea id="messageInput" rows="1" placeholder="Digite sua mensagem..."></textarea>
+    <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
 
-        // Função para enviar mensagem ao n8n
-        function enviarMensagem() {
-            const mensagem = document.getElementById('user-input').value;
+<script>
+  const preChat = document.getElementById('pre-chat');
+  const preChatForm = document.getElementById('pre-chat-form');
+  const chatWrapper = document.getElementById('chat-wrapper');
+  const messages = document.getElementById('messages');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
 
-            if (mensagem.trim() !== "") {
-                const chatBox = document.getElementById('chat-box');
-                const userMessage = document.createElement('div');
-                userMessage.classList.add('user');
-                userMessage.textContent = "Você: " + mensagem;
-                chatBox.appendChild(userMessage);
+  let user = {};
 
-                document.getElementById('user-input').value = "";
+  const webhookUrl = "https://kochti.app.n8n.cloud/webhook-test/chat-atendimento";
 
-                // Exibe indicador de digitação
-                document.getElementById('typing-indicator').style.display = 'block';
+  preChatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    user.nome = document.getElementById('nome').value;
+    user.filial = document.getElementById('filial').value;
+    user.setor = document.getElementById('setor').value;
+    preChat.style.display = 'none';
+    chatWrapper.style.display = 'flex';
+    sendWelcomeMessage();
+  });
 
-                // Enviar a mensagem para o n8n
-                fetch('https://kochti.app.n8n.cloud/webhook-test/chat-atendimento', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        nome: document.getElementById('nome').value,
-                        filial: document.getElementById('filial').value,
-                        setor: document.getElementById('setor').value,
-                        message: mensagem
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const botMessage = document.createElement('div');
-                    botMessage.classList.add('bot');
-                    botMessage.textContent = "Bot: " + data.message;
-                    chatBox.appendChild(botMessage);
-                    document.getElementById('typing-indicator').style.display = 'none';
-                    chatBox.scrollTop = chatBox.scrollHeight;  // Rolagem automática
-                })
-                .catch(error => {
-                    console.error('Erro ao enviar mensagem:', error);
-                    document.getElementById('typing-indicator').style.display = 'none';
-                });
-            }
-        }
-    </script>
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  function sendWelcomeMessage() {
+    addMessage(`Olá ${user.nome}! Como podemos ajudar você hoje?`, 'received');
+  }
+
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (text !== '') {
+      addMessage(text, 'sent');
+      messageInput.value = '';
+      sendToN8n(text);
+    }
+  }
+
+  function addMessage(content, type) {
+    const msg = document.createElement('div');
+    msg.classList.add('message', type);
+    msg.innerText = content;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  async function sendToN8n(userMessage) {
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nome: user.nome,
+          filial: user.filial,
+          setor: user.setor,
+          mensagem: userMessage
+        })
+      });
+
+      const data = await response.json();
+      if (data && data.resposta) {
+        addMessage(data.resposta, 'received');
+      } else {
+        addMessage('Não entendi, poderia repetir?', 'received');
+      }
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      addMessage('Erro de conexão. Tente novamente.', 'received');
+    }
+  }
+</script>
+
 </body>
 </html>
