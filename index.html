@@ -3,1164 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
-    <title>Gerenciador de Estoque TI KOCH</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Atendimento Automático</title>
     <style>
+        /* Estilos Gerais */
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f5f5f5;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: url('https://assets.isu.pub/document-structure/230504114755-05580be30f100ce1783d4f4656349573/v1/e7d736321df2ea556f17d0dbeb1bf2db.jpeg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #f0f8ff;
-            color: #343a40;
-        }
-        
-        .title {
-            display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            background-color: #1e90ff;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 2em; /* Aumentado para um título mais volumoso */
-            margin-bottom: 20px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        
-        .title img {
-            width: 200px; /* Ajuste o tamanho conforme necessário */
-            height: auto; /* Mantém a proporção da imagem */
-            margin-right: 20px; /* Espaço entre a imagem e o texto */
-        }
-        
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.3s, transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-        }
-        
-        button:active {
-            background-color: #004494;
-            transform: scale(0.98);
-        }
-        
-        #delete-log-btn, #clear-log-btn, #export-log-btn, #import-inventory-btn, #export-inventory-btn {
-            background-color: #007bff;
-        }
-        
-        #delete-log-btn:hover, #clear-log-btn:hover, #export-log-btn:hover, #import-inventory-btn:hover, #export-inventory-btn:hover {
-            background-color: #0056b3;
-        }
-        
-        #delete-log-btn:active, #clear-log-btn:active, #export-log-btn:active, #import-inventory-btn:active, #export-inventory-btn:active {
-            background-color: #004494;
-        }
-        
-        #clear-log-btn {
-            background-color: #dc3545;
-        }
-        
-        #clear-log-btn:hover {
-            background-color: #c82333;
-        }
-        
-        #clear-log-btn:active {
-            background-color: #bd2130;
-        }
-        
-        @media only screen and (min-width: 600px) and (max-width: 1024px) {
-            table {
-                width: 100%;
-                border-collapse: collapse;
-            }
-        
-            th, td {
-                padding: 10px;
-                text-align: left;
-            }
-        
-            .actions {
-                display: flex;
-                flex-direction: column;
-            }
-        
-            .actions button {
-                margin-bottom: 5px;
-            }
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            width: 90%;
-            background-color: rgba(255, 255, 255, 0.95);
+
+        .pre-chat-form {
+            background-color: #fff;
+            padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
-        
-        .inventory, .log-section, .patrimony-section {
+
+        .pre-chat-form h2 {
             margin-bottom: 20px;
+            text-align: center;
         }
-        
-        table {
+
+        .pre-chat-form input {
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        
-        th, td {
             padding: 8px;
-            text-align: left;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        
-        th {
-            background-color: #87cefa;
-        }
-        
+
         button {
+            background-color: #007bff;
+            color: white;
             padding: 10px 15px;
             border: none;
-            background-color: #007bff;
-            color: white;
+            border-radius: 4px;
             cursor: pointer;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 5px;
+            width: 100%;
         }
-        
+
         button:hover {
-            background-color: #26ff00;
+            background-color: #0056b3;
         }
-        
-        .actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .login-form, .add-item-form, .adjust-item-form, .patrimony-form {
+
+        #chat-container {
+            text-align: center;
             display: none;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
         }
-        
-        .prompt-box {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 1000;
-        }
-        
-        .form-input {
+
+        #chat-box {
+            max-width: 400px;
+            margin: 20px auto;
             padding: 10px;
-            margin: 10px 0;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #007bff;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        #user-input {
+            padding: 10px;
             width: 80%;
+            border-radius: 4px;
+            margin-top: 20px;
+            border: 1px solid #ddd;
         }
-        
-        .form-buttons {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
-        }
-        
-        .prompt-box.active {
-            display: flex;
-        }
-        
-        .adjust-item-form {
-            position: fixed;
-            top: 20%;
-            left: 50%;
-            transform: translate(-50%, -20%);
-            background-color: white;
-            padding: 20px;
-            border: 1px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            display: none;
-        }
-        
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .top-right {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-        
-        /* Responsiveness */
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                padding: 10px;
-            }
-        }
-        
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgb(0,0,0); 
-            background-color: rgba(0,0,0,0.4); 
-        }
-        
-        /* Modal Content */
-        .modal-content {
-            background-color: #ffffff;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
-            max-width: 600px;
-        }
-        
-        /* Close Button */
-        .close {
-            color: #ff0000;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        
-        button.cancel {
-            background-color: #f44336;
-        }
-        
-        button.cancel:hover {
-            background-color: #da190b;
-        }
-    
-        .log-table-container {
-            max-height: 400px; /* Define a altura máxima do contêiner */
-            overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo exceder a altura */
-            border: 1px solid #ddd; /* Opcional: Adiciona uma borda para melhor visualização */
-            margin-top: 10px; /* Espaçamento opcional entre o controle de pesquisa e a tabela */
-        }
-        
-        #log-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        #log-table th, #log-table td {
-            padding: 8px;
-            text-align: left;
-        }
-        
-        #log-table thead {
-            background-color: #f4f4f4;
-        }
-        
     </style>
 </head>
 <body>
-    <div class="title">
-        <img src="https://omunicipioblumenau.com.br/wp-content/uploads/2012/10/komprao-koch-atacadista-de-blumenau-abre-portas-nesta-quarta-feira-dia-28-de-outubro-logo-koch-site.png" alt="Logotipo">
-        Gerenciador de Estoque TI KOCH
-    </div>
-    <button id="login-btn" class="top-right"><i class="fas fa-sign-in-alt"></i> Login</button>
-    <button id="logout-btn" class="top-right" style="display: none;"><i class="fas fa-sign-out-alt"></i> Logout</button>
 
-    <div class="container">
-        <div class="login-form" id="login-form">
-            <input type="text" id="username" class="form-input" placeholder="Usuário">
-            <input type="password" id="password" class="form-input" placeholder="Senha">
-            <div class="form-buttons">
-                <button id="login-form-submit"><i class="fas fa-sign-in-alt"></i> Login</button>
-                <button id="login-form-cancel"><i class="fas fa-times"></i> Cancelar</button>
-            </div>
-        </div>
+    <!-- Tela de Preenchimento -->
+    <div id="pre-chat" class="overlay">
+        <div class="pre-chat-form">
+            <h2>Preencha seus dados</h2>
+            <label for="nome">Nome Completo:</label>
+            <input type="text" id="nome" required>
 
-        <div class="inventory">
-            <h2>Inventário</h2>
-            <table id="inventory-table">
-                <thead>
-                    <tr>
-                        <th>Nome do Item</th>
-                        <th>Estoque</th>
-                        <th>Patrimônio</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <label for="filial">Filial:</label>
+            <input type="text" id="filial" required>
 
-            <div id="add-item-form" class="prompt-box">
-                <input type="text" id="item-name" class="form-input" placeholder="Nome do Item">
-                <input type="number" id="item-stock" class="form-input" placeholder="Estoque">
-                <input type="text" id="item-patrimony" class="form-input" placeholder="Patrimônio">
-                <div class="form-buttons">
-                    <button id="submit-item"><i class="fas fa-check"></i> Adicionar</button>
-                    <button id="cancel-item"><i class="fas fa-times"></i> Cancelar</button>
-                </div>
-            </div>
+            <label for="setor">Setor:</label>
+            <input type="text" id="setor" required>
 
-            <div class="actions">
-                <button id="add-item-btn" style="display: none;"><i class="fas fa-plus"></i> Adicionar Novo Item</button>
-                <button id="export-inventory-btn"><i class="fas fa-file-export"></i> Exportar Inventário para Excel</button>
-                <button id="import-inventory-btn" style="display: none;"><i class="fas fa-file-import"></i> Importar Inventário do Excel</button>
-            </div>
-            <input type="file" id="import-inventory-file" accept=".xlsx" style="display: none;">
-        </div>
-
-        <div class="log-section">
-            <h2>Log de Retiradas</h2>
-            <div class="log-controls">
-                <input type="text" id="search-log" placeholder="Pesquisar log...">
-                <button id="filter-month-btn">Escolher Mês</button>
-                <select id="month-selector" style="display:none;">
-                    <option value="">Selecione um mês</option>
-                    <option value="01">Janeiro</option>
-                    <option value="02">Fevereiro</option>
-                    <option value="03">Março</option>
-                    <option value="04">Abril</option>
-                    <option value="05">Maio</option>
-                    <option value="06">Junho</option>
-                    <option value="07">Julho</option>
-                    <option value="08">Agosto</option>
-                    <option value="09">Setembro</option>
-                    <option value="10">Outubro</option>
-                    <option value="11">Novembro</option>
-                    <option value="12">Dezembro</option>
-                </select>
-            </div>
-            <div class="log-table-container">
-                <table id="log-table">
-                    <thead>
-                        <tr>
-                            <th>Ação</th>
-                            <th>Item</th>
-                            <th>Quantidade</th>
-                            <th>Usuário</th>
-                            <th>Motivo</th>
-                            <th>Patrimônio do Equipamento</th>
-                            <th>Data e Hora</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div class="actions">
-                <button id="export-log-btn"><i class="fas fa-file-export"></i> Exportar Log para Excel</button>
-                <button id="clear-log-btn" style="display: none;"><i class="fas fa-trash"></i> Limpar Log</button>
-            </div>
-        </div>
-
-    <div class="adjust-item-form" id="adjust-prompt" style="display: none;">
-        <input type="text" id="adjust-new-name" class="form-input" placeholder="Nome do Item">
-        <input type="number" id="adjust-quantity" class="form-input" placeholder="Quantidade">
-        <input type="text" id="new-patrimony-input" class="form-input" placeholder="Adicionar novo Patrimônio">
-        <select id="adjust-patrimony" class="form-input" multiple></select>
-        <select id="adjust-user" class="form-input"></select>
-        <div class="form-buttons">
-            <button id="adjust-submit"><i class="fas fa-check"></i> Confirmar</button>
-            <button id="adjust-cancel"><i class="fas fa-times"></i> Cancelar</button>
+            <button onclick="entrarChat()">Entrar no Chat</button>
         </div>
     </div>
 
-    <!-- Prompt boxes -->
-    <div class="prompt-box" id="withdraw-prompt">
-        <select id="withdraw-quantity" class="form-input"></select>
-        <select id="withdraw-user" class="form-input"></select>
-        <input type="text" id="withdraw-reason" class="form-input" placeholder="Motivo da retirada">
-        <div id="withdraw-patrimony" class="form-input"></div>
-        <div class="form-buttons">
-            <button id="withdraw-submit"><i class="fas fa-check"></i> Confirmar Retirada</button>
-            <button id="withdraw-cancel"><i class="fas fa-times"></i> Cancelar</button>
-        </div>
+    <!-- Chat -->
+    <div id="chat-container">
+        <h1>BEM VINDO AO ATENDIMENTO AUTOMÁTICO DO SUPORTE</h1>
+        <p>No que podemos ajudar?</p>
+        <div id="chat-box" class="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Digite sua mensagem...">
+        <button onclick="enviarMensagem()">Enviar</button>
     </div>
-
-    <div class="prompt-box" id="adjust-prompt">
-        <select id="adjust-quantity" class="form-input"></select>
-        <select id="adjust-user" class="form-input"></select>
-        <input type="text" id="adjust-reason" class="form-input" placeholder="Motivo do ajuste">
-        <input type="text" id="adjust-new-name" class="form-input" placeholder="Novo nome do item (opcional)">
-        <select id="adjust-patrimony" multiple class="form-input"></select>
-        <div class="form-buttons">
-            <button id="adjust-submit"><i class="fas fa-check"></i> Confirmar Ajuste</button>
-            <button id="adjust-cancel"><i class="fas fa-times"></i> Cancelar</button>
-        </div>
-    </div>
-
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Editar Log</h2>
-            <form id="edit-form">
-                <label for="edit-quantity">Quantidade:</label>
-                <input type="number" id="edit-quantity" required /><br>
-    
-                <label for="edit-reason">Motivo:</label>
-                <input type="text" id="edit-reason" required /><br>
-    
-                <label for="edit-patrimony">Patrimônio:</label>
-                <input type="text" id="edit-patrimony" required /><br>
-    
-                <button type="button" id="edit-submit">Salvar</button>
-                <button type="button" id="edit-cancel">Cancelar</button>
-            </form>
-        </div>
-    </div>
-    
-</body>
-</html>
 
     <script>
-        let loggedIn = false;
-        let isAdmin = false;
+        // Função para mostrar o chat após preencher os dados
+        function entrarChat() {
+            const nome = document.getElementById('nome').value;
+            const filial = document.getElementById('filial').value;
+            const setor = document.getElementById('setor').value;
 
-        document.getElementById('login-btn').addEventListener('click', function () {
-            document.getElementById('login-form').style.display = 'flex';
-        });
-        
-        document.getElementById('login-form-cancel').addEventListener('click', function () {
-            document.getElementById('login-form').style.display = 'none';
-        });
-        
-        document.getElementById('logout-btn').addEventListener('click', function () {
-            loggedIn = false;
-            isAdmin = false;
-            document.getElementById('logout-btn').style.display = 'none';
-            document.getElementById('login-btn').style.display = 'block';
-            document.getElementById('add-item-btn').style.display = 'none';
-            document.getElementById('clear-log-btn').style.display = 'none';
-            document.getElementById('add-item-form').style.display = 'none';
-            // Recarregar a página
-            window.location.reload();
-        });
-        
-        document.getElementById('add-item-btn').addEventListener('click', function () {
-            document.getElementById('add-item-form').style.display = 'flex';
-        });
-        
-        document.getElementById('cancel-item').addEventListener('click', function () {
-            document.getElementById('add-item-form').style.display = 'none';
-        });
-        
-        document.getElementById('submit-item').addEventListener('click', function () {
-            const name = document.getElementById('item-name').value;
-            const stock = parseInt(document.getElementById('item-stock').value);
-            const patrimony = document.getElementById('item-patrimony').value;
-        
-            if (name.trim() === '' || isNaN(stock) || stock <= 0) {
-                alert('Por favor, preencha todos os campos corretamente.');
-                return;
-            }
-        
-            addItem(name, stock, patrimony);
-        
-            // Limpar o formulário e esconder
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-stock').value = '';
-            document.getElementById('item-patrimony').value = '';
-            document.getElementById('add-item-form').style.display = 'none';
-        });
-        
-        document.getElementById('login-form-submit').addEventListener('click', function () {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-        
-            // Mock authentication (replace with actual authentication logic)
-            if (username === 'Admin' && password === '1234') {
-                loggedIn = true;
-                isAdmin = true;
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('login-btn').style.display = 'none';
-                document.getElementById('add-item-btn').style.display = 'block';
-                document.getElementById('clear-log-btn').style.display = 'block';
-                document.getElementById('import-inventory-btn').style.display = 'block'; // Mostrar o botão de importação
-            } else if (username === 'Admin' && password === '1234') {
-                loggedIn = true;
-                isAdmin = false;
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('login-btn').style.display = 'none';
+            if (nome && filial && setor) {
+                document.getElementById('pre-chat').style.display = 'none';
+                document.getElementById('chat-container').style.display = 'block';
             } else {
-                alert('Credenciais inválidas');
-            }
-        });
-        
-        document.getElementById('import-inventory-btn').addEventListener('click', function () {
-            document.getElementById('import-inventory-file').click();
-        });
-
-        document.getElementById('clear-log-btn').addEventListener('click', function() {
-            if (window.confirm("Você tem certeza de que deseja limpar o log? Esta ação não pode ser desfeita.")) {
-                let logTableBody = document.querySelector('#log-table tbody');
-                logTableBody.innerHTML = ''; // Limpa o conteúdo do corpo da tabela de log
-            }
-
-            saveLog();
-        });
-        
-        document.getElementById('search-log').addEventListener('input', function () {
-            const searchText = this.value.toLowerCase();
-            filterLogTable(searchText, getSelectedMonth());
-        });
-        
-        document.getElementById('filter-month-btn').addEventListener('click', function () {
-            const monthSelector = document.getElementById('month-selector');
-            monthSelector.style.display = monthSelector.style.display === 'none' ? 'inline' : 'none';
-        });
-        
-        document.getElementById('month-selector').addEventListener('change', function () {
-            const selectedMonth = this.value;
-            filterLogTable(document.getElementById('search-log').value.toLowerCase(), selectedMonth);
-        });
-        
-        function getSelectedMonth() {
-            const monthSelector = document.getElementById('month-selector');
-            return monthSelector.value;
-        }
-        
-        function filterLogTable(searchText, month) {
-            const table = document.getElementById('log-table');
-            const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
-        
-            for (const row of rows) {
-                const cells = row.getElementsByTagName('td');
-                const dateCell = cells[6].textContent;
-                const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-        
-                const matchesSearch = rowText.includes(searchText);
-                const matchesMonth = month === '' || dateCell.includes(`/${month}/`);
-        
-                if (matchesSearch && matchesMonth) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                alert('Por favor, preencha todos os campos!');
             }
         }
-        
-        document.getElementById('import-inventory-file').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const inventoryData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        
-                    // Limpar o inventário atual
-                    const tableBody = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-                    tableBody.innerHTML = '';
-        
-                    // Adicionar novos itens do Excel
-                    inventoryData.forEach((row, index) => {
-                        if (index > 0 && row.length >= 3) { // Ignorar a primeira linha (cabeçalho)
-                            const [itemName, itemStock, patrimonyNumber] = row;
-                            const patrimony = patrimonyNumber ? patrimonyNumber : 'Sem patrimônio'; // Define "Sem patrimônio" se vazio
-                            addItem(itemName, parseInt(itemStock), patrimony);
-                        }
-                    });
-        
-                    saveInventory();
-                };
-                reader.readAsArrayBuffer(file);
-            }
-        });
 
-        function exportToExcel(tableId, fileName) {
-            let table = document.getElementById(tableId);
-            let wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-            XLSX.writeFile(wb, fileName + ".xlsx");
-        }
-        
-        document.getElementById('export-inventory-btn').addEventListener('click', function () {
-            exportToExcel('inventory-table', 'Inventario');
-        });
-        
-        document.getElementById('export-log-btn').addEventListener('click', function () {
-            exportToExcel('log-table', 'Log');
-        });
-        
-        function addItem(name, stock, patrimony) {
-            const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${name}</td>
-                <td>${stock}</td>
-                <td>${patrimony || 'Sem patrimônio'}</td>
-                <td class="action-buttons">
-                    <button class="withdraw-btn"><i class="fas fa-minus"></i> Retirar</button>
-                    ${isAdmin ? `<button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
-                    <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
-                </td>
-            `;
-        
-            // Adicionar event listeners para os botões
-            newRow.querySelector('.withdraw-btn').addEventListener('click', function () {
-                showWithdrawPrompt(name, stock, patrimony || '', newRow.rowIndex);
-            });
-        
-            if (isAdmin) {
-                newRow.querySelector('.adjust-btn').addEventListener('click', function () {
-                    showAdjustPrompt(name, stock, patrimony || '', newRow.rowIndex);
-                });
-        
-                newRow.querySelector('.delete-btn').addEventListener('click', function () {
-                    deleteItem(newRow.rowIndex);
+        // Função para enviar mensagem ao n8n
+        function enviarMensagem() {
+            const mensagem = document.getElementById('user-input').value;
+
+            if (mensagem.trim() !== "") {
+                const chatBox = document.getElementById('chat-box');
+                const userMessage = document.createElement('div');
+                userMessage.textContent = "Você: " + mensagem;
+                chatBox.appendChild(userMessage);
+
+                document.getElementById('user-input').value = "";
+
+                // Enviar a mensagem para o n8n
+                fetch('https://kochti.app.n8n.cloud/webhook-test/chat-atendimento', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nome: document.getElementById('nome').value,
+                        filial: document.getElementById('filial').value,
+                        setor: document.getElementById('setor').value,
+                        message: mensagem
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessage = document.createElement('div');
+                    botMessage.textContent = "Bot: " + data.message;  // Ajuste para a estrutura da resposta do n8n
+                    chatBox.appendChild(botMessage);
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar mensagem:', error);
                 });
             }
-        
-            saveInventory();
         }
-
-        // No evento de login, após a autenticação
-        document.getElementById('login-form-submit').addEventListener('click', function () {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-        
-            // Mock authentication (replace with actual authentication logic)
-            if (username === 'Admin' && password === '1234') {
-                loggedIn = true;
-                isAdmin = true;
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('login-btn').style.display = 'none';
-                document.getElementById('add-item-btn').style.display = 'block';
-                document.getElementById('clear-log-btn').style.display = 'block';
-        
-                // Mostrar os botões de ajuste e excluir para administradores
-                const actionButtons = document.querySelectorAll('.action-buttons');
-                actionButtons.forEach(buttons => {
-                    buttons.innerHTML += `
-                        <button class="adjust-btn"><i class="fas fa-edit"></i> Ajustar</button>
-                        <button class="delete-btn"><i class="fas fa-trash"></i> Excluir</button>
-                    `;
-        
-                    buttons.querySelector('.adjust-btn').addEventListener('click', function () {
-                        const row = this.closest('tr');
-                        const name = row.cells[0].innerText;
-                        const stock = row.cells[1].innerText;
-                        const patrimony = row.cells[2].innerText;
-                        showAdjustPrompt(name, stock, patrimony, row.rowIndex);
-                    });
-        
-                    buttons.querySelector('.delete-btn').addEventListener('click', function () {
-                        const row = this.closest('tr');
-                        deleteItem(row.rowIndex);
-                    });
-                });
-            } else if (username === 'Admin' && password === '1234') {
-                loggedIn = true;
-                isAdmin = false;
-                document.getElementById('login-form').style.display = 'none';
-                document.getElementById('logout-btn').style.display = 'block';
-                document.getElementById('login-btn').style.display = 'none';
-            } else {
-                alert('Credenciais inválidas');
-            }
-        });
-        
-        function logout() {
-            // Limpar dados do usuário (por exemplo, remover token de autenticação)
-            localStorage.removeItem('user');
-            localStorage.removeItem('isAdmin'); // Se você estiver usando essa chave para verificar privilégios
-        
-        }
-
-        function deleteItem(rowIndex) {
-            // Exibir uma caixa de confirmação
-            if (confirm('Deseja excluir este item?')) {
-                // Se o usuário confirmar, exclua a linha
-                const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-                table.deleteRow(rowIndex);
-                
-                // Atualize o localStorage após a remoção
-                saveInventory();
-            }
-        }
-
-        function deleteLogItem(rowIndex) {
-            document.getElementById('log-table').deleteRow(rowIndex);
-            saveLog(); // Função que salva o log atualizado
-        }
-
-        function saveInventory() {
-            const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-            const data = [];
-            for (let i = 0; i < table.rows.length; i++) {
-                const row = table.rows[i];
-                const itemName = row.cells[0].textContent;
-                const itemStock = row.cells[1].textContent;
-                const patrimonyNumber = row.cells[2].textContent;
-                data.push({ itemName, itemStock, patrimonyNumber });
-            }
-            localStorage.setItem('inventoryData', JSON.stringify(data));
-        }        
-        
-        function loadInventory() {
-            const data = JSON.parse(localStorage.getItem('inventoryData') || '[]');
-            for (const item of data) {
-                addItem(item.itemName, item.itemStock, item.patrimonyNumber);
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            const isAdmin = true; // Defina isso conforme necessário
-        
-            // Função para adicionar botões de excluir e editar
-            function addActionButtons() {
-                const rows = document.querySelectorAll('#log-table tbody tr');
-                rows.forEach((row, index) => {
-                    const actionCell = row.cells[row.cells.length - 1];
-                    
-                    if (isAdmin) {
-                        if (!actionCell.querySelector('.delete-log-btn')) {
-                            const deleteButton = document.createElement('button');
-                            deleteButton.className = 'delete-log-btn';
-                            deleteButton.innerHTML = '<i class="fas fa-trash"></i> Excluir';
-                            deleteButton.addEventListener('click', () => {
-                                if (confirm('Tem certeza de que deseja excluir este log?')) {
-                                    deleteLogItem(index + 1);
-                                }
-                            });
-                            actionCell.appendChild(deleteButton);
-                        }
-                        
-                        if (!actionCell.querySelector('.edit-log-btn')) {
-                            const editButton = document.createElement('button');
-                            editButton.className = 'edit-log-btn';
-                            editButton.innerHTML = '<i class="fas fa-edit"></i> Editar';
-                            editButton.addEventListener('click', () => {
-                                showEditModal(editButton);
-                            });
-                            actionCell.appendChild(editButton);
-                        }
-                    }
-                });
-            }
-        
-            // Função para mostrar o modal de edição
-            function showEditModal(button) {
-                const row = button.closest('tr');  // Captura a linha mais próxima do botão clicado
-                const rowIndex = row.rowIndex - 1;  // Corrige o índice da linha
-            
-                document.getElementById('edit-quantity').value = row.cells[2].textContent;
-                document.getElementById('edit-reason').value = row.cells[4].textContent;
-                document.getElementById('edit-patrimony').value = row.cells[5].textContent;
-            
-                const modal = document.getElementById('edit-modal');
-                modal.style.display = 'block';
-            
-                document.getElementById('edit-submit').onclick = function () {
-                    confirmEdit(row, rowIndex);
-                };
-            
-                document.getElementById('edit-cancel').onclick = function () {
-                    modal.style.display = 'none';
-                };
-            
-                const closeButton = document.querySelector('#edit-modal .close');
-                closeButton.onclick = function () {
-                    modal.style.display = 'none';
-                };
-            
-                window.onclick = function (event) {
-                    if (event.target == modal) {
-                        modal.style.display = 'none';
-                    }
-                };
-            }
-        
-            // Função para confirmar a edição
-            function confirmEdit(row, rowIndex) {
-                const editQuantity = document.getElementById('edit-quantity').value;
-                const editReason = document.getElementById('edit-reason').value;
-                const editPatrimony = document.getElementById('edit-patrimony').value;
-            
-                row.cells[2].textContent = editQuantity;
-                row.cells[4].textContent = editReason;
-                row.cells[5].textContent = editPatrimony;
-            
-                const modal = document.getElementById('edit-modal');
-                modal.style.display = 'none';
-            
-                // Carregar os dados do log salvos
-                let logData = JSON.parse(localStorage.getItem('logData')) || [];
-            
-                // Atualizar o item correspondente no array
-                logData[rowIndex].quantity = editQuantity;
-                logData[rowIndex].reason = editReason;
-                logData[rowIndex].patrimony = editPatrimony;
-            
-                // Salvar os dados atualizados
-                localStorage.setItem('logData', JSON.stringify(logData));
-            }
-        
-            // Função para excluir um log
-            function deleteLogItem(rowIndex) {
-                const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-                // Ajuste o índice da linha para corresponder ao índice correto da tabela de logs
-                table.deleteRow(rowIndex - 1);
-                saveLog();
-            }
-            // Adicionar botões de excluir e editar às linhas existentes
-            addActionButtons();
-        });
-
-        function logAction(action, item, quantity, user, reason, patrimony, date) {
-            const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${action}</td>
-                <td>${item}</td>
-                <td>${quantity}</td>
-                <td>${user}</td>
-                <td>${reason}</td>
-                <td>${patrimony}</td>
-                <td>${date}</td>
-                <td>
-                    ${isAdmin ? `<button class="delete-log-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
-                </td>
-            `;
-        
-            if (isAdmin) {
-                newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
-                    if (confirm('Tem certeza de que deseja excluir este log?')) {
-                        deleteLogItem(newRow.rowIndex);
-                    }
-                });
-            }
-            
-            
-        
-            saveLog();
-        }        
-        
-        function logAdjustment(action, item, quantity, user, reason, patrimony, date) {
-            const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td>${action}</td>
-                <td>${item}</td>
-                <td>${quantity}</td>
-                <td>${user}</td>
-                <td>${reason}</td>
-                <td>${patrimony}</td>
-                <td>${date}</td>
-                <td>
-                    ${isAdmin ? `<button class="delete-log-btn"><i class="fas fa-trash"></i> Excluir</button>` : ''}
-                </td>
-            `;
-            
-            if (isAdmin) {
-                newRow.querySelector('.delete-log-btn').addEventListener('click', function () {
-                    if (confirm('Tem certeza de que deseja excluir este log?')) {
-                        deleteLogItem(newRow.rowIndex);
-                    }
-                });
-            }
-            
-            saveLog(); // Atualiza o log no localStorage
-        }
-
-        function saveLog() {
-            const table = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-            const data = [];
-            for (let i = 0; i < table.rows.length; i++) {
-                const row = table.rows[i];
-                const action = row.cells[0].textContent;
-                const item = row.cells[1].textContent;
-                const quantity = row.cells[2].textContent;
-                const user = row.cells[3].textContent;
-                const reason = row.cells[4].textContent;
-                const patrimony = row.cells[5].textContent;
-                const date = row.cells[6].textContent;
-                data.push({ action, item, quantity, user, reason, patrimony, date });
-            }
-            localStorage.setItem('logData', JSON.stringify(data));
-        }
-        
-        function loadLog() {
-            const data = JSON.parse(localStorage.getItem('logData') || '[]');
-            for (const log of data) {
-                logAction(log.action, log.item, log.quantity, log.user, log.reason, log.patrimony, log.date);
-            }
-        }
-
-        function showWithdrawPrompt(name, stock, patrimony, rowIndex) {
-            const quantitySelect = document.getElementById('withdraw-quantity');
-            quantitySelect.innerHTML = '';
-            for (let i = 1; i <= stock; i++) {
-                const option = document.createElement('option');
-                option.value = i;
-                option.textContent = i;
-                quantitySelect.appendChild(option);
-            }
-        
-            const userSelect = document.getElementById('withdraw-user');
-            userSelect.innerHTML = '';
-            ['João Teixeira', 'Diego', 'Rodrigo', 'Deivid', 'João Camargo', 'João Mateus', 'Felipe', 'Jader', 'Natã', 'Dielton', 'Alberto', 'Neto', 'Pooll', 'Willyan'].forEach(user => {
-                const option = document.createElement('option');
-                option.value = user;
-                option.textContent = user;
-                userSelect.appendChild(option);
-            });
-        
-            const patrimonyDiv = document.getElementById('withdraw-patrimony');
-            patrimonyDiv.innerHTML = '';
-            if (patrimony === 'Sem patrimônio') {
-                patrimonyDiv.textContent = 'Sem patrimônio';
-            } else {
-                patrimony.split(', ').forEach(pat => {
-                    const checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = pat;
-                    checkbox.id = `patrimony-${pat}`;
-                    const label = document.createElement('label');
-                    label.htmlFor = `patrimony-${pat}`;
-                    label.textContent = pat;
-                    patrimonyDiv.appendChild(checkbox);
-                    patrimonyDiv.appendChild(label);
-                    patrimonyDiv.appendChild(document.createElement('br'));
-                });
-            }
-        
-            document.getElementById('withdraw-prompt').style.display = 'flex';
-        
-            document.getElementById('withdraw-submit').onclick = function () {
-                const quantity = parseInt(quantitySelect.value);
-                const user = userSelect.value;
-                const reason = document.getElementById('withdraw-reason').value;
-                const selectedPatrimony = patrimony === 'Sem patrimônio' ? [] : Array.from(patrimonyDiv.querySelectorAll('input[type=checkbox]:checked')).map(checkbox => checkbox.value);
-                const date = new Date().toLocaleString();
-        
-                if (reason.trim() === '') {
-                    alert('Por favor, insira um motivo.');
-                    return;
-                }
-        
-                const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-                const row = table.rows[rowIndex - 1];
-        
-                if (patrimony === 'Sem patrimônio') {
-                    const newStock = parseInt(row.cells[1].textContent) - quantity;
-                    row.cells[1].textContent = newStock;
-                } else {
-                    if (selectedPatrimony.length !== quantity) {
-                        alert('A quantidade retirada deve corresponder ao número de patrimônios selecionados.');
-                        return;
-                    }
-        
-                    // Remove os patrimônios selecionados
-                    const remainingPatrimony = patrimony.split(', ').filter(pat => !selectedPatrimony.includes(pat)).join(', ');
-                    row.cells[2].textContent = remainingPatrimony;
-                    const newStock = parseInt(row.cells[1].textContent) - quantity;
-                    row.cells[1].textContent = newStock;
-                }
-        
-                logAction('Retirada', name, quantity, user, reason, selectedPatrimony.join(', '), date);
-                saveInventory();
-                document.getElementById('withdraw-prompt').style.display = 'none';
-                window.location.reload();
-            };
-        
-            document.getElementById('withdraw-cancel').onclick = function () {
-                document.getElementById('withdraw-prompt').style.display = 'none';
-            };
-        }
-        
-        function confirmAdjust(rowIndex) {
-            const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-            const row = table.rows[rowIndex - 1];
-            
-            const adjustQuantity = document.getElementById('adjust-quantity').value;
-            const adjustNewName = document.getElementById('adjust-new-name').value;
-            const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
-            const user = document.getElementById('adjust-user').value;
-            const date = new Date().toLocaleString();
-        
-            row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
-            row.cells[1].innerText = adjustQuantity;
-            row.cells[2].innerText = adjustPatrimony;
-            
-            // Adicionar log de ajuste
-            logAdjustment('Ajuste', adjustNewName || row.cells[0].innerText, adjustQuantity, user, document.getElementById('adjust-reason').value, adjustPatrimony, date);
-        
-            document.getElementById('adjust-prompt').style.display = 'none';
-            saveInventory();
-        }
-        
-document.getElementById('new-patrimony-input').addEventListener('change', function() {
-    const newPatrimony = this.value.trim();
-    const adjustPatrimonySelect = document.getElementById('adjust-patrimony');
-
-    if (newPatrimony && !Array.from(adjustPatrimonySelect.options).some(option => option.value === newPatrimony)) {
-        const option = document.createElement('option');
-        option.value = newPatrimony;
-        option.text = newPatrimony;
-        adjustPatrimonySelect.add(option);
-        this.value = ''; // Limpar o campo de entrada
-    }
-});
-
-function showAdjustPrompt(name, stock, patrimony, rowIndex) {
-    const adjustPrompt = document.getElementById('adjust-prompt');
-    const adjustQuantity = document.getElementById('adjust-quantity');
-    const adjustNewName = document.getElementById('adjust-new-name');
-    const adjustPatrimony = document.getElementById('adjust-patrimony');
-    const adjustUser = document.getElementById('adjust-user');
-
-    adjustQuantity.value = stock;
-    adjustNewName.value = name;
-
-    adjustPatrimony.innerHTML = patrimony === 'Sem patrimônio' ? `<option value="">Sem patrimônio</option>` : patrimony.split(',').map(pat => `<option value="${pat}">${pat}</option>`).join('');
-    adjustUser.innerHTML = `
-        <option value="João Teixeira">João Teixeira</option>
-        <option value="João Camargo">João Camargo</option>
-        <option value="Felipe">Felipe</option>
-        <option value="Jader">Jader</option>
-    `;
-
-    adjustPrompt.style.display = 'flex'; // Exibe o diálogo
-
-    document.getElementById('adjust-submit').onclick = function () {
-        const newName = adjustNewName.value.trim();
-        const quantity = adjustQuantity.value;
-        const selectedPatrimony = Array.from(adjustPatrimony.selectedOptions).map(option => option.value).join(', ');
-        const user = adjustUser.value;
-
-        if (newName === '' && quantity === '') {
-            alert('Por favor, insira pelo menos um ajuste.');
-            return;
-        }
-
-        confirmAdjust(rowIndex, newName, quantity, selectedPatrimony, user);
-    };
-
-    document.getElementById('adjust-cancel').onclick = function () {
-        adjustPrompt.style.display = 'none'; // Esconde o diálogo
-    };
-}
-function confirmAdjust(rowIndex) {
-    const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-    const row = table.rows[rowIndex - 1];
-
-    const adjustQuantity = document.getElementById('adjust-quantity').value;
-    const adjustNewName = document.getElementById('adjust-new-name').value;
-    const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
-
-    row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
-    row.cells[1].innerText = adjustQuantity;
-    row.cells[2].innerText = adjustPatrimony || 'Sem patrimônio';
-
-    document.getElementById('adjust-prompt').style.display = 'none';
-    saveInventory();
-}
-            document.getElementById('adjust-cancel').onclick = function () {
-                document.getElementById('adjust-prompt').style.display = 'none';
-            };
-
-            function confirmAdjust(rowIndex) {
-                const table = document.getElementById('inventory-table').getElementsByTagName('tbody')[0];
-                const row = table.rows[rowIndex - 1];
-            
-                const adjustQuantity = document.getElementById('adjust-quantity').value;
-                const adjustNewName = document.getElementById('adjust-new-name').value;
-                const adjustPatrimony = Array.from(document.getElementById('adjust-patrimony').selectedOptions).map(option => option.value).join(', ');
-            
-                row.cells[0].innerText = adjustNewName || row.cells[0].innerText;
-                row.cells[1].innerText = adjustQuantity;
-                row.cells[2].innerText = adjustPatrimony || 'Sem patrimônio';
-            
-                document.getElementById('adjust-prompt').style.display = 'none';
-                saveInventory();
-            }              
-
-        function exportToExcel(tableID, filename = '') {
-            const table = document.getElementById(tableID);
-            const tableHTML = table.outerHTML.replace(/ /g, '%20');
-            const downloadLink = document.createElement('a');
-
-            document.body.appendChild(downloadLink);
-
-            if (filename === '') {
-                filename = 'excel_data.xlsx';
-            }
-
-            downloadLink.href = 'data:application/vnd.ms-excel,' + tableHTML;
-            downloadLink.download = filename;
-            downloadLink.click();
-            document.body.removeChild(downloadLink);
-        }
-
-        function clearLog() {
-            const logTable = document.getElementById('log-table').getElementsByTagName('tbody')[0];
-            while (logTable.rows.length > 0) {
-                logTable.deleteRow(0);
-            }
-            saveLog();
-        }
-
-        loadInventory();
-        loadLog();
     </script>
 </body>
 </html>
