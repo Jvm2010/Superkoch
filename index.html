@@ -8,11 +8,13 @@
     <style>
         :root {
             --primary-color: #E31918; /* Vermelho Koch */
-            --secondary-color: #333333; /* Cinza escuro */
-            --light-color: #F8F8F8; /* Fundo claro */
+            --primary-dark: #C01010;
+            --secondary-color: #333333;
+            --light-color: #F8F8F8;
             --text-color: #333333;
             --white: #FFFFFF;
             --gray-border: #E0E0E0;
+            --gray-light: #F0F0F0;
         }
 
         * {
@@ -23,56 +25,58 @@
         }
 
         body {
-            background-color: var(--light-color);
+            background-color: #f5f5f5;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* Container principal */
+        /* Container principal ampliado */
         .chat-container {
             width: 100%;
-            max-width: 500px;
-            height: 90vh;
-            max-height: 800px;
+            max-width: 800px; /* Aumentado de 500px */
+            height: 85vh;
+            max-height: 900px;
             background-color: var(--white);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             border: 1px solid var(--gray-border);
         }
 
-        /* Cabeçalho */
+        /* Cabeçalho mais destacado */
         .chat-header {
             background-color: var(--primary-color);
             color: var(--white);
-            padding: 18px 20px;
+            padding: 20px 25px;
             display: flex;
             align-items: center;
             position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .chat-header h2 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 600;
             margin-left: 15px;
         }
 
         .header-icon {
-            font-size: 24px;
+            font-size: 26px;
         }
 
         .status-badge {
             position: absolute;
-            right: 20px;
+            right: 25px;
             background-color: #4CAF50;
             color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 13px;
             display: flex;
             align-items: center;
         }
@@ -84,32 +88,33 @@
             height: 8px;
             background-color: #FFF;
             border-radius: 50%;
-            margin-right: 6px;
+            margin-right: 8px;
         }
 
-        /* Área de mensagens */
+        /* Área de mensagens maior */
         .messages-container {
             flex: 1;
-            padding: 20px;
+            padding: 25px;
             overflow-y: auto;
             background-color: var(--white);
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23e0e0e0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
         }
 
+        /* Mensagens mais espaçosas */
         .message {
-            max-width: 80%;
-            margin-bottom: 16px;
+            max-width: 75%;
+            margin-bottom: 20px;
             position: relative;
         }
 
         .message-content {
-            padding: 12px 16px;
-            border-radius: 8px;
+            padding: 14px 18px;
+            border-radius: 10px;
             position: relative;
             word-wrap: break-word;
-            line-height: 1.4;
-            font-size: 15px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            line-height: 1.5;
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .received .message-content {
@@ -127,9 +132,9 @@
         }
 
         .message-time {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-color);
-            margin-top: 4px;
+            margin-top: 6px;
             text-align: right;
             opacity: 0.7;
         }
@@ -138,9 +143,9 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Área de input */
+        /* Área de input maior */
         .input-container {
-            padding: 12px;
+            padding: 15px 20px;
             background-color: var(--white);
             border-top: 1px solid var(--gray-border);
             display: flex;
@@ -149,55 +154,69 @@
 
         .input-tools {
             display: flex;
-            padding: 0 8px;
+            padding: 0 10px;
         }
 
         .input-tools button {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 26px;
             color: var(--secondary-color);
-            margin: 0 4px;
+            margin: 0 6px;
             cursor: pointer;
-            opacity: 0.7;
-            transition: opacity 0.2s;
+            opacity: 0.8;
+            transition: all 0.2s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
         }
 
         .input-tools button:hover {
             opacity: 1;
+            background-color: var(--gray-light);
         }
 
         .message-input {
             flex: 1;
-            padding: 12px 16px;
-            border-radius: 24px;
+            padding: 14px 18px;
+            border-radius: 25px;
             border: 1px solid var(--gray-border);
-            font-size: 15px;
+            font-size: 16px;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.3s;
+            margin: 0 10px;
+            min-height: 50px;
+            max-height: 120px;
+            resize: none;
         }
 
         .message-input:focus {
             border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(227, 25, 24, 0.2);
         }
 
         .send-button {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: var(--primary-color);
             color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 8px;
+            margin-left: 10px;
             cursor: pointer;
             border: none;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            font-size: 20px;
         }
 
         .send-button:hover {
-            background-color: #C01010;
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
         }
 
         /* Formulário pré-chat */
@@ -207,7 +226,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -216,74 +235,129 @@
 
         .pre-chat-form {
             background-color: var(--white);
-            padding: 30px;
-            border-radius: 10px;
+            padding: 40px;
+            border-radius: 12px;
             width: 90%;
-            max-width: 400px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         .pre-chat-form h2 {
             color: var(--primary-color);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-align: center;
-            font-size: 22px;
+            font-size: 24px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-weight: 500;
             color: var(--secondary-color);
+            font-size: 15px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 14px 18px;
             border: 1px solid var(--gray-border);
-            border-radius: 6px;
-            font-size: 15px;
-            transition: border-color 0.2s;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
         }
 
         .form-group input:focus {
             border-color: var(--primary-color);
             outline: none;
+            box-shadow: 0 0 0 2px rgba(227, 25, 24, 0.2);
         }
 
         .submit-btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             background-color: var(--primary-color);
             color: var(--white);
             border: none;
-            border-radius: 6px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 17px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: all 0.2s;
+            margin-top: 10px;
         }
 
         .submit-btn:hover {
-            background-color: #C01010;
+            background-color: var(--primary-dark);
         }
 
-        /* Emoji picker */
+        /* Emoji picker melhorado */
         .emoji-picker {
             position: absolute;
-            bottom: 70px;
-            right: 20px;
+            bottom: 80px;
+            right: 30px;
             background: white;
             border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             display: none;
             z-index: 10;
+            width: 300px;
+        }
+
+        .emoji-picker h3 {
+            font-size: 14px;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .emoji-categories {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--gray-light);
+            padding-bottom: 8px;
+        }
+
+        .emoji-categories button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            opacity: 0.6;
+        }
+
+        .emoji-categories button.active {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 5px;
+        }
+
+        .emoji-grid span {
+            font-size: 22px;
+            cursor: pointer;
+            text-align: center;
+            padding: 2px;
+            border-radius: 4px;
+        }
+
+        .emoji-grid span:hover {
+            background-color: var(--gray-light);
+            transform: scale(1.1);
         }
 
         /* File input */
@@ -292,11 +366,20 @@
         }
 
         /* Responsivo */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             .chat-container {
-                height: 100vh;
+                height: 95vh;
                 max-height: none;
                 border-radius: 0;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+            
+            .emoji-picker {
+                width: 90%;
+                right: 5%;
             }
         }
     </style>
@@ -322,7 +405,7 @@
         </div>
     </div>
 
-    <!-- Container do chat -->
+    <!-- Container do chat ampliado -->
     <div class="chat-container" id="chat-container" style="display: none;">
         <!-- Cabeçalho -->
         <div class="chat-header">
@@ -343,21 +426,24 @@
                 <button id="file-btn"><i class="fas fa-paperclip"></i></button>
                 <input type="file" id="file-input" class="file-input">
             </div>
-            <input type="text" class="message-input" id="message-input" placeholder="Digite sua mensagem...">
+            <textarea class="message-input" id="message-input" placeholder="Digite sua mensagem..." rows="1"></textarea>
             <button class="send-button" id="send-btn">
                 <i class="fas fa-paper-plane"></i>
             </button>
         </div>
 
-        <!-- Emoji picker (simplificado) -->
+        <!-- Emoji picker melhorado -->
         <div class="emoji-picker" id="emoji-picker">
-            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;">
-                <span style="font-size: 24px; cursor: pointer;">😀</span>
-                <span style="font-size: 24px; cursor: pointer;">😊</span>
-                <span style="font-size: 24px; cursor: pointer;">👍</span>
-                <span style="font-size: 24px; cursor: pointer;">❤️</span>
-                <span style="font-size: 24px; cursor: pointer;">😅</span>
-                <span style="font-size: 24px; cursor: pointer;">🙏</span>
+            <h3>Emojis</h3>
+            <div class="emoji-categories">
+                <button class="active" data-category="smileys">😀</button>
+                <button data-category="people">👋</button>
+                <button data-category="nature">🐻</button>
+                <button data-category="food">🍎</button>
+                <button data-category="symbols">❤️</button>
+            </div>
+            <div class="emoji-grid" id="emoji-grid">
+                <!-- Emojis serão adicionados via JavaScript -->
             </div>
         </div>
     </div>
@@ -371,8 +457,32 @@
         const sendBtn = document.getElementById('send-btn');
         const emojiBtn = document.getElementById('emoji-btn');
         const emojiPicker = document.getElementById('emoji-picker');
+        const emojiGrid = document.getElementById('emoji-grid');
         const fileBtn = document.getElementById('file-btn');
         const fileInput = document.getElementById('file-input');
+
+        // Emojis por categoria
+        const emojis = {
+            smileys: ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳'],
+            people: ['👋', '🤚', '🖐', '✋', '🖖', '👌', '🤏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '🖕', '👇', '☝️', '👍', '👎', '✊', '👊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏'],
+            nature: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🦇', '🐺', '🐗', '🐴', '🦄', '🐝', '🐛', '🦋'],
+            food: ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍈', '🍒', '🍑', '🥭', '🍍', '🥥', '🥝', '🍅', '🍆', '🥑', '🥦', '🥬', '🥒', '🌶', '🌽', '🥕', '🧄', '🧅', '🥔', '🍠', '🥐'],
+            symbols: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟', '☮️', '✝️', '☪️', '🕉', '☸️', '✡️', '🔯', '🕎', '☯️', '☦️', '🛐']
+        };
+
+        // Carrega emojis na grid
+        function loadEmojis(category = 'smileys') {
+            emojiGrid.innerHTML = '';
+            emojis[category].forEach(emoji => {
+                const span = document.createElement('span');
+                span.textContent = emoji;
+                span.addEventListener('click', () => {
+                    messageInput.value += emoji;
+                    messageInput.focus();
+                });
+                emojiGrid.appendChild(span);
+            });
+        }
 
         // Iniciar chat
         function startChat() {
@@ -385,7 +495,9 @@
                 chatContainer.style.display = 'flex';
                 
                 // Mensagem de boas-vindas
-                addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Koch Supermercados! Como podemos ajudar?`, 'received', new Date());
+                setTimeout(() => {
+                    addMessage('Suporte Técnico', `Olá ${nome}, bem-vindo ao atendimento do Koch Supermercados! Como podemos ajudar?`, 'received', new Date());
+                }, 500);
             } else {
                 alert('Por favor, preencha todos os campos!');
             }
@@ -407,51 +519,76 @@
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        // Enviar mensagem
-        function sendMessage() {
+        // Enviar mensagem para o n8n
+        async function sendMessage() {
             const text = messageInput.value.trim();
             if (text) {
                 const time = new Date();
+                const nome = document.getElementById('nome').value;
+                const filial = document.getElementById('filial').value;
+                const setor = document.getElementById('setor').value;
                 
                 // Adiciona mensagem do usuário
                 addMessage('Você', text, 'sent', time);
                 messageInput.value = '';
                 
-                // Simula resposta do suporte
-                setTimeout(() => {
-                    let response;
+                try {
+                    // Envia para o webhook do n8n
+                    const response = await fetch('https://kochti.app.n8n.cloud/webhook/chat-atendimento', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            nome: nome,
+                            filial: filial,
+                            setor: setor,
+                            message: text
+                        })
+                    });
                     
-                    if (text.toLowerCase().includes('senha')) {
-                        response = 'Para trocar sua senha, envie um e-mail para it.suporte@grupokochsa.com.br ou abra um chamado no Softdesk.';
-                    } else if (text.toLowerCase().includes('olá') || text.toLowerCase().includes('oi') || text.toLowerCase().includes('ola')) {
-                        response = 'Olá! Sou o assistente virtual do suporte técnico. No que posso ajudar?';
+                    const data = await response.json();
+                    
+                    // Exibe a resposta do bot
+                    if (data.message) {
+                        addMessage('Suporte Técnico', data.message, 'received', new Date());
                     } else {
-                        response = 'Entendi sua solicitação. Um de nossos técnicos entrará em contato em breve.';
+                        addMessage('Suporte Técnico', 'Recebemos sua mensagem. Em breve retornaremos.', 'received', new Date());
                     }
-                    
-                    addMessage('Suporte Técnico', response, 'received', new Date());
-                }, 1000);
+                } catch (error) {
+                    console.error('Erro ao enviar mensagem:', error);
+                    addMessage('Suporte Técnico', 'Desculpe, ocorreu um erro. Por favor, tente novamente.', 'received', new Date());
+                }
             }
         }
 
+        // Auto-resize do textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+
         // Event listeners
         sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
+        messageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 sendMessage();
             }
         });
 
         // Emoji picker
-        emojiBtn.addEventListener('click', () => {
+        emojiBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             emojiPicker.style.display = emojiPicker.style.display === 'block' ? 'none' : 'block';
         });
 
-        // Adiciona emoji ao input
-        emojiPicker.querySelectorAll('span').forEach(emoji => {
-            emoji.addEventListener('click', () => {
-                messageInput.value += emoji.textContent;
-                messageInput.focus();
+        // Categorias de emoji
+        document.querySelectorAll('.emoji-categories button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.emoji-categories button').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                loadEmojis(button.dataset.category);
             });
         });
 
@@ -474,11 +611,12 @@
         });
 
         // Fecha o emoji picker ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (!emojiBtn.contains(e.target) && !emojiPicker.contains(e.target)) {
-                emojiPicker.style.display = 'none';
-            }
+        document.addEventListener('click', () => {
+            emojiPicker.style.display = 'none';
         });
+
+        // Carrega emojis iniciais
+        loadEmojis();
     </script>
 </body>
 </html>
