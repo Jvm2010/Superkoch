@@ -216,13 +216,13 @@
 
   let user = {};
 
-  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook-test/chat-atendimento';
+  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook/chat-atendimento'; // <--- corrigido para production URL
 
   preChatForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    user.nome = document.getElementById('nome').value;
-    user.filial = document.getElementById('filial').value;
-    user.setor = document.getElementById('setor').value;
+    user.nome = document.getElementById('nome').value.trim();
+    user.filial = document.getElementById('filial').value.trim();
+    user.setor = document.getElementById('setor').value.trim();
     preChat.style.display = 'none';
     chatWrapper.style.display = 'flex';
     sendWelcomeMessage();
@@ -237,7 +237,7 @@
   });
 
   function sendWelcomeMessage() {
-    addMessage(`Olá ${user.nome}! Como podemos ajudar você hoje?`, 'received');
+    addMessage(`Bem-vindo ${user.nome} ao suporte da TI, no que posso ajudar?`, 'received');
   }
 
   function sendMessage() {
