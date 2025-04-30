@@ -257,31 +257,40 @@
     messages.scrollTop = messages.scrollHeight;
   }
 
-async function sendToN8N(userMessage) {
-  try {
-    const response = await fetch(N8N_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text: userMessage,
-        nome: user.nome,
-        filial: user.filial,
-        setor: user.setor
-      })
-    });
-    const data = await response.json();
-    console.log('Resposta recebida do n8n:', data);
-    if (data && data.resposta) {
-      addMessage(data.resposta, 'received');
-    } else {
-      addMessage('Desculpe, não entendi a resposta.', 'received');
-    }
-  } catch (error) {
-    console.error('Erro ao enviar mensagem para n8n:', error);
-    addMessage('Erro de conexão com o servidor.', 'received');
-  }
-}
+  async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const message = input.value.trim();
+    if (!message) return;
 
+    addMessage(message, 'user');
+    input.value = '';
+
+    try {
+      const response = await fetch('https://kochti.app.n8n.cloud/webhook/chat-atendimento', {  // <- USAR PRODUCTION URL AQUI
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await response.json();
+      if (data && data.reply) {
+        addMessage(data.reply, 'bot');
+      } else {
+        addMessage('Desculpe, não entendi a resposta.', 'bot');
+      }
+    } catch (error) {
+      addMessage('Erro de conexão com o servidor.', 'bot');
+    }
+  }
+
+  function addMessage(text, sender) {
+    const chatBody = document.getElementById('chat-body');
+    const msg = document.createElement('div');
+    msg.className = `message ${sender}`;
+    msg.innerText = text;
+    chatBody.appendChild(msg);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
 
 </script>
 
