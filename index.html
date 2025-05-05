@@ -16,6 +16,7 @@
       --text-color: #333;
       --error-color: #ff4444;
       --success-color: #4CAF50;
+      --recording-color: #f44336;
     }
 
     * {
@@ -33,12 +34,16 @@
       padding: 10px;
       color: var(--text-color);
       line-height: 1.6;
+      background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXOnnp5BC_whn8K-2MF8ixoBXbrhitz5xEzA&s');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     .chat-wrapper {
       width: 100%;
       max-width: 800px;
-      background: var(--light);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.15);
       display: flex;
@@ -46,6 +51,7 @@
       overflow: hidden;
       height: 90vh;
       max-height: 800px;
+      backdrop-filter: blur(2px);
     }
 
     .chat-header {
@@ -94,7 +100,7 @@
       flex: 1;
       padding: 20px;
       overflow-y: auto;
-      background: var(--light);
+      background: transparent;
       scroll-behavior: smooth;
     }
 
@@ -108,6 +114,7 @@
       word-wrap: break-word;
       position: relative;
       animation: fadeIn 0.3s ease;
+      backdrop-filter: blur(2px);
     }
 
     @keyframes fadeIn {
@@ -116,14 +123,14 @@
     }
 
     .message.sent {
-      background: var(--primary-color);
+      background: rgba(227, 25, 24, 0.9);
       color: var(--light);
       margin-left: auto;
       border-bottom-right-radius: 0;
     }
 
     .message.received {
-      background: var(--background-color);
+      background: rgba(248, 248, 248, 0.9);
       color: var(--text-color);
       border: 1px solid var(--border-color);
       border-bottom-left-radius: 0;
@@ -143,7 +150,8 @@
       padding: 10px;
       border-top: 1px solid var(--border-color);
       gap: 8px;
-      background: var(--light);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(2px);
     }
 
     .chat-input textarea {
@@ -157,6 +165,7 @@
       min-height: 45px;
       max-height: 120px;
       transition: border-color 0.3s;
+      background: rgba(255, 255, 255, 0.9);
     }
 
     .chat-input textarea:focus {
@@ -186,6 +195,30 @@
       transform: scale(0.95);
     }
 
+    .audio-btn.recording {
+      background: var(--recording-color);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(244, 67, 54, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(244, 67, 54, 0); }
+    }
+
+    .recording-timer {
+      display: none;
+      align-items: center;
+      margin-right: 8px;
+      font-size: 14px;
+      color: var(--recording-color);
+      font-weight: bold;
+    }
+
+    .recording-timer i {
+      margin-right: 5px;
+    }
+
     .pre-chat {
       position: fixed;
       top: 0;
@@ -198,6 +231,7 @@
       align-items: center;
       z-index: 100;
       padding: 20px;
+      backdrop-filter: blur(3px);
     }
 
     .pre-chat-form {
@@ -279,12 +313,13 @@
     .typing-indicator {
       display: flex;
       padding: 10px 15px;
-      background: var(--background-color);
+      background: rgba(248, 248, 248, 0.9);
       border: 1px solid var(--border-color);
       border-radius: 10px;
       border-bottom-left-radius: 0;
       margin-bottom: 15px;
       width: fit-content;
+      backdrop-filter: blur(2px);
     }
 
     .typing-indicator span {
@@ -315,6 +350,53 @@
       100% { opacity: 0.4; transform: translateY(0); }
     }
 
+    .audio-message {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 8px;
+      margin-top: 5px;
+    }
+    
+    .audio-message i {
+      margin-right: 8px;
+      color: var(--primary-color);
+    }
+    
+    .audio-player {
+      flex: 1;
+      height: 30px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .audio-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: var(--primary-color);
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+    
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+    }
+    
+    .audio-controls button {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
     @media (max-width: 600px) {
       .chat-wrapper {
         height: 100vh;
@@ -324,6 +406,10 @@
       
       .chat-header {
         padding: 12px 15px;
+      }
+      
+      .chat-header img {
+        height: 35px;
       }
       
       .chat-header h2 {
@@ -347,21 +433,10 @@
       .pre-chat-form h2 {
         font-size: 20px;
       }
-    }
-
-    /* Estilo para mensagens de arquivo */
-    .file-message {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-      background: rgba(0,0,0,0.05);
-      border-radius: 8px;
-      margin-top: 5px;
-    }
-    
-    .file-message i {
-      margin-right: 8px;
-      color: var(--primary-color);
+      
+      .chat-input textarea {
+        padding: 10px 15px;
+      }
     }
   </style>
 </head>
@@ -395,7 +470,7 @@
 
 <div class="chat-wrapper" id="chat-wrapper" style="display:none;">
   <div class="chat-header">
-    <img src="URL_DA_LOGO" alt="Logo Koch Supermercados">
+    <img src="https://www.superkoch.com.br/media/wysiwyg/institutional/home/kochbrands.png" alt="Logo Koch Supermercados">
     <h2>Atendimento Automático Suporte TI</h2>
     <div class="status">Online</div>
   </div>
@@ -405,6 +480,10 @@
   <div class="chat-input">
     <textarea id="messageInput" rows="1" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem"></textarea>
     <button class="upload-btn" id="uploadBtn" aria-label="Enviar arquivo"><i class="fas fa-paperclip"></i></button>
+    <div class="recording-timer" id="recordingTimer">
+      <i class="fas fa-circle"></i>
+      <span id="timerDisplay">00:00</span>
+    </div>
     <button class="audio-btn" id="audioBtn" aria-label="Gravar áudio"><i class="fas fa-microphone"></i></button>
     <button class="send-btn" id="sendBtn" aria-label="Enviar mensagem"><i class="fas fa-paper-plane"></i></button>
   </div>
@@ -422,6 +501,8 @@
   const audioBtn = document.getElementById('audioBtn');
   const uploadBtn = document.getElementById('uploadBtn');
   const fileInput = document.getElementById('fileInput');
+  const recordingTimer = document.getElementById('recordingTimer');
+  const timerDisplay = document.getElementById('timerDisplay');
   
   // Elementos de erro
   const nomeError = document.getElementById('nome-error');
@@ -433,6 +514,8 @@
   let mediaRecorder, audioChunks = [];
   let isRecording = false;
   let isTyping = false;
+  let recordingInterval;
+  let recordingSeconds = 0;
   const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook/chat-atendimento';
   
   // Solicitar permissões ao carregar
@@ -594,17 +677,30 @@
     fileInput.value = '';
   }
   
+  // Atualizar o timer de gravação
+  function updateTimer() {
+    recordingSeconds++;
+    const minutes = Math.floor(recordingSeconds / 60).toString().padStart(2, '0');
+    const seconds = (recordingSeconds % 60).toString().padStart(2, '0');
+    timerDisplay.textContent = `${minutes}:${seconds}`;
+  }
+  
   // Alternar gravação de áudio
   async function toggleAudioRecording() {
     if (isRecording) {
       stopAudioRecording();
+      audioBtn.classList.remove('recording');
       audioBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-      audioBtn.style.background = 'var(--primary-color)';
+      recordingTimer.style.display = 'none';
+      clearInterval(recordingInterval);
+      recordingSeconds = 0;
     } else {
       try {
         await startAudioRecording();
+        audioBtn.classList.add('recording');
         audioBtn.innerHTML = '<i class="fas fa-stop"></i>';
-        audioBtn.style.background = 'var(--error-color)';
+        recordingTimer.style.display = 'flex';
+        recordingInterval = setInterval(updateTimer, 1000);
       } catch (error) {
         addMessage('Erro ao acessar o microfone. Por favor, verifique as permissões.', 'received');
         console.error('Erro na gravação:', error);
@@ -724,7 +820,7 @@
     } else if (contentType === 'file') {
       msg.innerHTML = `
         <div>${content || 'Arquivo enviado'}</div>
-        <div class="file-message">
+        <div class="audio-message">
           <i class="fas fa-file"></i>
           <span>${extraContent}</span>
         </div>
@@ -732,9 +828,14 @@
     } else if (contentType === 'audio') {
       msg.innerHTML = `
         <div>${content || 'Áudio enviado'}</div>
-        <div class="file-message">
+        <div class="audio-message">
           <i class="fas fa-microphone"></i>
-          <span>${extraContent || 'Gravação de áudio'}</span>
+          <div class="audio-player">
+            <div class="audio-progress" id="audioProgress"></div>
+          </div>
+          <div class="audio-controls">
+            <button aria-label="Reproduzir áudio"><i class="fas fa-play"></i></button>
+          </div>
         </div>
       `;
     }
