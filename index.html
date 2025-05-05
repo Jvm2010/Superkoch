@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Atendimento Koch Supermercados</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
       --primary-color: #E31918;
@@ -17,10 +17,9 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url('URL_DO_FUNDO');
+      background-image: url('https://URL_DO_FUNDO');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -107,29 +106,26 @@
       border-top: 1px solid var(--border-color);
     }
 
-    .chat-input textarea {
+    .chat-input textarea, .chat-input input[type="file"] {
       flex: 1;
-      resize: none;
       border-radius: 25px;
       border: 1px solid var(--border-color);
-      padding: 10px 15px;
-      font-size: 15px;
-      outline: none;
+      padding: 10px;
+      margin-right: 10px;
     }
 
-    .send-btn, .audio-btn, .file-btn {
+    .send-btn {
       background: var(--primary-color);
       color: var(--light);
       border: none;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      margin-left: 5px;
+      width: 45px;
+      height: 45px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
+      font-size: 20px;
     }
 
     .pre-chat {
@@ -159,7 +155,7 @@
       color: var(--primary-color);
     }
 
-    .pre-chat-form input {
+    .pre-chat-form input, .pre-chat-form button {
       width: 100%;
       padding: 12px;
       margin-bottom: 15px;
@@ -169,36 +165,132 @@
     }
 
     .pre-chat-form button {
-      width: 100%;
-      padding: 14px;
       background: var(--primary-color);
-      border: none;
-      border-radius: 8px;
       color: var(--light);
-      font-size: 16px;
-      cursor: pointer;
       font-weight: bold;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
+<div class="pre-chat" id="pre-chat">
+  <form class="pre-chat-form" id="pre-chat-form">
+    <h2>Identificação do colaborador</h2>
+    <input type="text" id="nome" placeholder="Nome completo" required>
+    <input type="text" id="filial" placeholder="Filial" required>
+    <input type="text" id="setor" placeholder="Setor" required>
+    <button type="submit">Iniciar Atendimento</button>
+  </form>
+</div>
+
+<div class="chat-wrapper" id="chat-wrapper" style="display:none;">
+  <div class="chat-header">
+    <img src="https://URL_DA_LOGO" alt="Logo">
+    <h2>Atendimento Automático Suporte TI</h2>
+    <div class="status">Online</div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="chat-input">
+    <textarea id="messageInput" rows="1" placeholder="Digite sua mensagem..."></textarea>
+    <input type="file" id="fileInput" accept="audio/*,application/pdf,image/*">
+    <button class="send-btn" id="sendBtn"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
 <script>
-  // Solicita permissões de mídia
-  async function solicitarPermissoes() {
+  navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+
+  const preChat = document.getElementById('pre-chat');
+  const preChatForm = document.getElementById('pre-chat-form');
+  const chatWrapper = document.getElementById('chat-wrapper');
+  const messages = document.getElementById('messages');
+  const messageInput = document.getElementById('messageInput');
+  const fileInput = document.getElementById('fileInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  let user = {};
+  const N8N_WEBHOOK_URL = 'https://kochti.app.n8n.cloud/webhook/chat-atendimento';
+
+  preChatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    user.nome = document.getElementById('nome').value.trim();
+    user.filial = document.getElementById('filial').value.trim();
+    user.setor = document.getElementById('setor').value.trim();
+    preChat.style.display = 'none';
+    chatWrapper.style.display = 'flex';
+    addMessage(`Bem-vindo ${user.nome} ao suporte da TI, no que posso ajudar?`, 'received');
+  });
+
+  sendBtn.addEventListener('click', sendMessage);
+
+  function addMessage(content, type) {
+    const msg = document.createElement('div');
+    msg.classList.add('message', type);
+    msg.innerText = content;
+    messages.appendChild(msg);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const text = messageInput.value.trim();
+    const file = fileInput.files[0];
+
+    if (text) {
+      addMessage(text, 'sent');
+      await sendToN8N({ mensagem: text });
+    }
+
+    if (file) {
+      addMessage(`Enviando arquivo: ${file.name}`, 'sent');
+      const formData = new FormData();
+      formData.append('nome', user.nome);
+      formData.append('filial', user.filial);
+      formData.append('setor', user.setor);
+      formData.append('arquivo', file);
+
+      try {
+        const response = await fetch(N8N_WEBHOOK_URL, {
+          method: 'POST',
+          body: formData
+        });
+        const data = await response.json();
+        if (data && data.resposta) {
+          addMessage(data.resposta, 'received');
+        }
+      } catch (error) {
+        console.error(error);
+        addMessage('Erro ao enviar o arquivo.', 'received');
+      }
+    }
+
+    messageInput.value = '';
+    fileInput.value = '';
+  }
+
+  async function sendToN8N(payload) {
     try {
-      await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      console.log('Permissões concedidas.');
-    } catch (err) {
-      console.error('Permissões negadas:', err);
+      const response = await fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: user.nome,
+          filial: user.filial,
+          setor: user.setor,
+          ...payload
+        })
+      });
+      const data = await response.json();
+      if (data && data.resposta) {
+        addMessage(data.resposta, 'received');
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      addMessage('Erro na comunicação.', 'received');
     }
   }
-  solicitarPermissoes();
 </script>
-
-<!-- Adicione aqui os elementos da sua interface de chat -->
-<!-- Substitua 'URL_DA_LOGO' e 'URL_DO_FUNDO' com os URLs reais -->
 
 </body>
 </html>
